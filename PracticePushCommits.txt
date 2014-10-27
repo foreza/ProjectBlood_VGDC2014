@@ -5,7 +5,8 @@ Put your name in it somewhere.
 
 Example:
 
-- JASON WAS HERE o.o
+- JASON WAS HERE o.O
++ Voltar was here
 
 --------------
 
