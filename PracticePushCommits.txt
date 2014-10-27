@@ -11,8 +11,6 @@ Example:
 --------------
 
 - I was here! - Jason C.
-<<<<<<< HEAD
 - Jeremy checking in
-=======
 - I wasn't here! - Lawrence C.
->>>>>>> origin/master
+- Daniel Chiu
