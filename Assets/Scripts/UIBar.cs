@@ -8,11 +8,12 @@ public class UIBar : MonoBehaviour {
 	public int barToDisplayPercent;
 	public Texture2D progbarempty;
 	public Texture2D progbarfull;
+	public int offsetx, offsety;
 	void OnGUI(){
 		//RGB+Alpha. This affects ALL UI elements. Workaround until UISkin materializes in the assets directory.
 		GUI.backgroundColor = new Color (1.0f, 1.0f,1.0f, 0.0f);
 		//draw the background
-		GUI.BeginGroup (new Rect (10, 10, sizex, sizey));
+		GUI.BeginGroup (new Rect (offsetx, offsety, sizex, sizey));
 			GUI.Box (new Rect (0, 0, sizex, sizey), progbarempty);
 			//draw the filling
 			GUI.BeginGroup (new Rect (0, 0, sizex * barToDisplayPercent/100, sizey));
