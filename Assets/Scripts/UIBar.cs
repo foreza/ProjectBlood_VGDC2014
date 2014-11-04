@@ -13,9 +13,9 @@ public class UIBar : MonoBehaviour {
 		//RGB+Alpha. This affects ALL UI elements. Workaround until UISkin materializes in the assets directory.
 		GUI.backgroundColor = new Color (1.0f, 1.0f,1.0f, 0.0f);
 		//draw the background
-		GUI.BeginGroup (new Rect (offsetx, offsety, sizex, sizey));
-			GUI.Box (new Rect (0, 0, sizex, sizey), progbarempty);
-			//draw the filling
+		GUI.BeginGroup (new Rect (offsetx, offsety, sizex, sizey)); //this will offset this instance of UIBar by offsetx, offsety.
+			GUI.Box (new Rect (0, 0, sizex, sizey), progbarempty); //<-- this draws the outline of the bar at the top-left of the box
+			//draw the filling										//designated by the above BeginGroup.
 			GUI.BeginGroup (new Rect (0, 0, sizex * barToDisplayPercent/100, sizey));
 				GUI.Box (new Rect (0, 0, sizex - 2, sizey - 2), progbarfull);
 			GUI.EndGroup ();
