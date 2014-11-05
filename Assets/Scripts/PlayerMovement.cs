@@ -10,8 +10,8 @@ public class PlayerMovement : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed, 0));
+	// FixedUpdate is called once per frame
+	void FixedUpdate () {
+		rigidbody2D.velocity = new Vector3 (Input.GetAxisRaw ("Horizontal") * speed, Input.GetAxisRaw ("Vertical") * speed, 0);
 	}
 }
