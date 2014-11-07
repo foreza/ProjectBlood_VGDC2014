@@ -4,6 +4,7 @@ using System.Collections;
 public class ActivateMap : MonoBehaviour {
 
 	public Camera fullMapCamera;
+    bool cameraState;
 
 	// Use this for initialization
 	void Start () {
@@ -12,14 +13,15 @@ public class ActivateMap : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        // SetActive throws !IsActive && !GetRunInEditMode error if called within OnGui()
+        fullMapCamera.gameObject.SetActive(cameraState);
 	}
 
 	void OnGUI () {
 		if (Input.GetKey(KeyCode.M)) {
-			fullMapCamera.gameObject.SetActive(true);
+			cameraState = true;
 		} else {
-			fullMapCamera.gameObject.SetActive(false);
+			cameraState = false;
 		}
 	}
 }

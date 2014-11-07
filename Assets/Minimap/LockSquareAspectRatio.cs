@@ -2,28 +2,57 @@ using UnityEngine;
 using System.Collections;
 
 /*
- * Locks the camera to a square aspect ratio, compensating for the screen's aspect ratio.
- * The tCamScale var determines how much of the screen the camera's viewport will take up. 
+ * Locks a camera to a square aspect ratio.
+ * Since the screen is likely non-square, all relative references (including viewport coordinates)
+ * will be stretched - which is bad for viewports that were intended to show only a square area (minimaps,  etc.)
+ * We compensate by finding what percentage of the screen width is necessary to create a square area, then
+ * updating the camera viewport rectangle with each frame.
  */
 public class LockSquareAspectRatio : MonoBehaviour
-{
-		public Camera tCam; // Target camera
-		public float tCamScale; // Desired camera scale between 0 (invisible) and 1 (fills screen vertically)
-		float cAspRatio; // Current aspect ratio
-
-		// Use this for initialization
-		void OnGUI ()
-		{
-				cAspRatio = ((float)Screen.width / (float)Screen.height);
-				tCam = gameObject.GetComponent<Camera>();
-		}
+{	
+	public float viewportX;
+	public float viewportY;
+	public bool centerCamera; // If true, center the camera on the point (viewportX, viewportY)
+	public Camera targetCamera; // Target camera
+	public float cameraVerticalScale; // Desired camera scale between 0 (invisible) and 1 (fills screen vertically)
 	
-		// Update is called once per frame
-		void Update ()
-		{
-				cAspRatio = (((float)Screen.width / (float)Screen.height));
-				// set the camera viewpoint to a new rectangle of the appropriate size, limiting the horizontal size
-				tCam.rect = new Rect (tCam.rect.x, tCam.rect.y, tCamScale * (1 / cAspRatio), tCamScale);
-		}
+
+    float currentAspectRatio; // Current aspect ratio
+    //internal vars that hold our final viewport size
+    float vX;
+    float vY;
+    float vW;
+    float vH;
+
+	// Use this for initialization
+	void OnGUI ()
+	{
+        currentAspectRatio = ((float)Screen.width / (float)Screen.height);
+		targetCamera = gameObject.GetComponent<Camera> ();
+	}
+
+	// Update is called once per frame
+	void Update ()
+	{
+        if (targetCamera.enabled)
+        {
+            currentAspectRatio = (((float)Screen.width / (float)Screen.height));
+            // aspect ratio compensation
+            vW = cameraVerticalScale * (1 / currentAspectRatio);
+            vH = cameraVerticalScale;
+
+            if (centerCamera)
+            {
+                vX = viewportX - vW / 2;
+                vY = viewportY - vH / 2;
+            }
+            else
+            {
+                vX = viewportX;
+                vY = viewportY;
+            }
+            targetCamera.rect = new Rect(vX, vY, vW, vH);
+        }
+	}
 }
 
