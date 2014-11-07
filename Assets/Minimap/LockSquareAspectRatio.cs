@@ -6,7 +6,11 @@ using System.Collections;
  * Since the screen is likely non-square, all relative references (including viewport coordinates)
  * will be stretched - which is bad for viewports that were intended to show only a square area (minimaps,  etc.)
  * We compensate by finding what percentage of the screen width is necessary to create a square area, then
+<<<<<<< HEAD
  * updating the camera viewport rectangle during each frame.
+=======
+ * updating the camera viewport rectangle with each frame.
+>>>>>>> origin/maptest
  */
 public class LockSquareAspectRatio : MonoBehaviour
 {	
@@ -18,7 +22,10 @@ public class LockSquareAspectRatio : MonoBehaviour
 	
 
     float currentAspectRatio; // Current aspect ratio
+<<<<<<< HEAD
     float prevAspectRatio;
+=======
+>>>>>>> origin/maptest
     //internal vars that hold our final viewport size
     float vX;
     float vY;
@@ -38,6 +45,7 @@ public class LockSquareAspectRatio : MonoBehaviour
         if (targetCamera.enabled)
         {
             currentAspectRatio = (((float)Screen.width / (float)Screen.height));
+<<<<<<< HEAD
             if (!(prevAspectRatio == currentAspectRatio))
             {
                 // aspect ratio compensation
@@ -58,6 +66,24 @@ public class LockSquareAspectRatio : MonoBehaviour
             }
         }
         prevAspectRatio = currentAspectRatio;
+=======
+            // aspect ratio compensation
+            vW = cameraVerticalScale * (1 / currentAspectRatio);
+            vH = cameraVerticalScale;
+
+            if (centerCamera)
+            {
+                vX = viewportX - vW / 2;
+                vY = viewportY - vH / 2;
+            }
+            else
+            {
+                vX = viewportX;
+                vY = viewportY;
+            }
+            targetCamera.rect = new Rect(vX, vY, vW, vH);
+        }
+>>>>>>> origin/maptest
 	}
 }
 
