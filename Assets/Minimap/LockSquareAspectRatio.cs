@@ -22,10 +22,7 @@ public class LockSquareAspectRatio : MonoBehaviour
 	
 
     float currentAspectRatio; // Current aspect ratio
-<<<<<<< HEAD
     float prevAspectRatio;
-=======
->>>>>>> origin/maptest
     //internal vars that hold our final viewport size
     float vX;
     float vY;
@@ -45,7 +42,6 @@ public class LockSquareAspectRatio : MonoBehaviour
         if (targetCamera.enabled)
         {
             currentAspectRatio = (((float)Screen.width / (float)Screen.height));
-<<<<<<< HEAD
             if (!(prevAspectRatio == currentAspectRatio))
             {
                 // aspect ratio compensation
@@ -64,26 +60,8 @@ public class LockSquareAspectRatio : MonoBehaviour
                 }
                 targetCamera.rect = new Rect(vX, vY, vW, vH);
             }
-        }
+        } 
         prevAspectRatio = currentAspectRatio;
-=======
-            // aspect ratio compensation
-            vW = cameraVerticalScale * (1 / currentAspectRatio);
-            vH = cameraVerticalScale;
-
-            if (centerCamera)
-            {
-                vX = viewportX - vW / 2;
-                vY = viewportY - vH / 2;
-            }
-            else
-            {
-                vX = viewportX;
-                vY = viewportY;
-            }
-            targetCamera.rect = new Rect(vX, vY, vW, vH);
-        }
->>>>>>> origin/maptest
 	}
 }
 
