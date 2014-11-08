@@ -13,10 +13,10 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") != 0) {
-			transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * speed/2, Input.GetAxisRaw("Vertical") * speed/2, 0));
-		} else {
-			transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed, 0));
-		}
+//		if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") != 0) {
+//			transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * speed/2, Input.GetAxisRaw("Vertical") * speed/2, 0));
+//		} else {
+//			transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed, 0));
+//		}
 	}
 }
