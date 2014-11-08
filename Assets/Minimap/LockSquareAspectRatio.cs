@@ -6,11 +6,7 @@ using System.Collections;
  * Since the screen is likely non-square, all relative references (including viewport coordinates)
  * will be stretched - which is bad for viewports that were intended to show only a square area (minimaps,  etc.)
  * We compensate by finding what percentage of the screen width is necessary to create a square area, then
-<<<<<<< HEAD
  * updating the camera viewport rectangle during each frame.
-=======
- * updating the camera viewport rectangle with each frame.
->>>>>>> origin/maptest
  */
 public class LockSquareAspectRatio : MonoBehaviour
 {	
