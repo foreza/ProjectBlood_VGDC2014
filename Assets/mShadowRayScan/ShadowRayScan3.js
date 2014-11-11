@@ -8,7 +8,7 @@
 
 public var lightmeshholder:GameObject;
 
-private var RaysToShoot:int=1024; //64; 128; 1024; 
+private var RaysToShoot:int=256; //64; 128; 1024; 
 private var distance:int=1500;
 private var vertices : Vector3[];
 private var vertices2d : Vector2[];
@@ -44,24 +44,16 @@ function Update ()
 		var y = Mathf.Cos(angle);
 		angle += 2*Mathf.PI/RaysToShoot;
 		
-		var dir:Vector3 = Vector3(x,y,0);
+		var dir:Vector2 = Vector2(x,y);
 		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir);
-		if(hit.distance == null)
+		if(true)
 		{
-		    if(hit.distance>160)
-		    {
-		    	var tmp = lightmeshholder.transform.InverseTransformPoint(transform.position+(160*dir));
-		    }
-		    else
-		    {
-//			Debug.DrawLine (transform.position, hit.point, Color(1,1,0,1));
-				tmp = lightmeshholder.transform.InverseTransformPoint(transform.position+(hit.distance*dir));
-			}
+		    var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
 			vertices[i] = Vector3(tmp.x,tmp.y,0);
-		}else{ // no hit
+//		}else{ // no hit
 //			Debug.DrawRay (transform.position, dir*distance, Color(1,1,0,1));
-			var tmp2 = lightmeshholder.transform.InverseTransformPoint(transform.position+(80.5f*dir));
-			vertices[i] = Vector3(tmp2.x,tmp2.y,0);
+//			var tmp2 = lightmeshholder.transform.InverseTransformPoint(transform.position+(i*dir));
+//			vertices[i] = Vector3(tmp2.x,tmp2.y,0);
 		}
 	}
 	
@@ -130,7 +122,7 @@ function BuildMesh ()
     var newvertices : Vector3[] = new Vector3[vertices2d.Length+1];
     for (var n : int = 0; n<newvertices.Length-1;n++) 
 	{
-        newvertices[n] = new Vector3(vertices2d[n].x, 0, vertices2d[n].y);
+        newvertices[n] = new Vector3(vertices2d[n].x, vertices2d[n].y, 0);
 
 	// create some uv's for the mesh?
 	// uvs[n] = vertices2d[n];
