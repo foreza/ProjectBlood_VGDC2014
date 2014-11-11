@@ -9,12 +9,13 @@
 public var lightmeshholder:GameObject;
 
 private var RaysToShoot:int=256; //64; 128; 1024; 
-private var distance:int=1500;
+private var distance:int=150;
 private var vertices : Vector3[];
 private var vertices2d : Vector2[];
 private var triangles : int[];
 //private var vertices2 : Vector3[];
 private var mesh : Mesh;
+private var ignoreLayers : String[] = ["Mobs"];
 
 
 
@@ -45,16 +46,21 @@ function Update ()
 		angle += 2*Mathf.PI/RaysToShoot;
 		
 		var dir:Vector2 = Vector2(x,y);
-		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir);
-		if(true)
+		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir, distance);
+		if(hit.collider != null)
 		{
-		    var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
+			var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
 			vertices[i] = Vector3(tmp.x,tmp.y,0);
+		}
+		else
+		{
+			tmp = lightmeshholder.transform.InverseTransformPoint(transform.position+(distance*dir));
+			vertices[i] = Vector3(tmp.x,tmp.y,0);
+		}
 //		}else{ // no hit
 //			Debug.DrawRay (transform.position, dir*distance, Color(1,1,0,1));
 //			var tmp2 = lightmeshholder.transform.InverseTransformPoint(transform.position+(i*dir));
 //			vertices[i] = Vector3(tmp2.x,tmp2.y,0);
-		}
 	}
 	
 	// last vertice is at the player location (center point)
