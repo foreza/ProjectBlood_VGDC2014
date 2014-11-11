@@ -15,7 +15,7 @@ private var vertices2d : Vector2[];
 private var triangles : int[];
 //private var vertices2 : Vector3[];
 private var mesh : Mesh;
-private var ignoreLayers : String[] = ["Mobs"];
+private var layers : String[] = ["LightWalls"];
 
 
 
@@ -46,7 +46,7 @@ function Update ()
 		angle += 2*Mathf.PI/RaysToShoot;
 		
 		var dir:Vector2 = Vector2(x,y);
-		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir, distance);
+		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir, distance, LayerMask.GetMask(layers));
 		if(hit.collider != null)
 		{
 			var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
