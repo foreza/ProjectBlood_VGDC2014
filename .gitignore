@@ -75,3 +75,5 @@ ExportedObj/
 Icon?
 ehthumbs.db
 Thumbs.db
+*.prefab
+Assets/GateClosed.prefab

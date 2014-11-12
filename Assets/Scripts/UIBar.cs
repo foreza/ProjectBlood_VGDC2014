@@ -20,7 +20,5 @@ public class UIBar : MonoBehaviour {
 				GUI.Box (new Rect (0, 0, sizex - 2, sizey - 2), progbarfull);
 			GUI.EndGroup ();
 		GUI.EndGroup ();
-
-
 	}
 }
