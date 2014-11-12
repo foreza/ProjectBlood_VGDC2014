@@ -88,7 +88,7 @@ function BuildMesh ()
 		var y = Mathf.Cos(angle);
 		angle += 2*Mathf.PI/RaysToShoot;
 		
-		var dir:Vector3 = Vector3(x,y,0);
+		var dir:Vector3 = Vector3(x,0,y);
 		var hit : RaycastHit;
 		if (Physics.Raycast (transform.position, dir, hit, distance)) 
 		{
@@ -108,14 +108,14 @@ function BuildMesh ()
 			*/
 			
 			var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
-			vertices2d[i] = Vector2(tmp.x,tmp.y);
+			vertices2d[i] = Vector2(tmp.x,tmp.z);
 			
 			
 		}else{ // no hit
 //			Debug.DrawRay (transform.position, dir*distance, Color(1,1,0,1));
 
 			var tmp2 = lightmeshholder.transform.InverseTransformPoint(lightmeshholder.transform.position+dir);
-			vertices2d[i] = Vector2(tmp2.x,tmp2.y);
+			vertices2d[i] = Vector2(tmp2.x,tmp2.z);
 
 
 		}
