@@ -8,8 +8,8 @@
 
 public var lightmeshholder:GameObject;
 
-private var RaysToShoot:int=256; //64; 128; 1024; 
-private var distance:int=150;
+public var RaysToShoot:int=256; //64; 128; 1024; 
+public var distance:int=150;
 private var vertices : Vector3[];
 private var vertices2d : Vector2[];
 private var triangles : int[];
