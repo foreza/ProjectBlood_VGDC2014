@@ -30,8 +30,8 @@ function Start ()
 //	vertices2 = new Vector3[4];
 	mesh= lightmeshholder.GetComponent(MeshFilter).mesh;
 	BuildMesh ();
-	Extinguish();
-	Ignite();
+	lit = !lit;
+	ToggleLight();
 
 }
 
@@ -55,17 +55,23 @@ function ToggleLight()
 
 function Ignite()
 {
-    lit = true;
-	mesh.vertices = newvertices;
-   	mesh.triangles = triangles;
-   	mesh.uv = uvs;
+    if(!lit)
+    {
+    	lit = true;
+		mesh.vertices = newvertices;
+   		mesh.triangles = triangles;
+   		mesh.uv = uvs;
+   	}
 }
 function Extinguish()
 {
-    lit = false;
-	mesh.vertices = new Vector3[0];
-   	mesh.triangles = new int[0];
-   	mesh.uv = new Vector2[0];
+    if(lit)
+    {
+    	lit = false;
+		mesh.vertices = new Vector3[0];
+   		mesh.triangles = new int[0];
+   		mesh.uv = new Vector2[0];
+   	}
 }
 function BuildMesh () 
 {
