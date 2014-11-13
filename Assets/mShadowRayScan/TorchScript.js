@@ -10,14 +10,15 @@ public var lightmeshholder:GameObject;
 
 public var RaysToShoot:int=256; //64; 128; 1024; 
 public var distance:int=150;
+public var lit=true;
 private var vertices : Vector3[];
 private var vertices2d : Vector2[];
 private var triangles : int[];
+private var uvs : Vector2[];
+private var newvertices : Vector3[];
 //private var vertices2 : Vector3[];
 private var mesh : Mesh;
 private var layers : String[] = ["LightWalls"];
-
-
 
 function Start () 
 {
@@ -28,52 +29,46 @@ function Start ()
 	//triangles = new int[RaysToShoot];
 //	vertices2 = new Vector3[4];
 	mesh= lightmeshholder.GetComponent(MeshFilter).mesh;
-
 	BuildMesh ();
+	Extinguish();
+	Ignite();
 
 }
 
 function Update () 
 {
 
-	vertices = mesh.vertices;
 
-	var angle:float = 0;
-	for (var i:int=0;i<RaysToShoot;i++)
-	{
-		var x = Mathf.Sin(angle);
-		var y = Mathf.Cos(angle);
-		angle += 2*Mathf.PI/RaysToShoot;
-		
-		var dir:Vector2 = Vector2(x,y);
-		var hit : RaycastHit2D = Physics2D.Raycast (transform.position, dir, distance, LayerMask.GetMask(layers));
-		if(hit.collider != null)
-		{
-			var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
-			vertices[i] = Vector3(tmp.x,tmp.y,0);
-		}
-		else
-		{
-			tmp = lightmeshholder.transform.InverseTransformPoint(transform.position+(distance*dir));
-			vertices[i] = Vector3(tmp.x,tmp.y,0);
-		}
-//		}else{ // no hit
-//			Debug.DrawRay (transform.position, dir*distance, Color(1,1,0,1));
-//			var tmp2 = lightmeshholder.transform.InverseTransformPoint(transform.position+(i*dir));
-//			vertices[i] = Vector3(tmp2.x,tmp2.y,0);
-	}
-	
-	// last vertice is at the player location (center point)
-	vertices[i] = lightmeshholder.transform.InverseTransformPoint(transform.position);
-	
-	 mesh.vertices = vertices;
-	
-	
 }
 
+function ToggleLight()
+{
+    if(!lit)
+    {
+    	Ignite();
+    }
+    else
+    {
+    	Extinguish();
+    }
+}
+
+function Ignite()
+{
+    lit = true;
+	mesh.vertices = newvertices;
+   	mesh.triangles = triangles;
+   	mesh.uv = uvs;
+}
+function Extinguish()
+{
+    lit = false;
+	mesh.vertices = new Vector3[0];
+   	mesh.triangles = new int[0];
+   	mesh.uv = new Vector2[0];
+}
 function BuildMesh () 
 {
-
 	// dont cast if not moved?
 	// build prelook-array of hit points/pixels/areas?
 	// skip duplicate hit points (compare previous)
@@ -105,8 +100,8 @@ function BuildMesh ()
 //    var indices : int[] = tr.Triangulate();
 	
 	// build mesh
-    var uvs : Vector2[] = new Vector2[vertices2d.Length+1];
-    var newvertices : Vector3[] = new Vector3[vertices2d.Length+1];
+    uvs = new Vector2[vertices2d.Length+1];
+    newvertices = new Vector3[vertices2d.Length+1];
     for (var n : int = 0; n<newvertices.Length-1;n++) 
 	{
         newvertices[n] = new Vector3(vertices2d[n].x, vertices2d[n].y, 0);
