@@ -55,4 +55,8 @@ public class DoorScript : MonoBehaviour {
 			}
 		}
 	}
+	public bool IsOpen()
+	{
+		return open;
+	}
 }

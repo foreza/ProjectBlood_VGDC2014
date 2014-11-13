@@ -20,6 +20,7 @@ public class DoorSwitch : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Player") {
+			if((door.GetComponent<DoorScript>().IsOpen() && canClose) || (!door.GetComponent<DoorScript>().IsOpen() && canOpen))
 				door.GetComponent<DoorScript>().ToggleDoor();
 		}
 	}
