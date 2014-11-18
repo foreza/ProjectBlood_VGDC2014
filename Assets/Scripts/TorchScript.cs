@@ -33,7 +33,10 @@ public class TorchScript : MonoBehaviour
 		{
 	
 		}
-
+		public bool IsLit()
+		{
+		return lit;
+		}
         public void ToggleLight()
         {
             if (!lit)
