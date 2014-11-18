@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class LoSMeshScript : MonoBehaviour
 {
 
@@ -13,25 +13,26 @@ public class LoSMeshScript : MonoBehaviour
 	private int[] triangles;
 	//private var vertices2 : Vector3[];
 	private Mesh mesh;
-	private string[] layers = {"LightWalls"};
+	private LayerMask mask; 
+	private string[] layers = {"Enemy","LightWalls"};
+	private List<Transform> visibleMobs; //keeps track of the mobs in the LoS
 	
-	
-
 	void Start () 
 	{
-
+		mask = LayerMask.GetMask (layers);
+		Debug.Log (mask.value);
 		vertices2d = new Vector2[RaysToShoot];
 		mesh= lightmeshholder.GetComponent<MeshFilter>().mesh;
-		
+		visibleMobs = new List<Transform> ();
 		BuildMesh ();
 		
 	}
 	
 	void Update () 
 	{
-		
+		List<Transform> sightedMobs = new List<Transform> ();
 		vertices = mesh.vertices;
-		
+		GameObject[] newMobs = {};
 		float angle = 0;
 		for (int i=0;i<RaysToShoot;i++)
 		{
@@ -40,12 +41,27 @@ public class LoSMeshScript : MonoBehaviour
 			angle += 2*Mathf.PI/RaysToShoot;
 			
 			Vector3 dir = new Vector3(x,y,0);
-			RaycastHit2D hit  = Physics2D.Raycast (transform.position, dir, distance, LayerMask.GetMask(layers));
+			RaycastHit2D hit  = Physics2D.Raycast (transform.position, dir, distance, mask);
 			Vector3 tmp;
 			if(hit.collider != null)
 			{
 				tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
 				vertices[i] = new Vector3(tmp.x,tmp.y,0);
+
+				//code for LoS showing enemies
+				if (hit.collider.tag == "Enemy")
+				{
+					if(!visibleMobs.Contains (hit.transform))//&& visibleMobs.Contains(hit.transform.parent.gameObject)) 
+					{
+						Debug .Log ("sighted");
+						hit.transform.Find ("EnemyPlaceholder").GetComponent<SpriteRenderer>().enabled = true;
+						visibleMobs.Add (hit.transform);
+					}
+					else if(!sightedMobs.Contains (hit.transform))
+					{
+						sightedMobs.Add (hit.transform);
+					}
+				}
 			}
 			else
 			{
@@ -62,7 +78,16 @@ public class LoSMeshScript : MonoBehaviour
 		vertices[vertices.Length - 1] = lightmeshholder.transform.InverseTransformPoint(transform.position);
 		
 		mesh.vertices = vertices;
-		
+
+		//code for LoS showing enemies
+		foreach (Transform trans in visibleMobs)
+		{
+			if(!sightedMobs.Contains (trans))
+			{
+				visibleMobs.Remove (trans);
+				trans.Find ("EnemyPlaceholder").GetComponent<SpriteRenderer>().enabled = false;
+			}
+		}
 		
 	}
 	
@@ -82,7 +107,7 @@ public class LoSMeshScript : MonoBehaviour
 			angle += 2*Mathf.PI/RaysToShoot;
 			
 			Vector3 dir = new Vector3(x,y,0);
-			RaycastHit2D hit = Physics2D.Raycast (transform.position, dir, distance, LayerMask.GetMask(layers));
+			RaycastHit2D hit = Physics2D.Raycast (transform.position, dir, distance);
 			Vector3 tmp;
 			if(hit.collider != null)
 			{
