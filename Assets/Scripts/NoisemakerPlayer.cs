@@ -4,7 +4,7 @@ using System.Collections;
 
 
 public class NoisemakerPlayer : MonoBehaviour {
-	private string[] layers = {"Mobs"};
+	private string[] layers = {"LightWalls","FloorDecor"};
 	// Use this for initialization
 	void Start () {
 	
@@ -12,15 +12,16 @@ public class NoisemakerPlayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		//Noise (10000);
 	}
 
 	public void Noise(float radius)
 	{
-		RaycastHit2D[] hits  = Physics2D.CircleCastAll(transform.position, radius, new Vector2(0,0), 0, LayerMask.GetMask(layers));
+		RaycastHit2D[] hits  = Physics2D.CircleCastAll(transform.position, radius, new Vector2(0,0), 0);
 		foreach (RaycastHit2D hit in hits)
 		{
-			if (hit.collider.tag == "Enemy") {
+
+			if (hit.transform.tag == "Enemy") {
 				Debug.Log ("Did you hear that?", hit.collider);
 			}
 		}
