@@ -10,6 +10,9 @@ public class ButtonTest : MonoBehaviour {
 	public void startLevel(){
 		Application.LoadLevel(1);
 	}
+	public void exitGame(){
+			Application.Quit();
+	}
 	// Use this for initialization
 	void Start () {
 	}
