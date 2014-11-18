@@ -4,11 +4,13 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public Player player;
+	public Sword sword;
 
 	// Use this for initialization
 	void Start ()
 	{
-	
+		player = GameObject.Find ("Player").GetComponent<Player>();
+		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
 	}
 	
 	// Update is called once per frame
@@ -23,6 +25,12 @@ public class PlayerController : MonoBehaviour {
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
+
+		if(Input.GetKeyDown(KeyCode.Mouse0))
+		{
+			sword.Swing ();
+		}
+
 	}
 
 	void move(int x, int y)

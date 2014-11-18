@@ -16,10 +16,11 @@ public class Enemy : Character
 	void Awake()
 	{
 		this.health = 100;
-		this.speed = 5;
+		this.speed = 50;
 	}
 	void Start () 
 	{
+		player = GameObject.Find("Player").GetComponent<Player> ();
 		StartCoroutine("Patrol");
 	}
 	
