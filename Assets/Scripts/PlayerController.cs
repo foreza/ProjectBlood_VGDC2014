@@ -43,10 +43,21 @@ public class PlayerController : MonoBehaviour {
 		{
 			xComp = xComp * Mathf.Sqrt(2)/2;
 			yComp = yComp * Mathf.Sqrt(2)/2;
+
 		}
 
 		Vector3 velocity = new Vector3(xComp,yComp,0);
 		this.gameObject.transform.Translate(velocity);
+	}
+
+	void aim()
+	{
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hit;
+		if (Physics.Raycast(ray, out hit, 100))
+		{
+			Debug.DrawLine(ray.origin, hit.point);
+		}
 
 	}
 }
