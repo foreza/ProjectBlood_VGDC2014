@@ -7,40 +7,35 @@ public class UITest : MonoBehaviour {
 	public Slider energybarslider;
 	public GameObject objectivesPanel;
 	public GameObject oneObjective;
+	float x = 350;
+	float y = -100;
 
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
 		}
+
 	void OnGUI(){
 		if(Input.GetKeyDown("tab")){
 			objectives ();
 		}
 	}
-	public Text obj1;
+	
 	public Font font1;
 	void objectives(){
-
-		
 		RectTransform containerRectTransform = gameObject.GetComponent<RectTransform>();
-		float width = containerRectTransform.rect.width;
-		float height = containerRectTransform.rect.height;
-		GameObject theobj = Instantiate (oneObjective) as GameObject;
-		theobj.transform.parent = gameObject.transform;
-		RectTransform rectTransform = theobj.GetComponent<RectTransform>();
-	
-		float x = 350;
-		float y = -100;
-		rectTransform.offsetMin = new Vector2(x, y);
-		
-		x = rectTransform.offsetMin.x + width;
-		y = rectTransform.offsetMin.y + height;
-		rectTransform.offsetMax = new Vector2(x, y);
+		float screenwidth = containerRectTransform.rect.width;
+		float screenheight = containerRectTransform.rect.height;
 
-		obj1 = gameObject.AddComponent<Text> ();
-		obj1.text = "ASDFASDF";
-		obj1.font = font1;
+		for (int i=0; i<10; i++) {
+			GameObject cloneObj = Instantiate (oneObjective) as GameObject;
+			cloneObj.transform.parent = gameObject.transform;
+			RectTransform rectTransform = cloneObj.GetComponent<RectTransform> ();
+				//width and height must be set if you want to see anything
+			rectTransform.offsetMin = new Vector2 (x, y);
 
-
+			rectTransform.offsetMax = new Vector2 (x+60, y+60);
+			y -=20;
+		}
 	}
 	
 }
