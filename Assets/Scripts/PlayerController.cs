@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-	public Player player;
-	public Sword sword;
+	private Player player;
+	private Sword sword;
 
 	// Use this for initialization
 	void Start ()
