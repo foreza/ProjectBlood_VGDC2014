@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
-
+		aim ();
 		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			sword.Swing ();
@@ -52,12 +52,10 @@ public class PlayerController : MonoBehaviour {
 
 	void aim()
 	{
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit, 100))
-		{
-			Debug.DrawLine(ray.origin, hit.point);
-		}
+		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		Debug.Log (mousePos.x + " " + mousePos.y);
+		Vector3 lookPos = new Vector3 (mousePos.x-this.transform.position.x, mousePos.y-this.transform.position.y, 0);
+		this.transform.right = lookPos;
 
 	}
 }
