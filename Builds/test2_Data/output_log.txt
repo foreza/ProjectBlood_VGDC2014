@@ -1,0 +1,44 @@
+Initialize engine version: 4.6.0f2 (b073107612b7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 860M   (ID=0x1392)
+    Vendor:   NVIDIA
+    VRAM:     1972 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.158 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found.
+<RI> Input initialized.
+Initialize engine version: 4.6.0f2 (b073107612b7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 860M   (ID=0x1392)
+    Vendor:   NVIDIA
+    VRAM:     1972 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.045 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found.
+<RI> Input initialized.
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\projects\ProjectBlood\ProjectBlood_VGDC2014\Builds\test2_Data\Managed\System.dll (this message is harmless)
