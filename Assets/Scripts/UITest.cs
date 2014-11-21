@@ -7,7 +7,7 @@ public class UITest : MonoBehaviour {
 	public Slider energybarslider;
 	public GameObject objectivesPanel;
 	public GameObject oneObjective;
-
+	public string[] descriptions;
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
 		}
@@ -21,20 +21,22 @@ public class UITest : MonoBehaviour {
 	public Font font1;
 	GameObject cloneObj;
 	void objectives(){
-		Debug.Log ("Objectives called");
+		descriptions = new string[5] {"one","two","three","four;","five"};
 		RectTransform containerRectTransform = gameObject.GetComponent<RectTransform>();
 		float screenwidth = containerRectTransform.rect.width;
 		float screenheight = containerRectTransform.rect.height;
 		float x = 350;
-		float y = -100;
-		for (int i=0; i<10; i++) {
-			Debug.Log ("In loop number,"+i);
+		float y = 0;
+		for (int i=0; i<5; i++) {
 			cloneObj = Instantiate (oneObjective) as GameObject;
 			cloneObj.transform.parent = gameObject.transform;
 			RectTransform rectTransform = cloneObj.GetComponent<RectTransform> ();
 			rectTransform.offsetMin = new Vector2 (x, y);
-			rectTransform.offsetMax = new Vector2 (x+60, y+5);
-			y -=20;
+			Debug.Log ("LL:"+x+" "+y);
+			rectTransform.offsetMax = new Vector2 (x+60, y-50);
+			Debug.Log ("UR:"+(x+60)+" "+(y));
+			cloneObj.GetComponentInChildren<Text>().text = descriptions[i];
+			y -=50;
 		}
 	}
 	
