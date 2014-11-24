@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
-		//aim ();
+		aim ();
 		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			sword.Swing ();
