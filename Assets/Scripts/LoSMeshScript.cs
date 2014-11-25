@@ -84,10 +84,11 @@ public class LoSMeshScript : MonoBehaviour
 		{
 			if(!sightedMobs.Contains (trans))
 			{
-				visibleMobs.Remove (trans);
+				//visibleMobs.Remove (trans);
 				trans.Find ("EnemyPlaceholder").GetComponent<SpriteRenderer>().enabled = false;
 			}
 		}
+        visibleMobs = sightedMobs;
 		
 	}
 	
