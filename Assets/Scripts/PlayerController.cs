@@ -53,9 +53,7 @@ public class PlayerController : MonoBehaviour {
 	void aim()
 	{
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		Debug.Log (mousePos.x + " " + mousePos.y);
 		Vector3 lookPos = new Vector3 (mousePos.x-this.transform.position.x, mousePos.y-this.transform.position.y, 0);
 		this.transform.right = lookPos;
-
 	}
 }
