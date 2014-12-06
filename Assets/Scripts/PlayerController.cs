@@ -16,21 +16,26 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void Update ()
+	{
+		aim ();
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			stealth();
+		}
+		
+		if(Input.GetKeyDown(KeyCode.Mouse0))
+		{
+			sword.Swing ();
+		}
+	}
+
+	void FixedUpdate () 
 	{
 		int x = (int)Input.GetAxisRaw("Horizontal");
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
-		aim ();
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			stealth();
-		}
 
-		if(Input.GetKeyDown(KeyCode.Mouse0))
-		{
-			sword.Swing ();
-		}
 
 
 	}

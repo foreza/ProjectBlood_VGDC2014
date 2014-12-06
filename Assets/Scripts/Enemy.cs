@@ -39,7 +39,7 @@ public class Enemy : Character
 			Vector3 direction = player.transform.position - this.transform.position;
 			this.transform.Translate(Vector3.ClampMagnitude(direction, speed*Time.deltaTime), Space.World);
 			this.transform.right = player.transform.position - this.transform.position;
-			yield return null;
+			yield return new WaitForFixedUpdate();
 		}
 	}
 	
