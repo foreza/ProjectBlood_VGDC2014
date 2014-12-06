@@ -5,10 +5,10 @@ public class ButtonTest : MonoBehaviour {
 	
 	public void buttonClick(){
 		Debug.Log ("Button Clicked");
-		Application.LoadLevel(1);
+		Application.LoadLevel(2);
 	}
 	public void startLevel(){
-		Application.LoadLevel(1);
+		Application.LoadLevel(2);
 	}
 	public void exitGame(){
 			Application.Quit();
