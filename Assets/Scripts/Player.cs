@@ -32,6 +32,9 @@ public class Player : Character
 	void killPlayer()
 	{
 		this.gameObject.SetActive(false);
+		Application.LoadLevel(0);
+		// StartCoroutine("LoadStartScreen"); 
+
 	}
 
 	void takeHit(float dmg)
@@ -50,6 +53,14 @@ public class Player : Character
 			takeHit(10);
 			Debug.Log("Health: " + this.health);
 		}
+	}
+
+	IEnumerator LoadStartScreen() { // not working as intended oh well.
+	
+		yield return new WaitForSeconds(1);
+
+
+		Application.LoadLevel(0);
 	}
 
 
