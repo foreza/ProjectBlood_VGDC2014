@@ -101,6 +101,6 @@ public class PlayerController : MonoBehaviour {
 	{
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		Vector3 lookPos = new Vector3 (mousePos.x-this.transform.position.x, mousePos.y-this.transform.position.y, 0);
-		this.transform.right = lookPos;
+		this.transform.up = lookPos;
 	}
 }
