@@ -7,6 +7,7 @@ public class UITest : MonoBehaviour {
 	public Slider energybarslider;
 	public GameObject oneObjective;
 	public string[] descriptions;
+	ArrayList children;
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
 		}
@@ -14,6 +15,12 @@ public class UITest : MonoBehaviour {
 	void Update(){
 		if(Input.GetKeyDown("tab")){
 			objectives ();
+		}
+		if (Input.GetKeyUp ("tab")) {
+			Debug.Log ("OnKeyUp called");
+			children = new ArrayList();
+			foreach (Transform child in transform) children.Add(child.gameObject);
+			foreach(GameObject child in children) {Destroy (child);}
 		}
 	}
 	//If the objective is done, remove its description from the list. How should this link in to the backend?
@@ -29,7 +36,6 @@ public class UITest : MonoBehaviour {
 		float y = 0;
 		Debug.Log ("Just before foreach");
 		foreach (string obj in descriptions) {
-			Debug.Log ("asdf");
 			theobj = Instantiate (oneObjective) as GameObject;
 			theobj.transform.parent = gameObject.transform;
 			RectTransform rectTransform = theobj.GetComponent<RectTransform> ();

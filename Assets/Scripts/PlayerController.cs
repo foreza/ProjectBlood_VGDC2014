@@ -11,25 +11,65 @@ public class PlayerController : MonoBehaviour {
 	{
 		player = GameObject.Find ("Player").GetComponent<Player>();
 		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
-	{
-	
-	}
-
-	void FixedUpdate()
 	{
 		int x = (int)Input.GetAxisRaw("Horizontal");
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
 		aim ();
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			stealth();
+		}
+
 		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			sword.Swing ();
 		}
+
+
+	}
+	void stealth()
+	{
+		Debug.Log ("shift pressed");
+		if (player.state == PlayerState.NORMAL) {
+			StartCoroutine("StealthRoutine");
+		}
+	}
+
+	IEnumerator StealthRoutine()
+	{
+		Debug.Log ("StealthRoutine");
+		player.state = PlayerState.STEALTH;
+		float stealthTime = 5.0f;
+		player.sprite.enabled = false;
+
+		Debug.Log ("Sprite toggled");
+
+		float currentTime = 0.0f;
+
+		while(player.state == PlayerState.STEALTH)
+		{
+			Debug.Log (currentTime);
+			Debug.Log (stealthTime);
+			currentTime = currentTime + Time.deltaTime;
+			if(currentTime >= stealthTime)
+			{
+
+				Debug.Log ("true");
+				Debug.Log (currentTime);
+				Debug.Log (stealthTime);
+				player.sprite.enabled = true;
+				player.state = PlayerState.NORMAL;
+			}
+			yield return null;
+		}
+		
 
 	}
 
@@ -47,7 +87,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Vector3 velocity = new Vector3(xComp,yComp,0);
-		this.gameObject.transform.Translate(velocity,Space.World);
+		//CharacterController controller = GetComponent<CharacterController> ();
+		//controller.Move(velocity);
+		//this.gameObject.transform.Translate(velocity,Space.World);
 	}
 
 	void aim()

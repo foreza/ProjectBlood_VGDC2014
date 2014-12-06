@@ -1,13 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum PlayerState
+{
+	NORMAL,
+	STEALTH
+}
+
+
 public class Player : Character 
 {
 	float energy;
+	public PlayerState state;
+	public SpriteRenderer sprite;
 
 	void Start () 
 	{
-
+		sprite = transform.FindChild ("PlayerPlaceholder").GetComponent<SpriteRenderer>();
+		state = PlayerState.NORMAL;
 	}
 	
 	// Update is called once per frame
@@ -41,4 +51,6 @@ public class Player : Character
 			Debug.Log("Health: " + this.health);
 		}
 	}
+
+
 }
