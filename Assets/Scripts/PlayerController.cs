@@ -49,12 +49,12 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator StealthRoutine()
 	{
-		Debug.Log ("StealthRoutine");
-		player.state = PlayerState.STEALTH;
-		float stealthTime = 5.0f;
-		player.sprite.enabled = false;
 
-		Debug.Log ("Sprite toggled");
+		player.state = PlayerState.STEALTH;
+		float stealthTime = player.meldTime;
+		player.sprite.enabled = false;
+		player.audio.clip = player.stealthClip;
+		this.audio.Play ();
 
 		float currentTime = 0.0f;
 
@@ -66,11 +66,10 @@ public class PlayerController : MonoBehaviour {
 			if(currentTime >= stealthTime)
 			{
 
-				Debug.Log ("true");
-				Debug.Log (currentTime);
-				Debug.Log (stealthTime);
+
 				player.sprite.enabled = true;
 				player.state = PlayerState.NORMAL;
+				this.audio.Play ();
 			}
 			yield return null;
 		}

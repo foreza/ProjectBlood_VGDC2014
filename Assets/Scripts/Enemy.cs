@@ -12,7 +12,8 @@ public class Enemy : Character
 	public Player player;
 	public GameObject[] patrolPath;
 	public EnemyState state;
-	
+	public SpriteRenderer sprite;
+	public SpriteRenderer minimapSprite;
 	void Awake()
 	{
 		this.health = 100;
@@ -20,6 +21,8 @@ public class Enemy : Character
 	}
 	void Start () 
 	{
+		sprite = transform.FindChild ("EnemyPlaceholder").GetComponent<SpriteRenderer>();
+		minimapSprite = transform.FindChild ("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
 		player = GameObject.Find("Player").GetComponent<Player> ();
 		StartCoroutine("Patrol");
 	}
@@ -99,6 +102,15 @@ public class Enemy : Character
 		{
 			StartCoroutine("Patrol");
 		}
+	}
+
+	public void Die()
+	{
+		this.audio.Play ();
+		this.sprite.enabled = false;
+		this.minimapSprite.enabled = false;
+		this.collider2D.enabled = false;
+
 	}
 }
 
