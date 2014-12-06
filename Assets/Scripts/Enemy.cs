@@ -47,7 +47,7 @@ public class Enemy : Character
 	{
 		state = EnemyState.PATROL;
 		
-		int i = 0;
+		int i = closestWaypoint ();
 		while(state == EnemyState.PATROL)
 		{
 			
@@ -66,6 +66,22 @@ public class Enemy : Character
 			
 			i = (i >= patrolPath.Length - 1)? 0 : ++i;
 		}
+	}
+
+	int closestWaypoint()
+	{
+		int nearest = 0;
+		for ( int i = 0; i<this.patrolPath.Length; i++)
+		{
+			float distance = (this.transform.position - this.patrolPath[i].transform.position).magnitude;
+			Debug.Log (distance);
+			if(distance <(this.transform.position - this.patrolPath[nearest].transform.position).magnitude)
+			{
+				nearest = i;
+			}
+		}
+		Debug.Log (nearest);
+		return nearest;
 	}
 	
 	public void OnPlayerSighted()
