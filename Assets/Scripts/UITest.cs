@@ -23,6 +23,7 @@ public class UITest : MonoBehaviour {
 			foreach (Transform child in transform) children.Add(child.gameObject);
 			foreach(GameObject child in children) {Destroy (child);}
 		}
+		setBar (healthbarslider, GameObject.Find ("Player").GetComponent<Player>().health/100);
 	}
 	//If the objective is done, remove its description from the list. How should this link in to the backend?
 	public Font font1;
