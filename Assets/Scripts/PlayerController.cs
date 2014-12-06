@@ -1,23 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
-public enum PlayerState
-{
-	NORMAL,
-	STEALTH
-}
 
 public class PlayerController : MonoBehaviour {
 
 	private Player player;
 	private Sword sword;
-	public PlayerState state;
+
 	// Use this for initialization
 	void Start ()
 	{
 		player = GameObject.Find ("Player").GetComponent<Player>();
 		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
 
-		state = PlayerState.NORMAL;
+
 	}
 	
 	// Update is called once per frame
@@ -41,9 +36,41 @@ public class PlayerController : MonoBehaviour {
 	}
 	void stealth()
 	{
-		if (state == PlayerState.NORMAL) {
-
+		Debug.Log ("shift pressed");
+		if (player.state == PlayerState.NORMAL) {
+			StartCoroutine("StealthRoutine");
 		}
+	}
+
+	IEnumerator StealthRoutine()
+	{
+		Debug.Log ("StealthRoutine");
+		player.state = PlayerState.STEALTH;
+		float stealthTime = 5.0f;
+		player.sprite.enabled = false;
+
+		Debug.Log ("Sprite toggled");
+
+		float currentTime = 0.0f;
+
+		while(player.state == PlayerState.STEALTH)
+		{
+			Debug.Log (currentTime);
+			Debug.Log (stealthTime);
+			currentTime = currentTime + Time.deltaTime;
+			if(currentTime >= stealthTime)
+			{
+
+				Debug.Log ("true");
+				Debug.Log (currentTime);
+				Debug.Log (stealthTime);
+				player.sprite.enabled = true;
+				player.state = PlayerState.NORMAL;
+			}
+			yield return null;
+		}
+		
+
 	}
 
 	void move(int x, int y)
@@ -60,8 +87,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Vector3 velocity = new Vector3(xComp,yComp,0);
-		CharacterController controller = GetComponent<CharacterController> ();
-		controller.Move(velocity);
+		//CharacterController controller = GetComponent<CharacterController> ();
+		//controller.Move(velocity);
 		//this.gameObject.transform.Translate(velocity,Space.World);
 	}
 

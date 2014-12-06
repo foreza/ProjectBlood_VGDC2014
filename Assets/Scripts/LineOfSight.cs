@@ -12,12 +12,19 @@ public class LineOfSight : MonoBehaviour
 	
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == "Player" && other.gameObject.GetComponent<PlayerController>().state==PlayerState.NORMAL)
+		if(other.tag == "Player" && other.gameObject.GetComponent<Player>().state==PlayerState.NORMAL)
 		{
 			enemy.OnPlayerSighted();
 		}
 	}
-	
+
+	void OnTriggerStay2D(Collider2D other)
+	{
+		if(other.tag == "Player" && other.gameObject.GetComponent<Player>().state==PlayerState.STEALTH)
+			{
+				enemy.OnPlayerLost();
+			}
+	}
 	void OnTriggerExit2D(Collider2D other)
 	{
 		if(other.tag == "Player")
