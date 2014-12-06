@@ -53,13 +53,13 @@ public class LoSMeshScript : MonoBehaviour
 				{
 					if(!visibleMobs.Contains (hit.transform))//&& visibleMobs.Contains(hit.transform.parent.gameObject)) 
 					{
-						Debug .Log ("sighted");
 						hit.transform.Find ("EnemyPlaceholder").GetComponent<SpriteRenderer>().enabled = true;
 						visibleMobs.Add (hit.transform);
 					}
 					else if(!sightedMobs.Contains (hit.transform))
 					{
 						sightedMobs.Add (hit.transform);
+                        Debug.Log(hit.GetHashCode());
 					}
 				}
 			}
