@@ -13,6 +13,10 @@ public class Player : Character
 	float energy;
 	public PlayerState state;
 	public SpriteRenderer sprite;
+	public float meldTime = 2.0f;
+
+	public AudioClip dmgClip;
+	public AudioClip stealthClip;
 
 	void Start () 
 	{
@@ -32,6 +36,9 @@ public class Player : Character
 	void killPlayer()
 	{
 		this.gameObject.SetActive(false);
+		Application.LoadLevel(3);
+		// StartCoroutine("LoadStartScreen"); 
+
 	}
 
 	void takeHit(float dmg)
@@ -48,8 +55,18 @@ public class Player : Character
 		if(coll.gameObject.tag == "Enemy")
 		{
 			takeHit(10);
+			this.audio.clip = this.dmgClip;
+			this.audio.Play();
 			Debug.Log("Health: " + this.health);
 		}
+	}
+
+	IEnumerator LoadStartScreen() { // not working as intended oh well.
+	
+		yield return new WaitForSeconds(1);
+
+
+		Application.LoadLevel(0);
 	}
 
 

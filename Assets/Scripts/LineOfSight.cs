@@ -14,6 +14,7 @@ public class LineOfSight : MonoBehaviour
 	{
 		if(other.tag == "Player" && other.gameObject.GetComponent<Player>().state==PlayerState.NORMAL)
 		{
+			this.audio.Play ();
 			enemy.OnPlayerSighted();
 		}
 	}

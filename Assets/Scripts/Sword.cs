@@ -16,6 +16,7 @@ public class Sword : MonoBehaviour
 	{
 		if(this.renderer.enabled == false)
 		{
+			this.audio.Play();
 			StartCoroutine("SwingMotion");
 		}
 	}
@@ -47,9 +48,14 @@ public class Sword : MonoBehaviour
 		Debug.Log ("collided");
 		if(other.gameObject.tag == "Enemy")
 		{
-			Debug.Log ("hit");
-			other.gameObject.SetActive(false); //replace with actual damage system
-			Debug.Log ("disabled");
+			other.gameObject.GetComponent<Enemy>().Die();
 		}
+		if(other.gameObject.tag == "EnemyBoss")
+		{
+			Debug.Log ("hit boss.");
+			other.gameObject.SetActive(false); //replace with actual damage system
+			Debug.Log ("disabled, game win");
+		}
+
 	}
 }

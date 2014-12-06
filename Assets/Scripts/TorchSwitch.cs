@@ -21,6 +21,7 @@ public class TorchSwitch : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Player") {
+			this.audio.Play ();
 			if((torch.GetComponent<TorchScript>().IsLit() && canExtinguish) || (!torch.GetComponent<TorchScript>().IsLit() && canLight))
 				torch.GetComponent<TorchScript>().ToggleLight();
 		}

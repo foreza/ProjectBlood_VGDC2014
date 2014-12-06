@@ -37,6 +37,7 @@ public class DoorScript : MonoBehaviour {
 		open = !open;
 		doorIsTriggered = true;
 		startTime = Time.time;
+		this.audio.Play ();
 	}
 
 	void MoveDoor() {
