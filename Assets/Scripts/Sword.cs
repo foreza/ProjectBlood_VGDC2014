@@ -55,6 +55,7 @@ public class Sword : MonoBehaviour
 			Debug.Log ("hit boss.");
 			other.gameObject.SetActive(false); //replace with actual damage system
 			Debug.Log ("disabled, game win");
+            Application.LoadLevel(4);
 		}
 
 	}
