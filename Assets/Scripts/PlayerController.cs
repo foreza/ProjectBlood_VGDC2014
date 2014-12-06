@@ -1,36 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
+public enum PlayerState
+{
+	NORMAL,
+	STEALTH
+}
 
 public class PlayerController : MonoBehaviour {
 
 	private Player player;
 	private Sword sword;
-
+	public PlayerState state;
 	// Use this for initialization
 	void Start ()
 	{
 		player = GameObject.Find ("Player").GetComponent<Player>();
 		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
+
+		state = PlayerState.NORMAL;
 	}
 	
 	// Update is called once per frame
 	void Update () 
-	{
-	
-	}
-
-	void FixedUpdate()
 	{
 		int x = (int)Input.GetAxisRaw("Horizontal");
 		int y = (int)Input.GetAxisRaw("Vertical");
 		
 		move(x, y);
 		aim ();
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			stealth();
+		}
+
 		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			sword.Swing ();
 		}
 
+
+	}
+	void stealth()
+	{
+		if (state == PlayerState.NORMAL) {
+
+		}
 	}
 
 	void move(int x, int y)
@@ -47,7 +60,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Vector3 velocity = new Vector3(xComp,yComp,0);
-		this.gameObject.transform.Translate(velocity,Space.World);
+		CharacterController controller = GetComponent<CharacterController> ();
+		controller.Move(velocity);
+		//this.gameObject.transform.Translate(velocity,Space.World);
 	}
 
 	void aim()
