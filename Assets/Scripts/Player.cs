@@ -32,7 +32,7 @@ public class Player : Character
 	void killPlayer()
 	{
 		this.gameObject.SetActive(false);
-		Application.LoadLevel(0);
+		Application.LoadLevel(3);
 		// StartCoroutine("LoadStartScreen"); 
 
 	}

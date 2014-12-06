@@ -13,6 +13,11 @@ public class ButtonTest : MonoBehaviour {
 	public void exitGame(){
 			Application.Quit();
 	}
+
+	public void loadTitleScreen(){
+
+		Application.LoadLevel(0);
+	}
 	// Use this for initialization
 	void Start () {
 	}
