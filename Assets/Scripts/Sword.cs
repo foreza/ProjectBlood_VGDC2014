@@ -25,6 +25,7 @@ public class Sword : MonoBehaviour
 		state = SwordState.SWINGING;
 
 		this.renderer.enabled = true;
+		this.collider2D.enabled = true;
 
 		float currentTime = 0.0f;
 		while(state == SwordState.SWINGING)
@@ -33,10 +34,22 @@ public class Sword : MonoBehaviour
 			if(currentTime >= this.swingTime)
 			{
 				this.renderer.enabled = false;
+				this.collider2D.enabled = false;
 				state = SwordState.STANDBY;
 			}
 			yield return null;
 		}
 
+	}
+
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		Debug.Log ("collided");
+		if(other.gameObject.tag == "Enemy")
+		{
+			Debug.Log ("hit");
+			other.gameObject.SetActive(false); //replace with actual damage system
+			Debug.Log ("disabled");
+		}
 	}
 }

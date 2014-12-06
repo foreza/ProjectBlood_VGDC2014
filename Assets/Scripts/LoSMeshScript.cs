@@ -59,7 +59,7 @@ public class LoSMeshScript : MonoBehaviour
 					else if(!sightedMobs.Contains (hit.transform))
 					{
 						sightedMobs.Add (hit.transform);
-                        Debug.Log(hit.GetHashCode());
+                        //Debug.Log(hit.GetHashCode());
 					}
 				}
 			}
