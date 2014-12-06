@@ -8,6 +8,7 @@ public class UITest : MonoBehaviour {
 	public GameObject oneObjective;
 	public string[] descriptions;
 	ArrayList children;
+
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
 		}

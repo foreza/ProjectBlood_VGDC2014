@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 velocity = new Vector3(xComp,yComp,0);
 		//CharacterController controller = GetComponent<CharacterController> ();
 		//controller.Move(velocity);
-		//this.gameObject.transform.Translate(velocity,Space.World);
+		this.gameObject.transform.Translate(velocity,Space.World);
 	}
 
 	void aim()
