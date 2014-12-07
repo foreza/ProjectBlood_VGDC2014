@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
 	private Player player;
 	private Sword sword;
+	private bool whirl; // for whirling purposes.
 
 	// Use this for initialization
 	void Start ()
@@ -12,13 +13,34 @@ public class PlayerController : MonoBehaviour {
 		player = GameObject.Find ("Player").GetComponent<Player>();
 		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
 
-
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		aim ();
+
+		if(Input.GetKeyDown(KeyCode.Tab)) {
+			whirl = true; // DEMACIA.
+		}
+
+		if (Input.GetKeyUp (KeyCode.Tab)) {
+						whirl = false;
+				}
+
+		if (whirl) {
+
+			sword.Swing (); // sword swing!
+			//Vector3 lookPos = new Vector3 (50 - this.transform.position.x, 50 -this.transform.position.y, 0);
+			// this.transform.up = lookPos;
+
+			this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
+
+				}
+
+		if (!whirl) {
+						aim ();
+				}
+
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
 			stealth();
 		}
@@ -27,6 +49,11 @@ public class PlayerController : MonoBehaviour {
 		{
 			sword.Swing ();
 		}
+
+
+
+	
+
 	}
 
 	void FixedUpdate () 
