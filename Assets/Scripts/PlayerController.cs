@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	private Player player;
 	private Sword sword;
 	private bool whirl; // for whirling purposes.
+	private float stealthDegenRate = 10.0f;
 
 	// Use this for initialization
 	void Start ()
@@ -72,28 +73,39 @@ public class PlayerController : MonoBehaviour {
 		if (player.state == PlayerState.NORMAL) {
 			StartCoroutine("StealthRoutine");
 		}
+		else if (player.state == PlayerState.STEALTH)
+		{
+			//make a function for this later
+			player.energyRegen = true;
+			player.sprite.enabled = true;
+			player.state = PlayerState.NORMAL;
+			this.audio.Play ();
+		}
 	}
 
 	IEnumerator StealthRoutine()
 	{
 
 		player.state = PlayerState.STEALTH;
-		float stealthTime = player.meldTime;
+//		float stealthTime = player.meldTime;
 		player.sprite.enabled = false;
+		player.energyRegen = false;
 		player.audio.clip = player.stealthClip;
 		this.audio.Play ();
 
-		float currentTime = 0.0f;
+//		float currentTime = 0.0f;
 
 		while(player.state == PlayerState.STEALTH)
 		{
-			Debug.Log (currentTime);
-			Debug.Log (stealthTime);
-			currentTime = currentTime + Time.deltaTime;
-			if(currentTime >= stealthTime)
+//			Debug.Log (currentTime);
+//			Debug.Log (stealthTime);
+//			currentTime = currentTime + Time.deltaTime;
+//			if(currentTime >= stealthTime)
+			player.energy -= stealthDegenRate*Time.deltaTime;
+			if (player.energy <= 0)
 			{
-
-
+				player.energy = 0;
+				player.energyRegen = true;
 				player.sprite.enabled = true;
 				player.state = PlayerState.NORMAL;
 				this.audio.Play ();

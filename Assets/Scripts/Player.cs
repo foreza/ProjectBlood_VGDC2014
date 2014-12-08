@@ -10,10 +10,13 @@ public enum PlayerState
 
 public class Player : Character 
 {
-	float energy;
+	public float energy = 50;
+	public float energyMax = 50;
+	public float energyRegenRate = 1.0f;
+	public bool energyRegen = true;
 	public PlayerState state;
 	public SpriteRenderer sprite;
-	public float meldTime = 2.0f;
+//	public float meldTime = 2.0f;
 
 	public AudioClip dmgClip;
 	public AudioClip stealthClip;
@@ -30,6 +33,11 @@ public class Player : Character
 		if(this.health <= 0)
 		{
 			killPlayer();
+		}
+		if (energyRegen)
+		{
+			if (energy <= energyMax)
+				energy += (energyRegenRate * Time.deltaTime);
 		}
 	}
 
