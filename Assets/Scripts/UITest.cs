@@ -8,6 +8,9 @@ public class UITest : MonoBehaviour {
 	public GameObject oneObjective;
 	public string[] descriptions;
 	ArrayList children;
+	//If the objective is done, remove its description from the list. How should this link in to the backend?
+	public Font font1;
+	GameObject theobj;
 
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
@@ -27,9 +30,6 @@ public class UITest : MonoBehaviour {
 		setBar (healthbarslider, GameObject.Find ("Player").GetComponent<Player>().health/100);
 		setBar (energybarslider, GameObject.Find ("Player").GetComponent<Player>().energy/50);
 	}
-	//If the objective is done, remove its description from the list. How should this link in to the backend?
-	public Font font1;
-	GameObject theobj;
 	 
 	void objectives(){
 		descriptions = new string[4] {"one","two","three","77"};
