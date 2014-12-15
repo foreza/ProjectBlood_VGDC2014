@@ -45,16 +45,13 @@ public class Sword : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		Debug.Log ("collided");
 		if(other.gameObject.tag == "Enemy")
 		{
 			other.gameObject.GetComponent<Enemy>().GetHit(damage);
 		}
 		if(other.gameObject.tag == "EnemyBoss")
 		{
-			Debug.Log ("hit boss.");
 			other.gameObject.SetActive(false); //replace with actual damage system
-			Debug.Log ("disabled, game win");
             Application.LoadLevel(4);
 		}
 

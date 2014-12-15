@@ -8,19 +8,26 @@ public enum EnemyState
     DEAD
 }
 
+enum EnemyVisionState
+{
+    NORMAL,
+    BOOSTED
+}
+
 public class Enemy : Character 
 {
 	Player player;
 	public GameObject[] patrolPath;
 	public EnemyState state;
+    EnemyVisionState vision = EnemyVisionState.NORMAL;
 	SpriteRenderer sprite;
 	SpriteRenderer minimapSprite;
-    PolygonCollider2D LoSCollider;
+    Transform LoSCollider;
 	void Start () 
 	{
 		sprite = transform.FindChild ("EnemyPlaceholder").GetComponent<SpriteRenderer>();
 		minimapSprite = transform.FindChild ("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
-        LoSCollider = transform.FindChild("LineOfSight").GetComponent<PolygonCollider2D>();
+        LoSCollider = transform.FindChild("LineOfSight");
 		player = GameObject.Find("Player").GetComponent<Player> ();
 		StartCoroutine("Patrol");
 	}
@@ -117,8 +124,28 @@ public class Enemy : Character
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;
-        this.LoSCollider.enabled = false;
+        this.LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
         state = EnemyState.DEAD;
 	}
+
+    public void BoostSight()
+    {
+        if (vision == EnemyVisionState.NORMAL)
+        {
+            vision = EnemyVisionState.BOOSTED;
+            Debug.Log("BOOST!");
+            LoSCollider.localScale = new Vector3(LoSCollider.localScale.x * 2, LoSCollider.localScale.y, LoSCollider.localScale.z);
+        }
+    }
+
+    public void NormalSight()
+    {
+        if (vision == EnemyVisionState.BOOSTED)
+        {
+            vision = EnemyVisionState.NORMAL;
+            Debug.Log("BOOST!");
+            LoSCollider.localScale = new Vector3(LoSCollider.localScale.x / 2, LoSCollider.localScale.y, LoSCollider.localScale.z);
+        }
+    }
 }
 

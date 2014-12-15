@@ -7,7 +7,7 @@ public class TorchScript : MonoBehaviour
         public GameObject lightmeshholder;
         public bool lit=true;
         public int RaysToShoot; //64; 128; 1024; 
-        public int distance;
+        float distance;
         private Vector3[] vertices;
         private Vector2[] vertices2d;
         private int[] triangles;
@@ -19,6 +19,7 @@ public class TorchScript : MonoBehaviour
 
 		void Start ()
 		{
+            distance = GetComponent<CircleCollider2D>().radius;
             vertices2d = new Vector2[RaysToShoot];
             //triangles = new int[RaysToShoot];
             //	vertices2 = new Vector3[4];
@@ -33,6 +34,24 @@ public class TorchScript : MonoBehaviour
 		{
 	
 		}
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+                other.gameObject.GetComponent<Enemy>().BoostSight();
+            }
+        }
+
+        void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+                other.gameObject.GetComponent<Enemy>().NormalSight();
+            }
+        }
+
+
 		public bool IsLit()
 		{
 		return lit;
