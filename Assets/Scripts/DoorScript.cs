@@ -16,7 +16,8 @@ public class DoorScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		totalMoveDistance = transform.lossyScale.x * 2;
+
+        totalMoveDistance = transform.lossyScale.x * GetComponent<BoxCollider2D>().size.x;
 		if (open) {
 			openPosition = transform.position;
 			closedPosition = openPosition + new Vector3(totalMoveDistance, 0, 0);
