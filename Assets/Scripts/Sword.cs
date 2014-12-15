@@ -11,7 +11,7 @@ public class Sword : MonoBehaviour
 {
 	public float swingTime = 5.0f;
 	public SwordState state = SwordState.STANDBY;
-
+    public float damage = 50.0f;
 	public void Swing()
 	{
 		if(this.renderer.enabled == false)
@@ -48,7 +48,7 @@ public class Sword : MonoBehaviour
 		Debug.Log ("collided");
 		if(other.gameObject.tag == "Enemy")
 		{
-			other.gameObject.GetComponent<Enemy>().Die();
+			other.gameObject.GetComponent<Enemy>().GetHit(damage);
 		}
 		if(other.gameObject.tag == "EnemyBoss")
 		{

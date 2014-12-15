@@ -4,24 +4,23 @@ using System.Collections;
 public enum EnemyState
 {
 	PATROL,
-	CHASING
+	CHASING,
+    DEAD
 }
 
 public class Enemy : Character 
 {
-	public Player player;
+	Player player;
 	public GameObject[] patrolPath;
 	public EnemyState state;
-	public SpriteRenderer sprite;
-	public SpriteRenderer minimapSprite;
-	void Awake()
-	{
-		this.health = 100;
-	}
+	SpriteRenderer sprite;
+	SpriteRenderer minimapSprite;
+    PolygonCollider2D LoSCollider;
 	void Start () 
 	{
 		sprite = transform.FindChild ("EnemyPlaceholder").GetComponent<SpriteRenderer>();
 		minimapSprite = transform.FindChild ("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
+        LoSCollider = transform.FindChild("LineOfSight").GetComponent<PolygonCollider2D>();
 		player = GameObject.Find("Player").GetComponent<Player> ();
 		StartCoroutine("Patrol");
 	}
@@ -103,13 +102,23 @@ public class Enemy : Character
 		}
 	}
 
+    public void GetHit(float damage)
+    {
+        health = health - damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
 	public void Die()
 	{
 		this.audio.Play ();
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;
-
+        this.LoSCollider.enabled = false;
+        state = EnemyState.DEAD;
 	}
 }
 
