@@ -120,7 +120,7 @@ public class Enemy : Character
 
 	public void Die()
 	{
-		this.audio.Play ();
+
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;

@@ -7,11 +7,17 @@ public enum SwordState
 	SWINGING
 }
 
-public class Sword : MonoBehaviour 
+public class Sword : Weapon
 {
 	public float swingTime = 5.0f;
 	public SwordState state = SwordState.STANDBY;
     public float damage = 50.0f;
+
+	public override void Attack()
+	{
+		Swing ();
+	}
+
 	public void Swing()
 	{
 		if(this.renderer.enabled == false)
@@ -19,6 +25,12 @@ public class Sword : MonoBehaviour
 			this.audio.Play();
 			StartCoroutine("SwingMotion");
 		}
+	}
+
+	public override void Unsheathe(bool swordOut)
+	{
+		this.renderer.enabled = swordOut;
+		this.collider2D.enabled = swordOut;
 	}
 
 	IEnumerator SwingMotion()

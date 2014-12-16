@@ -4,119 +4,46 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	private Player player;
-	private Sword sword;
-	private bool whirl; // for whirling purposes.
-	private float stealthDegenRate = 10.0f;
+	public bool canMove = true;
+	public bool canAim = true;
 
 	// Use this for initialization
 	void Start ()
 	{
 		player = GameObject.Find ("Player").GetComponent<Player>();
-		sword = GameObject.Find ("Sword").GetComponent<Sword> ();
+
 
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+	//Use this instead of update for inputs. This function will be called in the InputManager's Update function.
+	public void UpdateController()
 	{
-
-		if(Input.GetKeyDown(KeyCode.Tab)) {
-			whirl = true; // DEMACIA.
+		if (Input.GetButtonDown("Stealth")){
+			player.Stealth();
 		}
 
-		if (Input.GetKeyUp (KeyCode.Tab)) {
-						whirl = false;
-				}
-
-		if (whirl) {
-
-			sword.Swing (); // sword swing!
-			//Vector3 lookPos = new Vector3 (50 - this.transform.position.x, 50 -this.transform.position.y, 0);
-			// this.transform.up = lookPos;
-
-			this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
-
-				}
-
-		if (!whirl) {
-						aim ();
-				}
-
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			stealth();
-		}
-		
-		if(Input.GetKeyDown(KeyCode.Mouse0))
+		if(Input.GetButton ("Demacia"))
 		{
-			sword.Swing ();
+			player.Demacia();
 		}
-
-
-
-	
-
-	}
-
-	void FixedUpdate () 
-	{
-		int x = (int)Input.GetAxisRaw("Horizontal");
-		int y = (int)Input.GetAxisRaw("Vertical");
-		
-		move(x, y);
-
-
-
-	}
-	void stealth()
-	{
-		Debug.Log ("shift pressed");
-		if (player.state == PlayerState.NORMAL) {
-			StartCoroutine("StealthRoutine");
-		}
-		else if (player.state == PlayerState.STEALTH)
+		else if(Input.GetButtonDown("Weapon"))
 		{
-			//make a function for this later
-			player.energyRegen = true;
-			player.sprite.enabled = true;
-			player.state = PlayerState.NORMAL;
-			this.audio.Play ();
+			player.weapon.Attack();
 		}
-	}
 
-	IEnumerator StealthRoutine()
-	{
-
-		player.state = PlayerState.STEALTH;
-//		float stealthTime = player.meldTime;
-		player.sprite.enabled = false;
-		player.energyRegen = false;
-		player.audio.clip = player.stealthClip;
-		this.audio.Play ();
-
-//		float currentTime = 0.0f;
-
-		while(player.state == PlayerState.STEALTH)
+		if(canMove)
 		{
-//			Debug.Log (currentTime);
-//			Debug.Log (stealthTime);
-//			currentTime = currentTime + Time.deltaTime;
-//			if(currentTime >= stealthTime)
-			player.energy -= stealthDegenRate*Time.deltaTime;
-			if (player.energy <= 0)
-			{
-				player.energy = 0;
-				player.energyRegen = true;
-				player.sprite.enabled = true;
-				player.state = PlayerState.NORMAL;
-				this.audio.Play ();
-			}
-			yield return null;
+			int x = (int)Input.GetAxisRaw("Horizontal");
+			int y = (int)Input.GetAxisRaw("Vertical");
+			
+			Move(x, y);
 		}
-		
+
+		Aim ();
 
 	}
 
-	void move(int x, int y)
+	void Move(int x, int y)
 	{
 		float displace = player.speed * Time.deltaTime;
 		float xComp = x * displace;
@@ -129,13 +56,14 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-		Vector3 velocity = new Vector3(xComp,yComp,0);
+		Vector2 velocity = new Vector2(xComp,yComp);
 		//CharacterController controller = GetComponent<CharacterController> ();
 		//controller.Move(velocity);
-		this.gameObject.transform.Translate(velocity,Space.World);
+		//this.gameObject.transform.Translate(velocity,Space.World);
+		this.rigidbody2D.MovePosition((Vector2)this.transform.position + velocity);
 	}
 
-	void aim()
+	void Aim()
 	{
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		Vector3 lookPos = new Vector3 (mousePos.x-this.transform.position.x, mousePos.y-this.transform.position.y, 0);

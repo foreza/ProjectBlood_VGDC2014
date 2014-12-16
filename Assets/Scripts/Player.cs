@@ -4,7 +4,7 @@ using System.Collections;
 public enum PlayerState
 {
 	NORMAL,
-	STEALTH
+	STEALTH,
 }
 
 
@@ -16,14 +16,16 @@ public class Player : Character
 	public bool energyRegen = true;
 	public PlayerState state;
 	public SpriteRenderer sprite;
-//	public float meldTime = 2.0f;
-
+	public Weapon weapon;
 	public AudioClip dmgClip;
 	public AudioClip stealthClip;
+
+	private float stealthDegenRate = 10.0f;
 
 	void Start () 
 	{
 		sprite = transform.FindChild ("PlayerPlaceholder").GetComponent<SpriteRenderer>();
+		weapon = GameObject.Find ("Sword").GetComponent<Sword> ();
 		state = PlayerState.NORMAL;
 	}
 	
@@ -58,13 +60,73 @@ public class Player : Character
 		}
 	}
 
+	public void Demacia()
+	{
+		StartCoroutine("DemaciaRoutine");
+	}
+
+	IEnumerator DemaciaRoutine()
+	{
+		while(Input.GetButton("Demacia"))
+		{
+			this.weapon.Unsheathe(true);
+			this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
+			yield return null;
+		}
+			
+		this.weapon.Unsheathe(false);
+	}
+
+	public void Stealth()
+	{
+		if (this.state == PlayerState.NORMAL) 
+		{
+			StartCoroutine("StealthRoutine");
+		}
+		else if (this.state == PlayerState.STEALTH)
+		{
+			//make a function for this later
+			this.energyRegen = true;
+			this.sprite.enabled = true;
+			this.state = PlayerState.NORMAL;
+			this.gameObject.audio.Play ();
+		}
+	}
+	
+	IEnumerator StealthRoutine()
+	{
+		
+		state = PlayerState.STEALTH;
+		//		float stealthTime = player.meldTime;
+		sprite.enabled = false;
+		energyRegen = false;
+		audio.clip = this.stealthClip;
+		this.audio.Play ();
+		
+		//		float currentTime = 0.0f;
+		
+		while(this.state == PlayerState.STEALTH)
+		{
+			this.energy -= stealthDegenRate*Time.deltaTime;
+			if (this.energy <= 0)
+			{
+				this.energy = 0;
+				this.energyRegen = true;
+				this.sprite.enabled = true;
+				this.state = PlayerState.NORMAL;
+				this.audio.Play ();
+			}
+			yield return null;
+		}
+	}
+
 	void OnCollisionEnter2D(Collision2D coll)
 	{
 		if(coll.gameObject.tag == "Enemy")
 		{
 			takeHit(10);
 			this.audio.clip = this.dmgClip;
-			this.audio.Play();
+			//this.audio.Play();
 			Debug.Log("Health: " + this.health);
 		}
 	}
