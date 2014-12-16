@@ -28,7 +28,7 @@ public class LoSMeshScript : MonoBehaviour
 		
 	}
 	
-	void Update () 
+	void LateUpdate () 
 	{
 		List<Transform> sightedMobs = new List<Transform> ();
 		vertices = mesh.vertices;
