@@ -6,14 +6,14 @@ using System.Collections;
 public class NoisemakerPlayer : MonoBehaviour {
 	private string[] soundLayers = {"Enemy"};
 	private string[] lightLayers = {"Enemy","LightWalls"};
+    private ParticleSystem particleEffect;
 	// Use this for initialization
 	void Start () {
-	
+	    particleEffect =  transform.GetComponent<ParticleSystem>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Noise (99999);
 	}
 
 	public void Noise(float radius)
@@ -29,6 +29,8 @@ public class NoisemakerPlayer : MonoBehaviour {
 				}
 			}
 		}
+
+        particleEffect.Play();
 	}
 	public bool hasLoS(Transform one, Transform two, int distance, LayerMask mask)
 	{

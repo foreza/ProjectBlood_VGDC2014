@@ -12,6 +12,15 @@ public class Sword : Weapon
 	public float swingTime = 5.0f;
 	public SwordState state = SwordState.STANDBY;
     public float damage = 50.0f;
+    private NoisemakerPlayer noisemaker;
+
+    // Use this for initialization
+    void Start()
+    {
+        noisemaker = transform.Find("ParticleEffects").GetComponent<NoisemakerPlayer>();
+
+
+    }
 
 	public override void Attack()
 	{
@@ -24,6 +33,7 @@ public class Sword : Weapon
 		{
 			this.audio.Play();
 			StartCoroutine("SwingMotion");
+            noisemaker.Noise(9999999);
 		}
 	}
 
