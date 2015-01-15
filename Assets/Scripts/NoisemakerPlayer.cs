@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-
+// general note: for the settings of the particle system, 750 base speed on .1 second run, then 0.4 dampening gives you 100 distance.
 
 public class NoisemakerPlayer : MonoBehaviour {
 	private string[] soundLayers = {"Enemy"};
