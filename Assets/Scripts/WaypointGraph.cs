@@ -14,9 +14,15 @@ public class WaypointGraph : MonoBehaviour
 	public Transform edges;
 	private int edgeCount;
 
-	WaypointGraph()
+//	WaypointGraph()
+//	{
+//		InitializeGraph();
+//	}
+	
+	void Start()
 	{
 		InitializeGraph();
+		PopulateGraph();
 	}
 	
 	public void InitializeGraph()
@@ -38,6 +44,11 @@ public class WaypointGraph : MonoBehaviour
 	
 	public void PopulateGraph()
 	{
+		if(graph == null)
+		{
+			graph = new Dictionary<Transform,List<Transform>>();
+		}
+		
 		Clear();
 		
 		for(int i = 0; i < waypoints.childCount; i++)
@@ -64,6 +75,70 @@ public class WaypointGraph : MonoBehaviour
 		Debug.Log("Instantiated");
 		Debug.Log("waypoints: " + WaypointCount() + " " + waypoints.childCount);
 		Debug.Log("edges: " + EdgeCount() + " " + edges.childCount);
+	}
+	
+	//Implements A* search to find the shortest path from startNode to goalNode
+	public LinkedList<Transform> ShortestPath(Transform startNode, Transform goalNode)
+	{
+		Dictionary<Transform, Transform> cameFrom = new Dictionary<Transform,Transform>();
+		Dictionary<Transform, float> gScore = new Dictionary<Transform, float>();
+		Dictionary<Transform, float> fScore = new Dictionary<Transform, float>();
+		Dictionary<Transform, float> evaluatedNodes = new Dictionary<Transform,float>();
+		WaypointPriorityQueue fringeQueue = new WaypointPriorityQueue();
+		
+		
+		gScore[startNode] = 0.0f;
+		fScore[startNode] = gScore[startNode] + heuristicCost(startNode, goalNode);
+		fringeQueue.Enqueue(startNode, fScore[startNode]);
+		
+		while(fringeQueue.Count != 0)
+		{
+			Debug.Log("LoopCount");
+			Transform currentNode = fringeQueue.Dequeue().Key;
+			
+			if(currentNode == goalNode)
+			{
+				Transform current = currentNode;
+				List<Transform> totalPath = new List<Transform>();
+				totalPath.Add(current);
+				Debug.Log(current.name);
+				while(cameFrom.ContainsKey(current))
+				{
+					current = cameFrom[current];
+					totalPath.Add(current);
+					Debug.Log(current.name);
+				}
+			
+				return null; // return shortest path
+			}
+			
+			evaluatedNodes.Add(currentNode, fScore[currentNode]);
+			
+			foreach(Transform neighbor in GetNeighborList(currentNode))
+			{
+				if(!evaluatedNodes.ContainsKey(neighbor))
+				{
+					float travelCost = gScore[currentNode] + (currentNode.position - neighbor.position).magnitude;
+					bool inFringe = fringeQueue.ContainsWaypoint(neighbor);
+					
+					if(!inFringe || travelCost < gScore[neighbor])
+					{
+						cameFrom[neighbor] = currentNode;
+						gScore[neighbor] = travelCost;
+						fScore[neighbor] = gScore[neighbor] + heuristicCost(neighbor, goalNode);
+						
+						fringeQueue.Enqueue(neighbor, fScore[neighbor]);
+						
+//						if(!inFringe)
+//						{
+//							fringeQueue.Enqueue(neighbor, fScore[neighbor]);
+//						}
+					}
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	public void DrawGraph()
@@ -253,4 +328,8 @@ public class WaypointGraph : MonoBehaviour
 		return neighborList;
 	}
 	
+	private float heuristicCost(Transform fromNode, Transform toNode)
+	{
+		return (fromNode.position - toNode.position).magnitude;
+	}
 }

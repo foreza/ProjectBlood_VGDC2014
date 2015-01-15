@@ -19,12 +19,12 @@ public class WaypointEditor : Editor
 
 		waypointGraph = (WaypointGraph)target;
 		
-		if(waypointGraph.waypoints == null || waypointGraph.edges == null) 
+		if(waypointGraph == null || waypointGraph.waypoints == null || waypointGraph.edges == null) 
 		{
 			waypointGraph.InitializeGraph();
 		}
 		else if(waypointGraph.isEmpty())
-		{
+		{	
 			waypointGraph.PopulateGraph();
 		}
 			
@@ -56,12 +56,16 @@ public class WaypointEditor : Editor
 	
 	void OnSceneGUI()
 	{
-		if(waypointGraph.graphIsOutDated())
+		if(waypointGraph != null && waypointGraph.graphIsOutDated())
 		{
 			waypointGraph.PopulateGraph();
 		}
 		
-		waypointGraph.DrawGraph();
+		if(waypointGraph != null)
+		{
+			waypointGraph.DrawGraph();
+		}
+		
 		
 	}
 }
