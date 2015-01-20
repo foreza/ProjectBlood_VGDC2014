@@ -6,11 +6,11 @@ public class UITest : MonoBehaviour {
 	public Slider healthbarslider;
 	public Slider energybarslider;
 	public GameObject oneObjective;
-	public string[] descriptions;
+	public Objective[] descriptions;
 	ArrayList children;
-	//If the objective is done, remove its description from the list. How should this link in to the backend?
 	public Font font1;
 	GameObject theobj;
+	public Player theplayer;
 
 	void setBar(Slider bar,float amount){
 		bar.value = amount;
@@ -21,25 +21,27 @@ public class UITest : MonoBehaviour {
 			objectives ();
 		}
 		if (Input.GetKeyUp ("tab")) {
-			Debug.Log ("OnKeyUp called");
 			children = new ArrayList();
 			foreach (Transform child in transform) children.Add(child.gameObject);
 			foreach(GameObject child in children) {Destroy (child);}
 		}
 		//change to be set to player's max health later
-		setBar (healthbarslider, GameObject.Find ("Player").GetComponent<Player>().health/100);
-		setBar (energybarslider, GameObject.Find ("Player").GetComponent<Player>().energy/50);
+		Debug.Log (theplayer);
+		setBar (healthbarslider, GameObject.Find("Player").GetComponent<Player>().health/100);
+		setBar (energybarslider, GameObject.Find("Player").GetComponent<Player>().energy/50);
 	}
 	 
 	void objectives(){
-		descriptions = new string[4] {"one","two","three","77"};
+				//descriptions = new string[4] {"one","two","three","77"};
+		descriptions = new Objective[1];
+		Enemy anenemy = GameObject.Find ("Enemy").GetComponent<Enemy> ();
+		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill",new Vector3(0,0,0), anenemy);
 		RectTransform containerRectTransform = gameObject.GetComponent<RectTransform>();
 		float screenwidth = containerRectTransform.rect.width;
 		float screenheight = containerRectTransform.rect.height;
 		float x = 350;
 		float y = 0;
-		Debug.Log ("Just before foreach");
-		foreach (string obj in descriptions) {
+		foreach (Objective obj in descriptions) {
 			theobj = Instantiate (oneObjective) as GameObject;
 			theobj.transform.parent = gameObject.transform;
 			RectTransform rectTransform = theobj.GetComponent<RectTransform> ();
@@ -47,7 +49,7 @@ public class UITest : MonoBehaviour {
 			Debug.Log ("LL:" + x + " " + y);
 			rectTransform.offsetMax = new Vector2 (x + 60, y - 50);
 			Debug.Log ("UR:" + (x + 60) + " " + (y));
-			theobj.GetComponentInChildren<Text> ().text = obj;
+			theobj.GetComponentInChildren<Text> ().text = obj.description;
 			y -= 50;
 				}
 
