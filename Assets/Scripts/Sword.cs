@@ -13,6 +13,7 @@ public class Sword : Weapon
     public SwordState state = SwordState.STANDBY;
     public float damage = 50.0f;
     public Transform handlePosition;
+    public float noiseRadius = 125.0f;
     private NoisemakerPlayer noisemaker;
     private Character swordWielder;
     private float swingSpeed = 1000;
@@ -40,7 +41,7 @@ public class Sword : Weapon
             originalPosition = this.transform.localPosition;
             originalRotation = this.transform.localRotation;
             StartCoroutine("SwingMotion");
-            noisemaker.Noise(9999999);
+            noisemaker.Noise(noiseRadius);
         }
     }
 

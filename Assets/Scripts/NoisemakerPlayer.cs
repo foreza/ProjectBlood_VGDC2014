@@ -25,11 +25,12 @@ public class NoisemakerPlayer : MonoBehaviour {
 				Debug.Log ("Did you hear that?", hit.collider);
 				if(hasLoS (transform, hit.transform, (int)radius, LayerMask.GetMask(lightLayers)))
 				{
-					Debug.Log ("Did you see that?", hit.collider);
+                    hit.transform.GetComponent<Enemy>().face((Vector2)this.transform.position);
+                    Debug.Log("Did you see that?", hit.collider);
 				}
 			}
 		}
-
+        particleEffect.startSpeed = 7.50f * radius;
         particleEffect.Play();
 	}
 	public bool hasLoS(Transform one, Transform two, int distance, LayerMask mask)
