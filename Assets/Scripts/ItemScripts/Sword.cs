@@ -15,7 +15,7 @@ public class Sword : Weapon
     public Transform handlePosition;
     public float noiseRadius = 125.0f;
     private NoisemakerPlayer noisemaker;
-    private Character swordWielder;
+    private Transform swordWielder;
     private float swingSpeed = 1000;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
@@ -24,7 +24,7 @@ public class Sword : Weapon
     void Start()
     {
         noisemaker = transform.Find("ParticleEffects").GetComponent<NoisemakerPlayer>();
-        swordWielder = transform.parent.GetComponent<Character>(); 
+        swordWielder = transform.parent;
         handlePosition = this.transform.parent.FindChild("HandlePosition");
     }
 
