@@ -4,7 +4,7 @@ using System.Collections;
 public class ButtonTest : MonoBehaviour {
 	
 	public void buttonClick(){
-		Debug.Log ("Button Clicked");
+		Debug.Log ("Button Clicked, we are using ButtonTest");
 		Application.LoadLevel(2);
 	}
 	public void startLevel(){
