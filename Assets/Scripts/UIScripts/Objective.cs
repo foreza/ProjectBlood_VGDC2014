@@ -11,27 +11,25 @@ public class Objective
 	public UIMaster thegui;
 	private Player player;
 
-	public Objective(string objname, string objdesc, string objtype, Enemy objkill = null, Vector3 objcoords = Vector3.zero)
+	public Objective(string objname, string objdesc, string objtype, Vector3 objcoords, Enemy evil)
 	{
 		name = objname;
 		description = objdesc;
 		type = objtype;
-		Vector3 destination = objcoords;
-		Enemy tokill = objkill;
 		thegui = GameObject.Find ("Main Camera").GetComponent<UIMaster> ();
 		player = GameObject.Find ("Player").GetComponent<Player> ();
 	}
-	//checks if objective is done.
-	public bool isObjectiveDone()
+	//checks if objective is done and automatically removes if it is.
+	bool isObjectiveDone(string objType)
 	{
-		if (this.type == "kill") {
+		if (objType == "kill") {
 			if (evil.health <= 0) {
 					//remove objective from list in UITest
 					return true;
 			} else {
 					return false;
 			}
-		} else if (this.type == "go") {
+		} else if (objType == "go") {
 			Vector3 offset = player.transform.position - coords;
 			float sqrLen = offset.sqrMagnitude;
 			if (sqrLen < 10 * 10) {
