@@ -88,7 +88,7 @@ public class Player : Character
         } else if (this.state == PlayerState.STEALTH)
         {
             //make a function for this later
-			this.energyRegen = false;
+			this.energyRegen = true;
             this.sprite.sprite = normalSprite;
             this.state = PlayerState.NORMAL;
             this.gameObject.audio.Play();
