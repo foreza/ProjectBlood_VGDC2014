@@ -4,40 +4,54 @@ using System.Collections.Generic;
 
 public class PlayerTrail : MonoBehaviour 
 {
-	public float spawnRate = 1.0f;
-	public float lifeTime = 5.0f;
-	
-	public LinkedList<TrailCrumb> trail;
-	
-	private GameObject trailObj;
-	private float lastSpawnTime;
 
-	
-	void Start()
+	// PUBLIC VARIABLES
+	public static float CRUMB_SPAWN_RATE = 0.2f;
+	public static float CRUMB_LIFETIME = 1.8f;
+
+	// PRIVATE VARIABLES
+	private static GameObject crumbObj;
+	private float spawnTimer;
+	private LinkedList <TrailCrumb> crumbTrail;
+
+	void Start ()
 	{
-		trail = new LinkedList<TrailCrumb>();
-		trailObj = Resources.Load("TrailObject") as GameObject;
-		lastSpawnTime = 0.0f;
+		crumbTrail = new LinkedList<TrailCrumb> ();					// list of crumb scripts. oldest crumb is at the end.
+		crumbObj = Resources.Load ( "TrailObject" ) as GameObject;	// reference to TrailObject prefab.
+		spawnTimer = 0.0f;											// timer to keep track of when to spawn a new crumb
 	}
 	
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Time.time > lastSpawnTime + spawnRate)
+		if ( spawnTimer >= CRUMB_SPAWN_RATE )		// If the time to spawn a crumb has come ...
 		{
-			lastSpawnTime = Time.time;
-			GameObject crumbObj = Instantiate(trailObj) as GameObject;
-			crumbObj.transform.position = this.transform.position;
-			crumbObj.layer = LayerMask.NameToLayer("Tracks");
-			trail.AddFirst(crumbObj.GetComponent<TrailCrumb>());
+			spawnTimer = 0;		// reset the timer.
+
+			// instantiate a new crumb and set its position to the player's current position
+			GameObject crumbInstance = Instantiate ( crumbObj ) as GameObject;
+			crumbInstance.transform.position = this.transform.position;
+			crumbInstance.layer = LayerMask.NameToLayer ( "Tracks" );
+
+			// add the new crumb SCRIPT to the BEGINNING of the trail.
+			crumbTrail.AddFirst ( crumbInstance.GetComponent <TrailCrumb> () );
 		}
-		
-		if(trail.Count > 0 && trail.Last.Value.GetLifeTime() > lifeTime)
+		else 			// Otherwise, add time to spawnTimer.
+			spawnTimer += Time.deltaTime;
+
+		// destroy the oldest crumb if its lifetime is expired
+		if ( crumbTrail.Count > 0 && crumbTrail.Last.Value.GetLifeTime () > CRUMB_LIFETIME )
 		{
-			GameObject toDestroy = trail.Last.Value.gameObject;
-			trail.RemoveLast();
-			Destroy(toDestroy);
+			GameObject toDestroy = crumbTrail.Last.Value.gameObject;
+			crumbTrail.RemoveLast ();
+			Destroy ( toDestroy );
 		}
+	}
+
+	// Getter for the crumb trail
+	public LinkedList <TrailCrumb> GetCrumbTrail ()
+	{
+		return crumbTrail;
 	}
 }

@@ -18,10 +18,10 @@ public class LineOfSight : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(parentEnemy.state == EnemyState.PATROL && other.tag == "Player")
+		if ( other.gameObject.tag == "Player")
 		{
-			Player player = other.transform.GetComponent<Player>();
-			Vector2 rayDir = player.transform.position - this.transform.position;
+			Player player = other.transform.GetComponent <Player> ();
+			//Vector2 rayDir = player.transform.position - this.transform.position;
 			//Debug.Log ("Raydir" + rayDir);
 			//RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
 
@@ -29,7 +29,7 @@ public class LineOfSight : MonoBehaviour
 			//if(hit && hit.transform == player.transform)
 			//if
 
-				Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
+				//Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
 				if(player.state != PlayerState.STEALTH)
 				{
 					this.audio.Play();

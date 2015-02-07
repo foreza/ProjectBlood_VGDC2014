@@ -16,128 +16,123 @@ enum EnemyVisionState
 
 public class Enemy : Character 
 {
+	// PUBLIC VARIABLES
 	public GameObject[] patrolPath;
-	public EnemyState state;
-	
+	public EnemyState state = EnemyState.PATROL;
+
+	// PRIVATE VARIABLES
 	private Player player;
 	private PlayerTrail playerTrail;
     private EnemyVisionState vision = EnemyVisionState.NORMAL;
 	private SpriteRenderer sprite;
 	private SpriteRenderer minimapSprite;
-	private  Transform LoSCollider;
+	private Transform LoSCollider;
 	private LayerMask trackMask;
 	private LayerMask sightMask;
-	
+	private int currWaypointIndex;
+
+	// INITIALIZE
 	void Start () 
 	{
-		sprite = transform.FindChild ("EnemyPlaceholder").GetComponent<SpriteRenderer>();
-		minimapSprite = transform.FindChild ("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
-        LoSCollider = transform.FindChild("LineOfSight");
-		player = GameObject.Find("Player").GetComponent<Player> ();
-		playerTrail = player.GetComponent<PlayerTrail>();
+		sprite = transform.FindChild ( "EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
+		minimapSprite = transform.FindChild ( "Minimap EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
+        LoSCollider = transform.FindChild ( "LineOfSight" );
+		player = GameObject.Find ( "Player" ).GetComponent <Player> ();
+		playerTrail = player.GetComponent <PlayerTrail> ();
 		
-		string[] trackLayers = {"LightWalls", "Tracks"};
-		trackMask = LayerMask.GetMask(trackLayers);
-		string[] sightLayers = {"LightWalls", "Mobs"};
-		sightMask = LayerMask.GetMask(sightLayers);
-		
-		StartCoroutine("Patrol");
+		string[] trackLayers = { "LightWalls", "Tracks" };
+		trackMask = LayerMask.GetMask ( trackLayers );
+		string[] sightLayers = { "LightWalls", "Mobs" };
+		sightMask = LayerMask.GetMask ( sightLayers );
+		currWaypointIndex = ClosestWaypoint ();
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	// FIXED UPDATE
+	void FixedUpdate ()
 	{
-		//followPlayer();
-		
-	}
-	
-	IEnumerator FollowPlayer()
-	{
-		this.state = EnemyState.CHASING;
-		while(this.state == EnemyState.CHASING)
+		rigidbody2D.velocity = Vector2.zero;
+		if ( state != EnemyState.DEAD )
 		{
-			Vector2 rayDir = player.transform.position - this.transform.position;
-			RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
-			
-			if(hit && hit.transform.gameObject.tag == "Player") 
+			if ( state == EnemyState.PATROL )
+				Patrol ();
+			else if ( state == EnemyState.CHASING )
+				FollowPlayer ();
+		}
+	}
+
+	// FollowPlayer: tries to find the player and move towards him. Otherwise, move towards the latest crumb.
+	private void FollowPlayer ()
+	{
+		// ray direction is towards the player
+		Vector2 rayDir = player.transform.position - this.transform.position;
+		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
+		Debug.Log (hit.collider.gameObject.tag);
+
+		if ( hit && hit.collider.gameObject.tag == "Player" )		// if the player is sighted, move towards him ...
+		{
+			Debug.DrawLine ( this.transform.position, hit.point );
+			WalkTowards ( player.transform.position );
+		}
+		else 														// ... Otherwise, try to find the breadcrumbs.
+		{
+			Vector2 crumbToFollow = Vector2.zero;		// position to move towards
+
+			// Starting from the newest crumb (first), check if visible. If it's visible move towards it.
+			// Start at newest, otherwise it will try to follow the full trail like an idiot.
+			foreach ( TrailCrumb crumb in playerTrail.GetCrumbTrail () )
 			{
-				// Debug.Log ("Hit Transform" + hit.transform.position + " Player Transform " + player.transform.position);
-				WalkTowards(player.transform.position); 
+				// cast the ray towards the crumb
+				rayDir = crumb.transform.position - this.transform.position;
+				hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, trackMask );
+
+				// if it hits the crumb, move towards crumb
+				if ( crumbToFollow == Vector2.zero && hit && hit.transform.gameObject.tag == "Trail" )
+				{
+					crumbToFollow = hit.point;
+					Debug.DrawLine ( this.transform.position, hit.point );
+				}
 			}
+
+			// If there is a crumb to follow, follow it. Otherwise, lose the player.
+			if ( crumbToFollow != Vector2.zero )
+				WalkTowards ( crumbToFollow );
 			else
 			{
-				TrailCrumb crumbToFollow = null;
-				
-				foreach(TrailCrumb crumb in playerTrail.trail)
-				// Get the first crumb that was dropped rather than ALL of the crumbs at once.
-				// Do a raycast to the crumb
-				// If it doesn't hit, look to the next crumb.
-				// Condition: If none of the crumbs hit, go back to patrolling
-				
-				{
-					rayDir = crumb.transform.position - this.transform.position;
-					RaycastHit2D[] hitArray = Physics2D.RaycastAll(this.transform.position, rayDir, 1000, trackMask);
-					
-					for(int i = 0; i < hitArray.Length && hitArray[i].transform.tag == "Trail"; i++)
-					{
-						TrailCrumb hitCrumb = hitArray[i].transform.GetComponent<TrailCrumb>();
-						
-						if(crumbToFollow == null || crumbToFollow.GetLifeTime() > hitCrumb.GetLifeTime())
-						{
-							crumbToFollow = hitCrumb;
-						}
-					}
-				}
-				
-				if(crumbToFollow != null)
-				{
-					WalkTowards(crumbToFollow.transform.position);
-				}
-				else
-				{
-					Debug.Log("Player Lost");
-					//StopCoroutine("FollowPlayer");
-					OnPlayerLost();
-				}
+				Debug.Log("Player Lost");
+				state = EnemyState.PATROL;
+				currWaypointIndex = ClosestWaypoint ();
 			}
-			
-			yield return new WaitForFixedUpdate();
 		}
 	}
-	
-	IEnumerator Patrol()
+
+	// Patrol: if state is patrolling, do patrol
+	private void Patrol ()
 	{
-		state = EnemyState.PATROL;
-		
-		int i = ClosestWaypoint ();
-		while(state == EnemyState.PATROL)
-		{
-			
-			Vector2 to = patrolPath[i].transform.position;
-			
-			while( (Vector2)this.transform.position != to && state == EnemyState.PATROL )
-			{
-				WalkTowards(to);
-				
-				yield return null;
-			}
-			
-			
-			i = (i >= patrolPath.Length - 1)? 0 : ++i;
-		}
+		Vector2 to = patrolPath [ currWaypointIndex ].transform.position;		// get current waypoint's position.
+		if ( ( Vector2 ) this.transform.position != to )						// if not at the waypoint, move towards it ~~ !
+			WalkTowards ( to );
+		else 																	// otherwise, set current waypoint to the next one.
+			currWaypointIndex = ( currWaypointIndex >= patrolPath.Length - 1)? 0 : ++currWaypointIndex;
 	}
-	
-	private void WalkTowards(Vector2 to)
+
+	// WalkTowards: Tells enemy to move to a specified location.
+	// TODO need to make this smarter using pathfinding or something D:
+	private void WalkTowards ( Vector2 to )
 	{
-		Vector2 direction = to - (Vector2)this.transform.position;
-		this.transform.Translate(Vector3.ClampMagnitude(direction, speed*Time.deltaTime), Space.World);
-		this.transform.right = to - (Vector2)this.transform.position;
+		Vector2 direction = to - ( Vector2 ) this.transform.position;
+		this.transform.Translate ( Vector3.ClampMagnitude ( direction, speed*Time.deltaTime ), Space.World );
+		this.transform.right = to - ( Vector2 ) this.transform.position;
 	}
 
     public void face(Vector2 point)
     {
         this.transform.right = point - (Vector2)this.transform.position;
     }
+
+	public void OnPlayerSighted ()
+	{
+		this.state = EnemyState.CHASING;
+	}
        
 	private int ClosestWaypoint()
 	{
@@ -152,27 +147,6 @@ public class Enemy : Character
 		}
 		Debug.Log (nearest);
 		return nearest;
-	}
-	
-	public void OnPlayerSighted()
-	{
-		if(state != EnemyState.CHASING)
-		{
-			Debug.Log("I am followin");
-			StartCoroutine("FollowPlayer");
-			StopCoroutine("Patrol");
-
-		}
-		
-	}
-	
-	public void OnPlayerLost()
-	{
-		// if(state == EnemyState.CHASING) // Unnecessary
-		{
-			StartCoroutine("Patrol");
-			StopCoroutine("FollowPlayer");
-		}
 	}
 
     public void GetHit(float damage)

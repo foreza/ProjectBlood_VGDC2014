@@ -13,7 +13,7 @@ public class UIMaster : MonoBehaviour {
 	public Player theplayer;
 
 	void setBar(Slider bar,float amount){
-		bar.value = amount;
+		//bar.value = amount;
 		}
 
 	void Update(){
