@@ -11,6 +11,7 @@ public enum PlayerState
 public class Player : Character
 {
     public float energy = 50;
+	public float healthMax = 100;
     public float energyMax = 50;
     public float energyRegenRate = 1.0f;
     public bool energyRegen = true;
@@ -27,6 +28,7 @@ public class Player : Character
         sprite = transform.FindChild("PlayerPlaceholder").GetComponent<SpriteRenderer>();
         weapon = this.transform.FindChild("Sword").GetComponent<Sword>();
         state = PlayerState.NORMAL;
+		health = healthMax;
     }
 	
     // Update is called once per frame
@@ -85,7 +87,7 @@ public class Player : Character
         } else if (this.state == PlayerState.STEALTH)
         {
             //make a function for this later
-            this.energyRegen = true;
+			this.energyRegen = false;
             this.sprite.enabled = true;
             this.state = PlayerState.NORMAL;
             this.gameObject.audio.Play();

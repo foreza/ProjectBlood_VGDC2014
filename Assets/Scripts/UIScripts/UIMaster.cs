@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class UITest : MonoBehaviour {
+public class UIMaster : MonoBehaviour {
 	public Slider healthbarslider;
 	public Slider energybarslider;
 	public GameObject oneObjective;
@@ -26,13 +26,11 @@ public class UITest : MonoBehaviour {
 			foreach(GameObject child in children) {Destroy (child);}
 		}
 		//change to be set to player's max health later
-		Debug.Log (theplayer);
 		setBar (healthbarslider, GameObject.Find("Player").GetComponent<Player>().health/100);
 		setBar (energybarslider, GameObject.Find("Player").GetComponent<Player>().energy/50);
 	}
 	 
 	void objectives(){
-				//descriptions = new string[4] {"one","two","three","77"};
 		descriptions = new Objective[1];
 		Enemy anenemy = GameObject.Find ("Enemy").GetComponent<Enemy> ();
 		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill",new Vector3(0,0,0), anenemy);
