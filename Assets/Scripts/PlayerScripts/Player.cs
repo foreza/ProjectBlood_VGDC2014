@@ -20,7 +20,8 @@ public class Player : Character
     public Weapon weapon;
     public AudioClip dmgClip;
     public AudioClip stealthClip;
-
+    public Sprite normalSprite;
+    public Sprite stealthedSprite;
     private float stealthDegenRate = 10.0f;
 
     void Start()
@@ -87,8 +88,8 @@ public class Player : Character
         } else if (this.state == PlayerState.STEALTH)
         {
             //make a function for this later
-			this.energyRegen = false;
-            this.sprite.enabled = true;
+			this.energyRegen = true;
+            this.sprite.sprite = normalSprite;
             this.state = PlayerState.NORMAL;
             this.gameObject.audio.Play();
         }
@@ -99,7 +100,7 @@ public class Player : Character
 		
         state = PlayerState.STEALTH;
         //		float stealthTime = player.meldTime;
-        sprite.enabled = false;
+        sprite.sprite = stealthedSprite;
         energyRegen = false;
         audio.clip = this.stealthClip;
         this.audio.Play();

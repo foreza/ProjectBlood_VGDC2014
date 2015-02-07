@@ -30,6 +30,7 @@ public class Enemy : Character
 	private LayerMask trackMask;
 	private LayerMask sightMask;
 	private int currWaypointIndex;
+	private ParticleSystem deathParticleEffect;
 
 	// INITIALIZE
 	void Start () 
@@ -39,12 +40,12 @@ public class Enemy : Character
         LoSCollider = transform.FindChild ( "LineOfSight" );
 		player = GameObject.Find ( "Player" ).GetComponent <Player> ();
 		playerTrail = player.GetComponent <PlayerTrail> ();
-		
 		string[] trackLayers = { "LightWalls", "Tracks" };
 		trackMask = LayerMask.GetMask ( trackLayers );
 		string[] sightLayers = { "LightWalls", "Mobs" };
 		sightMask = LayerMask.GetMask ( sightLayers );
 		currWaypointIndex = ClosestWaypoint ();
+		deathParticleEffect = transform.FindChild ("EnemyPlaceholder").GetComponent<ParticleSystem>();
 	}
 
 	// FIXED UPDATE
@@ -160,7 +161,7 @@ public class Enemy : Character
 
 	public void Die()
 	{
-
+        deathParticleEffect.Play();
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;
