@@ -15,7 +15,7 @@ public class Objective
 	{
 		name = objname;
 		description = objdesc;
-		objtype = type;
+		type = objtype;
 		thegui = GameObject.Find ("Main Camera").GetComponent<UIMaster> ();
 		player = GameObject.Find ("Player").GetComponent<Player> ();
 	}

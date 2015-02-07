@@ -3,18 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class UIMaster : MonoBehaviour {
-	public Slider healthbarslider;
-	public Slider energybarslider;
 	public GameObject oneObjective;
 	public Objective[] descriptions;
 	ArrayList children;
 	public Font font1;
 	GameObject theobj;
-	public Player theplayer;
-
-	void setBar(Slider bar,float amount){
-		bar.value = amount;
-		}
 
 	void Update(){
 		if(Input.GetKeyDown("tab")){
@@ -25,9 +18,6 @@ public class UIMaster : MonoBehaviour {
 			foreach (Transform child in transform) children.Add(child.gameObject);
 			foreach(GameObject child in children) {Destroy (child);}
 		}
-		//change to be set to player's max health later
-		setBar (healthbarslider, GameObject.Find("Player").GetComponent<Player>().health/100);
-		setBar (energybarslider, GameObject.Find("Player").GetComponent<Player>().energy/50);
 	}
 	 
 	void objectives(){
