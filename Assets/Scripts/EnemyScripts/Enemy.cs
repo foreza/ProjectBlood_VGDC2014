@@ -27,7 +27,7 @@ public class Enemy : Character
 	private  Transform LoSCollider;
 	private LayerMask trackMask;
 	private LayerMask sightMask;
-	
+    private ParticleSystem deathParticleEffect;
 	void Start () 
 	{
 		sprite = transform.FindChild ("EnemyPlaceholder").GetComponent<SpriteRenderer>();
@@ -35,7 +35,7 @@ public class Enemy : Character
         LoSCollider = transform.FindChild("LineOfSight");
 		player = GameObject.Find("Player").GetComponent<Player> ();
 		playerTrail = player.GetComponent<PlayerTrail>();
-		
+        deathParticleEffect = transform.FindChild ("EnemyPlaceholder").GetComponent<ParticleSystem>();
 		string[] trackLayers = {"LightWalls", "Tracks"};
 		trackMask = LayerMask.GetMask(trackLayers);
 		string[] sightLayers = {"LightWalls", "Mobs"};
@@ -186,7 +186,7 @@ public class Enemy : Character
 
 	public void Die()
 	{
-
+        deathParticleEffect.Play();
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;
