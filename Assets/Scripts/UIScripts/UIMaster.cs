@@ -1,13 +1,20 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class UIMaster : MonoBehaviour {
 	public GameObject oneObjective;
-	public Objective[] descriptions;
+	List<Objective> descriptions;
 	ArrayList children;
 	public Font font1;
 	GameObject theobj;
+
+	void Start(){
+		descriptions = new List<Objective> ();
+		Enemy anenemy = GameObject.Find ("Enemy").GetComponent<Enemy> ();
+		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill", null, anenemy);
+	}
 
 	void Update(){
 		if(Input.GetKeyDown("tab")){
@@ -18,12 +25,14 @@ public class UIMaster : MonoBehaviour {
 			foreach (Transform child in transform) children.Add(child.gameObject);
 			foreach(GameObject child in children) {Destroy (child);}
 		}
+		foreach(Objective o in descriptions){
+			if(o.isObjectiveDone()){
+				descriptions.Remove (o); //hopefully this only removes o and not all objects of type o.
+			}
+		}
 	}
 	 
 	void objectives(){
-		descriptions = new Objective[1];
-		Enemy anenemy = GameObject.Find ("Enemy").GetComponent<Enemy> ();
-		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill",new Vector3(0,0,0), anenemy);
 		RectTransform containerRectTransform = gameObject.GetComponent<RectTransform>();
 		float screenwidth = containerRectTransform.rect.width;
 		float screenheight = containerRectTransform.rect.height;
