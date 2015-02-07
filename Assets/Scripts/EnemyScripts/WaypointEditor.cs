@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+
+using UnityEngine;
 using System.Collections;
 using UnityEditor;
 using System.Collections.Generic;
@@ -69,3 +71,5 @@ public class WaypointEditor : Editor
 		
 	}
 }
+
+#endif
