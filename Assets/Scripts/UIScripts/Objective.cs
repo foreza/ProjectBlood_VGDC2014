@@ -11,7 +11,7 @@ public class Objective
 	public UIMaster thegui;
 	private Player player;
 
-	public Objective(string objname, string objdesc, string objtype, Vector3 objcoords, Enemy evil)
+	public Objective(string objname, string objdesc, string objtype, Enemy evil=null, Vector3 objcoords = default(Vector3))
 	{
 		name = objname;
 		description = objdesc;

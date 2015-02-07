@@ -23,7 +23,7 @@ public class UIMaster : MonoBehaviour {
 	void objectives(){
 		descriptions = new Objective[1];
 		Enemy anenemy = GameObject.Find ("Enemy").GetComponent<Enemy> ();
-		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill",new Vector3(0,0,0), anenemy);
+		descriptions [0] = new Objective ("Kill Him", "He Needs To Die", "kill",anenemy);
 		RectTransform containerRectTransform = gameObject.GetComponent<RectTransform>();
 		float screenwidth = containerRectTransform.rect.width;
 		float screenheight = containerRectTransform.rect.height;
