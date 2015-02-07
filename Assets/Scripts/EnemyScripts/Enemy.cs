@@ -161,7 +161,7 @@ public class Enemy : Character
 
 	public void Die()
 	{
-        deathParticleEffect.Play();
+        deathParticleEffect.Play(); // Temporarily removed since it was throwing errors. TODO : FIX THIS D:
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
 		this.collider2D.enabled = false;
