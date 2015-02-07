@@ -59,15 +59,21 @@ public class Enemy : Character
 			Vector2 rayDir = player.transform.position - this.transform.position;
 			RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
 			
-			if(hit && hit.transform == player.transform)
+			if(hit && hit.transform.gameObject.tag == "Player") 
 			{
-				WalkTowards(player.transform.position);
+				// Debug.Log ("Hit Transform" + hit.transform.position + " Player Transform " + player.transform.position);
+				WalkTowards(player.transform.position); 
 			}
 			else
 			{
 				TrailCrumb crumbToFollow = null;
 				
 				foreach(TrailCrumb crumb in playerTrail.trail)
+				// Get the first crumb that was dropped rather than ALL of the crumbs at once.
+				// Do a raycast to the crumb
+				// If it doesn't hit, look to the next crumb.
+				// Condition: If none of the crumbs hit, go back to patrolling
+				
 				{
 					rayDir = crumb.transform.position - this.transform.position;
 					RaycastHit2D[] hitArray = Physics2D.RaycastAll(this.transform.position, rayDir, 1000, trackMask);
@@ -89,6 +95,8 @@ public class Enemy : Character
 				}
 				else
 				{
+					Debug.Log("Player Lost");
+					//StopCoroutine("FollowPlayer");
 					OnPlayerLost();
 				}
 			}
@@ -150,16 +158,20 @@ public class Enemy : Character
 	{
 		if(state != EnemyState.CHASING)
 		{
+			Debug.Log("I am followin");
 			StartCoroutine("FollowPlayer");
+			StopCoroutine("Patrol");
+
 		}
 		
 	}
 	
 	public void OnPlayerLost()
 	{
-		if(state == EnemyState.CHASING)
+		// if(state == EnemyState.CHASING) // Unnecessary
 		{
 			StartCoroutine("Patrol");
+			StopCoroutine("FollowPlayer");
 		}
 	}
 

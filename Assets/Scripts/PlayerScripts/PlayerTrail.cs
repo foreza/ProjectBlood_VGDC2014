@@ -29,6 +29,7 @@ public class PlayerTrail : MonoBehaviour
 			lastSpawnTime = Time.time;
 			GameObject crumbObj = Instantiate(trailObj) as GameObject;
 			crumbObj.transform.position = this.transform.position;
+			crumbObj.layer = LayerMask.NameToLayer("Tracks");
 			trail.AddFirst(crumbObj.GetComponent<TrailCrumb>());
 		}
 		

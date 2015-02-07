@@ -16,22 +16,28 @@ public class LineOfSight : MonoBehaviour
 		sightMask = LayerMask.GetMask(layers);
 	}
 
-	void OnTriggerStay2D(Collider2D other)
+	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(parentEnemy.state == EnemyState.PATROL && other.tag == "Player")
 		{
 			Player player = other.transform.GetComponent<Player>();
 			Vector2 rayDir = player.transform.position - this.transform.position;
-			RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
-			
-			if(hit && hit.transform == player.transform)
-			{
+			//Debug.Log ("Raydir" + rayDir);
+			//RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
+
+			//Debug.Log (hit.transform.position + "HI THIS IS TO STRING" + player.transform.position);
+			//if(hit && hit.transform == player.transform)
+			//if
+
+				Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
 				if(player.state != PlayerState.STEALTH)
 				{
 					this.audio.Play();
 					parentEnemy.OnPlayerSighted();
+					
+					Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
 				}
-			}
+
 		}
 	}
 
