@@ -6,7 +6,8 @@ public enum EnemyState
 	PATROL,
 	CHASING,
     DEAD,
-	STATIONARY
+	STATIONARY,
+	ATTACK
 }
 
 enum EnemyVisionState
