@@ -5,7 +5,8 @@ public enum EnemyState
 {
 	PATROL,
 	CHASING,
-    DEAD
+    DEAD,
+	STATIONARY
 }
 
 enum EnemyVisionState
@@ -19,11 +20,11 @@ public class Enemy : Character
 	// PUBLIC VARIABLES
 	public GameObject[] patrolPath;
 	public EnemyState state = EnemyState.PATROL;
-
+	
 	// PRIVATE VARIABLES
 	private Player player;
 	private PlayerTrail playerTrail;
-    private EnemyVisionState vision = EnemyVisionState.NORMAL;
+	private EnemyVisionState vision = EnemyVisionState.NORMAL;
 	private SpriteRenderer sprite;
 	private SpriteRenderer minimapSprite;
 	private Transform LoSCollider;
@@ -31,13 +32,13 @@ public class Enemy : Character
 	private LayerMask sightMask;
 	private int currWaypointIndex;
 	private ParticleSystem deathParticleEffect;
-
+	
 	// INITIALIZE
 	void Start () 
 	{
 		sprite = transform.FindChild ( "EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
 		minimapSprite = transform.FindChild ( "Minimap EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
-        LoSCollider = transform.FindChild ( "LineOfSight" );
+		LoSCollider = transform.FindChild ( "LineOfSight" );
 		player = GameObject.Find ( "Player" ).GetComponent <Player> ();
 		playerTrail = player.GetComponent <PlayerTrail> ();
 		string[] trackLayers = { "LightWalls", "Tracks" };

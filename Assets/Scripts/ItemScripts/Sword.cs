@@ -81,18 +81,18 @@ public class Sword : Weapon
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+	public override void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (swordWielder.tag == "Player") // this should be in the weapon class.
+        if (swordWielder.tag == "Player") 
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.tag == "Enemy") 
             {
-                other.gameObject.GetComponent<Enemy>().GetHit(damage);
+                other.gameObject.GetComponent<Enemy>().GetHit(damage); // Deal damage to the enemy.
             } 
             else if (other.gameObject.tag == "EnemyBoss")
             {
-                other.gameObject.SetActive(false); //replace with actual damage system
+                other.gameObject.SetActive(false); 					   //replace with actual damage system
                 Application.LoadLevel(4); // finish.
             }
         } 
