@@ -35,6 +35,7 @@ public class Enemy : Character
 	private ParticleSystem deathParticleEffect;
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
+	private float ATTACK_DAMAGE = 10.0f;
 	
 	// INITIALIZE
 	void Start () 
@@ -81,8 +82,14 @@ public class Enemy : Character
 			WalkTowards ( player.transform.position );
 
 
-			if (hit.distance < 40) {
-				hit.collider.gameObject.GetComponent<Character>().health--;
+			if (attackTimer == 0 && hit.distance < 40) {
+				hit.collider.gameObject.GetComponent<Character>().health -= ATTACK_DAMAGE;
+				attackTimer += Time.deltaTime;
+			} else if (attackTimer > 0) {
+				attackTimer += Time.deltaTime;
+				if (attackTimer >= ATTACK_COOLDOWN) {
+					attackTimer = 0;
+				}
 			}
 		}
 		else 														// ... Otherwise, try to find the breadcrumbs.
