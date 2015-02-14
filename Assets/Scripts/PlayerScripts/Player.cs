@@ -13,7 +13,7 @@ public class Player : Character
     public float energy = 50;
 	public float healthMax = 100;
     public float energyMax = 50;
-    public float energyRegenRate = 1.0f;
+    public float energyRegenRate = 5.0f;
     public bool energyRegen = true;
     public PlayerState state;
     public SpriteRenderer sprite;
@@ -23,6 +23,7 @@ public class Player : Character
     public Sprite normalSprite;
     public Sprite stealthedSprite;
     private float stealthDegenRate = 10.0f;
+	private float spinDegenRate = 0.5f;
 
     void Start()
     {
@@ -74,10 +75,13 @@ public class Player : Character
         {
             this.weapon.Unsheathe(true);
             this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
+			this.energy -= spinDegenRate * Time.deltaTime;
+			energyRegen = false;
             yield return null;
         }
 			
         this.weapon.Unsheathe(false);
+		energyRegen = true;
     }
 
     public void Stealth()
