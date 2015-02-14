@@ -5,9 +5,9 @@ public enum EnemyState
 {
 	PATROL,
 	CHASING,
+	ATTACK,
     DEAD,
-	STATIONARY,
-	ATTACK
+	STATIONARY
 }
 
 enum EnemyVisionState
@@ -33,6 +33,8 @@ public class Enemy : Character
 	private LayerMask sightMask;
 	private int currWaypointIndex;
 	private ParticleSystem deathParticleEffect;
+	private static float ATTACK_COOLDOWN = 1.0f;
+	private float attackTimer = 0.0f;
 	
 	// INITIALIZE
 	void Start () 
@@ -60,6 +62,8 @@ public class Enemy : Character
 				Patrol ();
 			else if ( state == EnemyState.CHASING )
 				FollowPlayer ();
+			else if ( state == EnemyState.ATTACK )
+				AttackPlayer ();
 		}
 	}
 
@@ -75,6 +79,11 @@ public class Enemy : Character
 		{
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
+
+
+			if (hit.distance < 40) {
+				hit.collider.gameObject.GetComponent<Character>().health--;
+			}
 		}
 		else 														// ... Otherwise, try to find the breadcrumbs.
 		{
@@ -105,6 +114,14 @@ public class Enemy : Character
 				state = EnemyState.PATROL;
 				currWaypointIndex = ClosestWaypoint ();
 			}
+		}
+	}
+
+	// AttackPlayer: attack player if within attack radius
+	private void AttackPlayer ()
+	{
+		if (attackTimer == 0.0f) {
+
 		}
 	}
 

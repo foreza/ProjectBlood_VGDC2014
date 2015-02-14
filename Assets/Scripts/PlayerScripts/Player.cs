@@ -49,7 +49,7 @@ public class Player : Character
     void killPlayer()
     {
         this.gameObject.SetActive(false);
-        Application.LoadLevel(3);
+        Application.LoadLevel(Application.loadedLevel);
         // StartCoroutine("LoadStartScreen"); 
 
     }
