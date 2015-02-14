@@ -13,7 +13,7 @@ public class Player : Character
     public float energy = 50;
 	public float healthMax = 100;
     public float energyMax = 50;
-    public float energyRegenRate = 5.0f;
+    public float energyRegenRate = 50.0f;
     public bool energyRegen = true;
     public PlayerState state;
     public SpriteRenderer sprite;
@@ -24,6 +24,7 @@ public class Player : Character
     public Sprite stealthedSprite;
     private float stealthDegenRate = 10.0f;
 	private float spinDegenRate = 0.5f;
+	private float blinkDegenCost = 10.0f;
 
     void Start()
     {
@@ -43,7 +44,7 @@ public class Player : Character
         if (energyRegen)
         {
             if (energy <= energyMax)
-                energy += (energyRegenRate * Time.deltaTime);
+                energy += (energyRegenRate * Time.deltaTime * 10);
         }
     }
 
@@ -63,6 +64,19 @@ public class Player : Character
             this.health = 0;
         }
     }
+
+	public void Blink()
+	{
+		if (this.energy > blinkDegenCost) {
+						Vector3 target;
+						target = transform.position;
+						target = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+						target.z = this.transform.position.z;
+						this.transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * 5);
+						this.energy -= blinkDegenCost;
+				}
+	}
+
 
     public void Demacia()
     {
@@ -126,6 +140,8 @@ public class Player : Character
         }
     }
 
+
+
     void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.tag == "Enemy")
@@ -145,6 +161,7 @@ public class Player : Character
 
         Application.LoadLevel(0);
     }
+
 
 
 }

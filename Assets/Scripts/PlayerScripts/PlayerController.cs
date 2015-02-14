@@ -22,13 +22,20 @@ public class PlayerController : MonoBehaviour {
 			player.Stealth();
 		}
 
-		if(Input.GetButton ("Demacia"))
+
+		 if (Input.GetButton ("Blink")) // Will work on this feature more - consider it a fun thing for now.
 		{
-			player.Demacia();
+			player.Blink();
 		}
-		else if(Input.GetButtonDown("Weapon"))
+
+		 if(Input.GetButtonDown("Weapon"))
 		{
 			player.weapon.Attack();
+		}
+
+		else if(Input.GetButton ("Demacia"))
+		{
+			player.Demacia();
 		}
 
 		if(canMove)
