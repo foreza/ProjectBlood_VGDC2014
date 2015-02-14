@@ -21,6 +21,8 @@ public class Enemy : Character
 	// PUBLIC VARIABLES
 	public GameObject[] patrolPath;
 	public EnemyState state = EnemyState.PATROL;
+
+	public float distanceToPlayer;
 	
 	// PRIVATE VARIABLES
 	private Player player;
@@ -36,6 +38,7 @@ public class Enemy : Character
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
 	private float ATTACK_DAMAGE = 10.0f;
+	private float DISTANCE_TO_ATTACK = 20.0f;
 	
 	// INITIALIZE
 	void Start () 
@@ -56,6 +59,7 @@ public class Enemy : Character
 	// FIXED UPDATE
 	void FixedUpdate ()
 	{
+		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
 		rigidbody2D.velocity = Vector2.zero;
 		if ( state != EnemyState.DEAD )
 		{
@@ -74,22 +78,15 @@ public class Enemy : Character
 		// ray direction is towards the player
 		Vector2 rayDir = player.transform.position - this.transform.position;
 		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
-		Debug.Log (hit.collider.gameObject.tag);
+//		Debug.Log (hit.collider.gameObject.tag);
 
 		if ( hit && hit.collider.gameObject.tag == "Player" )		// if the player is sighted, move towards him ...
 		{
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
 
-
-			if (attackTimer == 0 && hit.distance < 40) {
-				hit.collider.gameObject.GetComponent<Character>().health -= ATTACK_DAMAGE;
-				attackTimer += Time.deltaTime;
-			} else if (attackTimer > 0) {
-				attackTimer += Time.deltaTime;
-				if (attackTimer >= ATTACK_COOLDOWN) {
-					attackTimer = 0;
-				}
+			if (distanceToPlayer <= DISTANCE_TO_ATTACK) {
+				state = EnemyState.ATTACK;
 			}
 		}
 		else 														// ... Otherwise, try to find the breadcrumbs.
@@ -127,8 +124,17 @@ public class Enemy : Character
 	// AttackPlayer: attack player if within attack radius
 	private void AttackPlayer ()
 	{
-		if (attackTimer == 0.0f) {
-
+		if (distanceToPlayer > DISTANCE_TO_ATTACK) {
+			state = EnemyState.CHASING;
+		}
+		else if (attackTimer == 0) {
+			player.GetComponent<Character>().health -= ATTACK_DAMAGE;
+			attackTimer += Time.deltaTime;
+		} else if (attackTimer > 0) {
+			attackTimer += Time.deltaTime;
+			if (attackTimer >= ATTACK_COOLDOWN) {
+				attackTimer = 0;
+			}
 		}
 	}
 
@@ -200,7 +206,7 @@ public class Enemy : Character
         if (vision == EnemyVisionState.NORMAL)
         {
             vision = EnemyVisionState.BOOSTED;
-            Debug.Log("BOOST!");
+//            Debug.Log("BOOST!");
             LoSCollider.localScale = new Vector3(LoSCollider.localScale.x * 2, LoSCollider.localScale.y, LoSCollider.localScale.z);
         }
     }
