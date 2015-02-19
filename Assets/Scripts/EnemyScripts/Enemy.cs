@@ -178,7 +178,7 @@ public class Enemy : Character
 				nearest = i;
 			}
 		}
-		Debug.Log (nearest);
+		//Debug.Log (nearest);
 		return nearest;
 	}
 
