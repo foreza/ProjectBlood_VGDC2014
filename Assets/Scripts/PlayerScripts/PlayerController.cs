@@ -22,12 +22,14 @@ public class PlayerController : MonoBehaviour {
 			player.Stealth();
 		}
 
-
 		 if (Input.GetButton ("Blink")) // Will work on this feature more - consider it a fun thing for now.
 		{
 			player.Blink();
 		}
-
+         if (Input.GetButtonUp("Blink"))
+         {
+             player.BlinkParticleEffects(false);
+         }
 		 if(Input.GetButtonDown("Weapon"))// attack!
 		{
 			player.weapon.Attack();

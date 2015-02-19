@@ -22,13 +22,16 @@ public class Player : Character
     public AudioClip stealthClip;
     public Sprite normalSprite;
     public Sprite stealthedSprite;
-    private float stealthDegenRate = 10.0f;
-	private float spinDegenRate = 0.5f;
-	private float blinkDegenCost = 10.0f;
-
+    public float stealthDegenRate = 10.0f;
+	public float spinDegenRate = 0.5f;
+	public float blinkDegenCost = 10.0f;
+    private ParticleSystem trailParticles;
+    private ParticleSystem blinkParticles;
     void Start()
     {
         sprite = transform.FindChild("PlayerPlaceholder").GetComponent<SpriteRenderer>();
+        trailParticles = transform.FindChild("PlayerPlaceholder").GetComponent<ParticleSystem>();
+        blinkParticles = transform.FindChild("BlinkParticleEffect").GetComponent<ParticleSystem>();
         weapon = this.transform.FindChild("Sword").GetComponent<Sword>();
         state = PlayerState.NORMAL;
 		health = healthMax;
@@ -69,16 +72,33 @@ public class Player : Character
 
 	public void Blink()
 	{
-		if (this.energy > blinkDegenCost) {
-						Vector3 target;
-						target = transform.position;
-						target = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-						target.z = this.transform.position.z;
-						this.transform.position = Vector3.MoveTowards (transform.position, target, speed * Time.deltaTime * 5);
-						this.energy -= blinkDegenCost;
-				}
+        if (this.energy > blinkDegenCost)
+        {
+            BlinkParticleEffects(true);
+            Vector3 target;
+            target = transform.position;
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = this.transform.position.z;
+            this.transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime * 5);
+            this.energy -= blinkDegenCost;
+        }
+        else
+        {
+            BlinkParticleEffects(false);
+        }
 	}
 
+    public void BlinkParticleEffects(bool enabled)
+    {
+        if (trailParticles.enableEmission == true && enabled == true) //edge trigger for first activation
+        {
+            audio.clip = this.stealthClip;
+            this.audio.Play();
+            blinkParticles.Play();
+        }
+        trailParticles.enableEmission = !enabled;
+
+    }
 
     public void Demacia()
     {

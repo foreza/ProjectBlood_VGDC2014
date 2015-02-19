@@ -71,7 +71,7 @@ public class ShadowRayCaster2D : MonoBehaviour
         foreach (Vector2 point in worldVertexList)
         {
             Vector2 direction = (Vector2)point - (Vector2)transform.position; 
-            Vector2 tempPoint;
+            //Vector2 tempPoint; // never used
             RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
             if (hit.collider != null)
             {
