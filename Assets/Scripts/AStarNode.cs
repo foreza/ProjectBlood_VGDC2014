@@ -4,38 +4,35 @@ using System.Collections.Generic;
 
 public class AStarNode : MonoBehaviour
 {
-	public Dictionary <AStarNode, Vector2> neighborDict;	// Make sure all POSSIBLE neighbors are defined. Vector2.x stores cost, Vector2.y doesn't matter.
-
-	private Transform t;
-	private int obstacleLayer;
-
+	public AStarNode[] neighbors;	// Make sure all POSSIBLE neighbors are defined. Vector2.x stores cost, Vector2.y doesn't matter.
+	public string[] obstacleLayers = new string[] { "LightWalls" };
+	public float cost = 1f;
+	
+	private float originalCost;
+	private HashSet <int> obstacleLayerInts;
+	
 	// INITIALIZE
 	void Start ()
 	{
-		if ( neighborDict == null )	// avoid null reference exception
-			neighborDict = new Dictionary <AStarNode, Vector2> ();
-		t = GetComponent<Transform> ();		// automatically find Transform of game object
-		obstacleLayer = LayerMask.GetMask ( new string[] { "LightWalls" } );
+		foreach ( string layer in obstacleLayers )
+			obstacleLayerInts.Add ( LayerMask.NameToLayer ( layer ) );
+		originalCost = cost;
 	}
-
-	// FIXED UPDATE
-	void FixedUpdate ()
+	
+	// COLLISIONS
+	void OnCollisionEnter2D ( Collision2D collider )
 	{
-		// The below will check for obstructions to neighbors. If there's an obstruction, make the edge cost prohibitive.
-		foreach ( AStarNode n in neighborDict.Keys )
+		if ( obstacleLayerInts.Contains ( collider.gameObject.layer ) )
 		{
-			Vector2 dir = n.GetPos () - (Vector2) t.position;
-			RaycastHit2D hit = Physics2D.Raycast ( t.position, dir, dir.magnitude, obstacleLayer );
-			if ( hit.collider != null )
-				neighborDict [n] = new Vector2 ( -1, neighborDict [n].x );		// TODO using -1 for cost prohibitive edges for now
-			else
-				neighborDict [n] = new Vector2 ( neighborDict [n].y, neighborDict [n].y );		// otherwise, swap back in the original cost
+			cost = 2000f;
 		}
 	}
-
-	// Position Getter
-	public Vector2 GetPos ()
+	
+	void OnCollisionExit2D ( Collision2D collider )
 	{
-		return t.position;
+		if ( obstacleLayerInts.Contains ( collider.gameObject.layer ) )
+		{
+			cost = originalCost;
+		}
 	}
 }
