@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 			player.Blink();
 		}
 
-		 if(Input.GetButtonDown("Weapon"))
+		 if(Input.GetButtonDown("Weapon"))// attack!
 		{
 			player.weapon.Attack();
 		}

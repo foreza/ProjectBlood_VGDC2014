@@ -38,8 +38,10 @@ public class Enemy : Character
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
 	private float ATTACK_DAMAGE = 10.0f;
-	private float DISTANCE_TO_ATTACK = 20.0f;
-	
+	private float DISTANCE_TO_ATTACK = 35.0f;
+
+	private Weapon weapon;
+
 	// INITIALIZE
 	void Start () 
 	{
@@ -54,6 +56,8 @@ public class Enemy : Character
 		sightMask = LayerMask.GetMask ( sightLayers );
 		currWaypointIndex = ClosestWaypoint ();
 		deathParticleEffect = transform.FindChild ("EnemyPlaceholder").GetComponent<ParticleSystem>();
+
+		weapon = transform.FindChild("Sword").GetComponent<Sword>();
 	}
 
 	// FIXED UPDATE
@@ -128,8 +132,10 @@ public class Enemy : Character
 			state = EnemyState.CHASING;
 		}
 		else if (attackTimer == 0) {
-			player.GetComponent<Character>().health -= ATTACK_DAMAGE;
+			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
+			weapon.Attack();
 			attackTimer += Time.deltaTime;
+
 		} else if (attackTimer > 0) {
 			attackTimer += Time.deltaTime;
 			if (attackTimer >= ATTACK_COOLDOWN) {

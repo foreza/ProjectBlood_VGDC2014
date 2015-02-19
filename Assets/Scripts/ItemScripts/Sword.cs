@@ -74,11 +74,10 @@ public class Sword : Weapon
                 this.transform.localRotation = originalRotation;
             } else {
                 //simple sword swing until animations are working
-                transform.RotateAround(handlePosition.position, this.transform.forward, Time.deltaTime * swingSpeed);
+                this.transform.RotateAround(handlePosition.position, this.transform.forward, Time.deltaTime * swingSpeed);
             }
             yield return null;
         }
-
     }
 
 	public override void OnTriggerEnter2D(Collider2D other)
