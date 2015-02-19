@@ -59,6 +59,8 @@ public class Player : Character
     public void takeHit(float dmg)
     {
         this.health = this.health - dmg;
+		this.audio.clip = this.dmgClip;
+		this.audio.Play();
         if (this.health < 0)
         {
             this.health = 0;
@@ -146,9 +148,8 @@ public class Player : Character
     {
         if (coll.gameObject.tag == "Enemy")
         {
-            takeHit(10);
-            this.audio.clip = this.dmgClip;
-            //this.audio.Play();
+            //takeHit(50);
+          
             Debug.Log("Health: " + this.health);
         }
     }
