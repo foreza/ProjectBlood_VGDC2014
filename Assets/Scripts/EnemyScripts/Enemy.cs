@@ -86,7 +86,7 @@ public class Enemy : Character
 		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
 //		Debug.Log (hit.collider.gameObject.tag);
 
-		if ( hit && hit.collider.gameObject.tag == "Player" )		// if the player is sighted, move towards him ...
+		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
