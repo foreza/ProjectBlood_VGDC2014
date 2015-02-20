@@ -71,8 +71,10 @@ public class Enemy : Character
 				Patrol ();
 			else if ( state == EnemyState.CHASING )
 				FollowPlayer ();
-			else if ( state == EnemyState.ATTACK )
-				AttackPlayer ();
+            else if (state == EnemyState.ATTACK)
+            {
+                AttackPlayer();
+            }
 		}
 	}
 
@@ -135,6 +137,7 @@ public class Enemy : Character
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
 			weapon.Attack();
 			attackTimer += Time.deltaTime;
+            LookTowards(player.transform.position); //face the player
 
 		} else if (attackTimer > 0) {
 			attackTimer += Time.deltaTime;
@@ -162,6 +165,11 @@ public class Enemy : Character
 		this.transform.Translate ( Vector3.ClampMagnitude ( direction, speed*Time.deltaTime ), Space.World );
 		this.transform.right = to - ( Vector2 ) this.transform.position;
 	}
+
+    private void LookTowards(Vector2 to)
+    {
+        this.transform.right = to - (Vector2)this.transform.position;
+    }
 
     public void face(Vector2 point)
     {
