@@ -25,7 +25,7 @@ public class NoisemakerPlayer : MonoBehaviour {
 				Debug.Log ("Did you hear that?", hit.collider);
 				if(hasLoS (transform, hit.transform, (int)radius, LayerMask.GetMask(lightLayers)))
 				{
-                    hit.transform.GetComponent<Enemy>().face((Vector2)this.transform.position);
+                    hit.transform.GetComponent<Enemy>().OnPlayerSighted();
                     Debug.Log("Did you see that?", hit.collider);
 				}
 			}

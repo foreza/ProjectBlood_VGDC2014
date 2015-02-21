@@ -171,11 +171,6 @@ public class Enemy : Character
         this.transform.right = to - (Vector2)this.transform.position;
     }
 
-    public void face(Vector2 point)
-    {
-        this.transform.right = point - (Vector2)this.transform.position;
-    }
-
 	public void OnPlayerSighted ()
 	{
 		this.state = EnemyState.CHASING;
