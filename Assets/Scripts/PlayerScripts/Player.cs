@@ -17,7 +17,7 @@ public class Player : Character
     public bool energyRegen = true;
     public PlayerState state;
     public SpriteRenderer sprite;
-    public Weapon weapon;
+    private Weapon weapon;
     public AudioClip dmgClip;
     public AudioClip stealthClip;
     public Sprite normalSprite;
@@ -98,6 +98,11 @@ public class Player : Character
         }
         trailParticles.enableEmission = !enabled;
 
+    }
+
+    public void Attack()
+    {
+        weapon.Attack();
     }
 
     public void Demacia()

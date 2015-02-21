@@ -38,7 +38,7 @@ public class Enemy : Character
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
 	private float ATTACK_DAMAGE = 10.0f;
-	private float DISTANCE_TO_ATTACK = 35.0f;
+	public float DISTANCE_TO_ATTACK = 50.0f;
 
 	private Weapon weapon;
 
@@ -71,8 +71,10 @@ public class Enemy : Character
 				Patrol ();
 			else if ( state == EnemyState.CHASING )
 				FollowPlayer ();
-			else if ( state == EnemyState.ATTACK )
-				AttackPlayer ();
+            else if (state == EnemyState.ATTACK)
+            {
+                AttackPlayer();
+            }
 		}
 	}
 
@@ -84,7 +86,7 @@ public class Enemy : Character
 		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
 //		Debug.Log (hit.collider.gameObject.tag);
 
-		if ( hit && hit.collider.gameObject.tag == "Player" )		// if the player is sighted, move towards him ...
+		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
@@ -135,6 +137,7 @@ public class Enemy : Character
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
 			weapon.Attack();
 			attackTimer += Time.deltaTime;
+            LookTowards(player.transform.position); //face the player
 
 		} else if (attackTimer > 0) {
 			attackTimer += Time.deltaTime;
@@ -163,9 +166,9 @@ public class Enemy : Character
 		this.transform.right = to - ( Vector2 ) this.transform.position;
 	}
 
-    public void face(Vector2 point)
+    private void LookTowards(Vector2 to)
     {
-        this.transform.right = point - (Vector2)this.transform.position;
+        this.transform.right = to - (Vector2)this.transform.position;
     }
 
 	public void OnPlayerSighted ()

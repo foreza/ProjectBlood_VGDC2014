@@ -8,7 +8,7 @@ public class PlayerTrail : MonoBehaviour
 	// PUBLIC VARIABLES
 	public static float CRUMB_SPAWN_RATE = 0.2f;
 	public static float CRUMB_LIFETIME = 1.8f;
-
+    private Player player;
 	// PRIVATE VARIABLES
 	private static GameObject crumbObj;
 	private float spawnTimer;
@@ -16,6 +16,7 @@ public class PlayerTrail : MonoBehaviour
 
 	void Start ()
 	{
+        player = GetComponent<Player>();
 		crumbTrail = new LinkedList<TrailCrumb> ();					// list of crumb scripts. oldest crumb is at the end.
 		crumbObj = Resources.Load ( "TrailObject" ) as GameObject;	// reference to TrailObject prefab.
 		spawnTimer = 0.0f;											// timer to keep track of when to spawn a new crumb
@@ -25,7 +26,7 @@ public class PlayerTrail : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if ( spawnTimer >= CRUMB_SPAWN_RATE )		// If the time to spawn a crumb has come ...
+		if ( spawnTimer >= CRUMB_SPAWN_RATE && player.state != PlayerState.STEALTH)		// If the time to spawn a crumb has come ...
 		{
 			spawnTimer = 0;		// reset the timer.
 

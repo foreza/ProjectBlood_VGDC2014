@@ -12,11 +12,11 @@ public class Sword : Weapon
     public float swingTime = 5.0f; 					// time it takes to swing.
     public SwordState state = SwordState.STANDBY;	// standby = sheathed?
     public float damage = 50.0f;					// damage of sword. 
-    public Transform handlePosition;				// position of handle.
+    private Transform handlePosition;				// position of handle.
     public float noiseRadius = 125.0f;
     private NoisemakerPlayer noisemaker;
     private Transform swordWielder;
-    private float swingSpeed = 1000;
+    public float swingSpeed = 1000;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
 

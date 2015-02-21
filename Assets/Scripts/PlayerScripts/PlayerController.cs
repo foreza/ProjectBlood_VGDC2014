@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour {
          }
 		 if(Input.GetButtonDown("Weapon"))// attack!
 		{
-			player.weapon.Attack();
+			player.Attack();
 		}
 
 		else if(Input.GetButton ("Demacia"))
