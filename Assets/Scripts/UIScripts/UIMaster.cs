@@ -9,45 +9,38 @@ public class UIMaster : MonoBehaviour {
 	ArrayList children;
 	GameObject theobj;
 	public List<Objective> descriptions;
-	public ScrollableList scrolist;
-	Enemy anenemy;
 
 	void Start(){
 		descriptions = new List<Objective>();
-		anenemy = GameObject.Find ("/Enemy").GetComponent<Enemy> (); //find whatever enemy is first in the scene
-		//UnityEngine.Debug.Log (anenemy);
+		Enemy anenemy = GameObject.Find ("/Enemy").GetComponent<Enemy> (); //find whatever enemy is first in the scene
+		UnityEngine.Debug.Log (anenemy);
 		descriptions.Add ( new Objective ("Kill Him", "He Needs To Die", "kill",anenemy, new Vector3(0,0,0)));
-		scrolist = GetComponent<ScrollableList> ();
 	}
 
 	void Update(){
+		System.Diagnostics.Debug.Assert (descriptions != null);
 		foreach (Objective o in descriptions) {
 			if(o.isObjectiveDone ()){
 				descriptions.Remove(o);
 			}
+			UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
 		}
-	
-		
+	}
+		/*
 		if(Input.GetKeyDown("tab")){
-			scrolist.doTheGUI();
+			objectives ();
 		}
 		if (Input.GetKeyUp ("tab")) {
-			/*
 			children = new ArrayList ();
 			foreach (Transform child in transform)
 					children.Add (child.gameObject);
 			foreach (GameObject child in children) {
 					Destroy (child);
-
 			}
-			*/
 		}
 	}
-
+	 */
 	void objectives(){
-		//foreach (Objective obj in descriptions) {
-		//theobj.transform.parent = gameObject.transform;
-		//}
 			/*
 		float x = 350;
 		float y = 0;
