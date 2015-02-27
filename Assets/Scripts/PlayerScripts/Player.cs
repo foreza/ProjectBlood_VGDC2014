@@ -159,7 +159,7 @@ public class Player : Character
             {
                 this.energy = 0;
                 this.energyRegen = true;
-                this.sprite.enabled = true;
+                this.sprite.sprite = normalSprite;
                 this.state = PlayerState.NORMAL;
                 this.audio.Play();
             }
