@@ -112,6 +112,9 @@ public class Player : Character
     public void Demacia()
     {
         StartCoroutine("DemaciaRoutine");
+        this.sprite.sprite = normalSprite;
+        this.state = PlayerState.NORMAL;
+        this.audio.Play();
     }
 
     IEnumerator DemaciaRoutine()
