@@ -139,7 +139,16 @@ public class Player : Character
             this.gameObject.audio.Play();
         }
     }
+
+	public void unStealth() // called only by other skills that should break you out of stealth.
+	{
+		this.energyRegen = true; // not sure if this will cause anything;
+		this.sprite.sprite = normalSprite;
+		this.state = PlayerState.NORMAL;
+		this.gameObject.audio.Play();
+	}
 	
+
     IEnumerator StealthRoutine()
     {
 		
