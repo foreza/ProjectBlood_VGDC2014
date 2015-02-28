@@ -36,6 +36,7 @@ public static class AStarPathing
 		
 		// Set up the known cost function (g-function)
 		Dictionary<Transform, float> gFunct = new Dictionary<Transform, float> ();
+
 		// Link node transforms to neighbors
 		Dictionary<Transform, AStarNode[]> neighborDict = new Dictionary<Transform, AStarNode[]> ();
 		foreach ( AStarNode node in nodes )
@@ -54,7 +55,9 @@ public static class AStarPathing
 		
 		// Set up dictionary to keep track of parent/child links
 		Dictionary<Transform, Transform> childToParent = new Dictionary<Transform, Transform> ();
-		
+
+		Debug.Log ("Beginning A Star");
+
 		// while lowest priority node is not the goal ...
 		Transform curr = start;
 		while ( curr != end )
@@ -83,7 +86,6 @@ public static class AStarPathing
 					}
 				}
 			}
-			
 			// iterate the while loop
 			curr = open.Dequeue ().Key;
 		}
