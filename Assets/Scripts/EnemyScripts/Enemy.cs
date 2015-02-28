@@ -96,16 +96,17 @@ public class Enemy : Character
 
 		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
+            foreach (AbstractSkill ability in abilities)
+            {
+                ability.Use();
+            }
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
 
 			if (distanceToPlayer <= DISTANCE_TO_ATTACK) {
 				state = EnemyState.ATTACK;
 			}
-            foreach (AbstractSkill ability in abilities)
-            {
-                ability.Use();
-            }
+            
 		}
 		else 														// ... Otherwise, try to find the breadcrumbs.
 		{
