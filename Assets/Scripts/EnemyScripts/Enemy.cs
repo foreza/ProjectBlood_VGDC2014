@@ -38,7 +38,7 @@ public class Enemy : Character
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
 	private float ATTACK_DAMAGE = 10.0f;
-	public float DISTANCE_TO_ATTACK = 50.0f;
+	public float DISTANCE_TO_ATTACK = 10.0f;
 
 	private Weapon weapon;
 
