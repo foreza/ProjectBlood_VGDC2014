@@ -17,6 +17,7 @@ public class Sword : Weapon
     private NoisemakerPlayer noisemaker;
     private Transform swordWielder;
     public float swingSpeed = 1000;
+    public float critMultiplier = 3;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
 
@@ -41,7 +42,7 @@ public class Sword : Weapon
             originalPosition = this.transform.localPosition;	// Transform/move the sword
             originalRotation = this.transform.localRotation;	// Rotate it
             StartCoroutine("SwingMotion");						// Call the co-routine "SwingMotion"
-            noisemaker.Noise(noiseRadius);						// Cause nose for the radius.
+            
         }
     }
 
@@ -87,7 +88,15 @@ public class Sword : Weapon
         {
             if (other.gameObject.tag == "Enemy") 
             {
-                other.gameObject.GetComponent<Enemy>().GetHit(damage); // Deal damage to the enemy.
+                if(other.gameObject.GetComponent<Enemy>().state == EnemyState.PATROL)
+                {
+                    other.gameObject.GetComponent<Enemy>().GetHit(critMultiplier*damage);
+                    Debug.Log("crit!");
+                }
+                else
+                    other.gameObject.GetComponent<Enemy>().GetHit(damage);  // Deal damage to the enemy.
+
+                noisemaker.Noise(noiseRadius);						// Cause nose for the radius.
             } 
             else if (other.gameObject.tag == "EnemyBoss")
             {

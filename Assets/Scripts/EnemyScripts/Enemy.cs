@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum EnemyState
 {
@@ -38,8 +39,8 @@ public class Enemy : Character
 	private static float ATTACK_COOLDOWN = 1.0f;
 	private float attackTimer = 0.0f;
 	private float ATTACK_DAMAGE = 10.0f;
-	public float DISTANCE_TO_ATTACK = 10.0f;
-
+	public float DISTANCE_TO_ATTACK = 50.0f;
+    private List<AbstractSkill> abilities;
 	private Weapon weapon;
 
 	// INITIALIZE
@@ -58,6 +59,13 @@ public class Enemy : Character
 		deathParticleEffect = transform.FindChild ("EnemyPlaceholder").GetComponent<ParticleSystem>();
 
 		weapon = transform.FindChild("Sword").GetComponent<Sword>();
+        
+        abilities = new List<AbstractSkill>();
+        AbstractSkill probAbility = transform.GetComponent<RandomTeleport>();
+        if (probAbility != null)
+        {
+            abilities.Add(probAbility);
+        }
 	}
 
 	// FIXED UPDATE
@@ -88,12 +96,17 @@ public class Enemy : Character
 
 		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
+            foreach (AbstractSkill ability in abilities)
+            {
+                ability.Use();
+            }
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
 
 			if (distanceToPlayer <= DISTANCE_TO_ATTACK) {
 				state = EnemyState.ATTACK;
 			}
+            
 		}
 		else 														// ... Otherwise, try to find the breadcrumbs.
 		{
@@ -135,9 +148,10 @@ public class Enemy : Character
 		}
 		else if (attackTimer == 0) {
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
+            
 			weapon.Attack();
 			attackTimer += Time.deltaTime;
-            LookTowards(player.transform.position); //face the player
+            //LookTowards(player.transform.position); //face the player
 
 		} else if (attackTimer > 0) {
 			attackTimer += Time.deltaTime;

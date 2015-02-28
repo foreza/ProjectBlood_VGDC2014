@@ -14,6 +14,7 @@ public class AStarNode : MonoBehaviour
 	// INITIALIZE
 	void Start ()
 	{
+		obstacleLayerInts = new HashSet<int> ();
 		foreach ( string layer in obstacleLayers )
 			obstacleLayerInts.Add ( LayerMask.NameToLayer ( layer ) );
 		originalCost = cost;

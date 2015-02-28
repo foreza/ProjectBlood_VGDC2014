@@ -103,11 +103,18 @@ public class Player : Character
     public void Attack()
     {
         weapon.Attack();
+        this.energyRegen = true;
+        this.sprite.sprite = normalSprite;
+        this.state = PlayerState.NORMAL;
+        this.audio.Play();
     }
 
     public void Demacia()
     {
         StartCoroutine("DemaciaRoutine");
+        this.sprite.sprite = normalSprite;
+        this.state = PlayerState.NORMAL;
+        this.audio.Play();
     }
 
     IEnumerator DemaciaRoutine()
