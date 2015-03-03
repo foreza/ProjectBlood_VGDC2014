@@ -34,13 +34,7 @@ public class UIMaster : MonoBehaviour {
 
 	void Update(){
 				System.Diagnostics.Debug.Assert (descriptions != null);
-				foreach (Objective o in descriptions) {
-						if (o.isObjectiveDone ()) {
-								descriptions.Remove (o);
-								break;
-						}
-						//UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
-				}
+				
 	
 		if (GameObject.Find ("/Boss").GetComponent<Enemy> ().state == EnemyState.DEAD && alreadyInstantiated == false) {
 			//buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
@@ -63,6 +57,15 @@ public class UIMaster : MonoBehaviour {
 					Destroy (child);
 			}
 		}
+        foreach (Objective o in descriptions)
+        {
+            if (o.isObjectiveDone())
+            {
+                descriptions.Remove(o);
+                break;
+            }
+            //UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
+        }
 	}
 	
 }
