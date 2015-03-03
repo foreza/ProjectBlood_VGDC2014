@@ -106,6 +106,7 @@ public class Player : Character
         this.energyRegen = true;
         this.sprite.sprite = normalSprite;
         this.state = PlayerState.NORMAL;
+        audio.clip = null;
         this.audio.Play();
     }
 
@@ -114,6 +115,7 @@ public class Player : Character
         StartCoroutine("DemaciaRoutine");
         this.sprite.sprite = normalSprite;
         this.state = PlayerState.NORMAL;
+        audio.clip = null;
         this.audio.Play();
     }
 
@@ -177,6 +179,7 @@ public class Player : Character
                 this.energyRegen = true;
                 this.sprite.sprite = normalSprite;
                 this.state = PlayerState.NORMAL;
+                audio.clip = this.stealthClip;
                 this.audio.Play();
             }
             yield return null;
