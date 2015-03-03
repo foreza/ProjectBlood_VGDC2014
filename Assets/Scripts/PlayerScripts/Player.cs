@@ -114,16 +114,19 @@ public class Player : Character
 
     public void Demacia()
     {
-        StartCoroutine("DemaciaRoutine");
-        this.sprite.sprite = normalSprite;
-        this.state = PlayerState.NORMAL;
-        audio.clip = null;
-        this.audio.Play();
+        if (this.energy > spinDegenRate)
+        {
+            StartCoroutine("DemaciaRoutine");
+            this.sprite.sprite = normalSprite;
+            this.state = PlayerState.NORMAL;
+            audio.clip = null;
+            this.audio.Play();
+        }
     }
 
     IEnumerator DemaciaRoutine()
     {
-        while (Input.GetButton("Demacia"))
+        while (Input.GetButton("Demacia") && this.energy > spinDegenRate)
         {
             this.weapon.Unsheathe(true);
             this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
