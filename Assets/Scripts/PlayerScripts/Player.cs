@@ -62,8 +62,10 @@ public class Player : Character
     public void takeHit(float dmg)
     {
         this.health = this.health - dmg;
-		this.audio.clip = this.dmgClip;
-		this.audio.Play();
+        
+        this.audio.clip = this.dmgClip;
+        if (dmg > 0)
+		    this.audio.Play();
         if (this.health < 0)
         {
             this.health = 0;
