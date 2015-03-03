@@ -35,8 +35,14 @@ public static class AStarPathing
 			nodes = GameObject.FindObjectsOfType<AStarNode> ();
 		//Debug.Log( "Found " + nodes.Length + " A star nodes.");
 
+		bool getSuccess;	// for dictionary queries
+
 		// Set up the known cost function (g-function)
 		Dictionary<Transform, float> gFunct = new Dictionary<Transform, float> ();
+
+		// Set up the closed and the unexamined AND unscheduled set of nodes
+		HashSet<Transform> others = new HashSet<Transform> ();
+		HashSet<Transform> closed = new HashSet<Transform> ();
 
 		// Link node transforms to neighbors
 		Dictionary<Transform, AStarNode[]> neighborDict = new Dictionary<Transform, AStarNode[]> ();
@@ -44,20 +50,17 @@ public static class AStarPathing
 		{
 			gFunct.Add ( node.transform, node.cost );
 			neighborDict.Add ( node.transform, node.neighbors );
+			if ( node.transform != start )		// do not add start node to others, it's in the open queue.
+				others.Add ( node.transform );
 		}
 
 		// Set up the waypoint priority queue
 		WaypointPriorityQueue open = new WaypointPriorityQueue ();
-		float getVal;
-		gFunct.TryGetValue ( start, out getVal );
-		open.Enqueue ( start, getVal );
-		
-		// Set up the closed and the unexamined AND unscheduled set of nodes
-		HashSet<Transform> others = new HashSet<Transform> ();
-		foreach ( AStarNode node in nodes )
-			others.Add ( node.transform );
-		others.Remove ( start );
-		HashSet<Transform> closed = new HashSet<Transform> ();
+		float startCost;
+		getSuccess = gFunct.TryGetValue ( start, out startCost );
+		if ( !getSuccess )
+			BreakWithMessage ( start, "is missing from known cost dictionary!" );
+		open.Enqueue ( start, startCost );
 		
 		// Set up dictionary to keep track of parent/child links
 		Dictionary<Transform, Transform> childToParent = new Dictionary<Transform, Transform> ();
@@ -65,7 +68,6 @@ public static class AStarPathing
 		// while lowest priority node is not the goal ...
 		//Debug.Log ("Beginning A Star");
 		Transform curr;
-		bool getSuccess;	// for dictionary queries
 		do
 		{
 			// Get next node. Remove from open
@@ -92,7 +94,7 @@ public static class AStarPathing
 				if ( !getSuccess )
 					BreakWithMessage ( curr, "is missing from neighbor dictionary!" );
 
-				//Debug.Log ( "(" + curr.position.x + ", " + curr.position.y + ") " + gcurr );
+				Debug.Log ( "(" + curr.position.x + ", " + curr.position.y + ") known cost: " + gcurr );
 
 				// Scan neighbors and process them
 				foreach ( AStarNode neighbor in neighborOut )
@@ -107,19 +109,19 @@ public static class AStarPathing
 					if ( !getSuccess )
 						BreakWithMessage ( nt, "is missing from known cost dictionary!" );
 
-					//Debug.Log ( "\t(" + nt.position.x + ", " + nt.position.y + ") " + cost );
+					Debug.Log ( "\t(" + nt.position.x + ", " + nt.position.y + ") cost: " + neighbor.cost + " known cost: " + nknowncost );
 
 					// Process the neighbor
 					if ( !others.Contains ( nt ) && cost < nknowncost )
 					{
 						others.Add ( nt );
-						//Debug.Log ( "\t\tadded to others (removing it from open), new path is better" );
+						Debug.Log ( "\t\tadded to others (removing it from open), new path is better" );
 					}
 					if ( closed.Contains ( nt ) && cost < nknowncost )
 					{
 						closed.Remove ( nt );
-						open.Enqueue ( nt, cost );
-						//Debug.Log ( "\t\removed from closed, added back to open" );
+						//open.Enqueue ( nt, cost );
+						Debug.Log ( "\t\removed from closed, added back to open" );
 					}
 					if ( others.Contains ( nt ) && !closed.Contains ( nt ) )
 					{
@@ -129,11 +131,14 @@ public static class AStarPathing
 						float hn = EstimateCost ( start, end, dn, averageCost );
 						float newpriority = cost + hn;
 						open.Enqueue ( nt, newpriority );
-						childToParent.Add ( nt, curr );
+						if ( !childToParent.ContainsKey ( nt ) )
+							childToParent.Add ( nt, curr );
+						else
+							childToParent[nt] = curr;
 
-						//Debug.Log ( "\t\tadded to open with priority " + newpriority );
-						//Debug.Log ( "\t\tcost changed to " + cost );
-						//Debug.Log ( "\t\t(" + curr.position.x + ", " + curr.position.y + ") -> (" + nt.position.x + ", " + nt.position.y + ")");
+						Debug.Log ( "\t\tadded to open with priority " + newpriority );
+						Debug.Log ( "\t\tcost changed to " + cost );
+						Debug.Log ( "\t\t(" + curr.position.x + ", " + curr.position.y + ") -> (" + nt.position.x + ", " + nt.position.y + ")");
 					}
 				}
 			}
@@ -152,13 +157,10 @@ public static class AStarPathing
 			getSuccess = childToParent.TryGetValue ( curr, out curr );
 			if ( !getSuccess )
 				BreakWithMessage ( curr, "is missing from parent dictionary!" );
-
-			Debug.DrawLine ( prev, curr.position );
 		}
 		while ( curr != start );
 
-		foreach ( Vector3 vec in result )
-			Debug.Log ( "(" + vec.x + ", " + vec.y + ")" );
+		Debug.Log ( "Found path of length: " + result.Count );
 
 		return result;
 	}

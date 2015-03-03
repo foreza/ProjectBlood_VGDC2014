@@ -19,10 +19,21 @@ public class AStarMoveTest : MonoBehaviour {
 	{
 		if ( path != null )
 		{
-			if ( this.transform.position != path.First.Value )
+			DrawPath ();
+			if ( !this.transform.position.Equals ( path.First.Value ) )
 				Vector3.MoveTowards ( this.transform.position, path.First.Value, 5f * Time.deltaTime );
 			else if ( path.Count > 0 )
 				path.RemoveFirst ();
+		}
+	}
+
+	private void DrawPath ()
+	{
+		Vector3 prev = this.transform.position;
+		foreach ( Vector3 vec in path )
+		{
+			Debug.DrawLine ( prev, vec );
+			prev = vec;
 		}
 	}
 }
