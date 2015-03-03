@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScrollableList : MonoBehaviour
 {
     public GameObject itemPrefab;
-    public int columnCount = 2;
+    public int columnCount = 1;
 	List<Objective> descs;
 	public int itemCount;
     public void doTheGUI()
