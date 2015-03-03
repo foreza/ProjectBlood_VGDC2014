@@ -475,7 +475,7 @@ MonoBehaviour:
   - {fileID: 0}
   state: 0
   distanceToPlayer: 0
-  DISTANCE_TO_ATTACK: 70
+  DISTANCE_TO_ATTACK: 50
 --- !u!114 &11459974
 MonoBehaviour:
   m_ObjectHideFlags: 1

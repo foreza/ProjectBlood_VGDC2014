@@ -23,6 +23,7 @@ public class UIMaster : MonoBehaviour {
 				foreach (Objective o in descriptions) {
 						if (o.isObjectiveDone ()) {
 								descriptions.Remove (o);
+								break;
 						}
 						//UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
 				}
