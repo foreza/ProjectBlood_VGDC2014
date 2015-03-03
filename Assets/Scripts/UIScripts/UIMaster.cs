@@ -12,7 +12,7 @@ public class UIMaster : MonoBehaviour {
 
 	void Start(){
 		descriptions = new List<Objective>();
-		Enemy anenemy = GameObject.Find ("/Enemy").GetComponent<Enemy> (); //find whatever enemy is first in the scene
+		Enemy anenemy = GameObject.Find ("/Boss").GetComponent<Enemy> (); //find whatever enemy is first in the scene
 		UnityEngine.Debug.Log (anenemy);
 		descriptions.Add ( new Objective ("Kill Him", "He Needs To Die", "kill",anenemy, new Vector3(0,0,0)));
 		scrolist = this.GetComponent<ScrollableList> ();
