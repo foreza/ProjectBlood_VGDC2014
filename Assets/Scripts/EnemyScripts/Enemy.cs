@@ -28,19 +28,20 @@ public class Enemy : Character
 	// PRIVATE VARIABLES
 	protected Player player;
     protected PlayerTrail playerTrail;
+	private EnemyVisionState vision = EnemyVisionState.NORMAL;
     protected SpriteRenderer sprite;
     protected SpriteRenderer minimapSprite;
-    protected Transform LoSCollider;
+	private Transform LoSCollider;
 	protected LayerMask trackMask;
 	protected LayerMask sightMask;
-    protected int currWaypointIndex;
-    protected ParticleSystem deathParticleEffect;
-    protected static float ATTACK_COOLDOWN = 1.0f;
-    protected float attackTimer = 0.0f;
-	protected float ATTACK_DAMAGE = 50.0f;
+	private int currWaypointIndex;
+	private ParticleSystem deathParticleEffect;
+	private static float ATTACK_COOLDOWN = 1.0f;
+	private float attackTimer = 0.0f;
+	private float ATTACK_DAMAGE = 10.0f;
 	public float DISTANCE_TO_ATTACK = 50.0f;
-    protected List<AbstractSkill> abilities;
-    protected Weapon weapon;
+    private List<AbstractSkill> abilities;
+	private Weapon weapon;
 
 	// INITIALIZE
 	void Start () 
@@ -56,6 +57,7 @@ public class Enemy : Character
 		sightMask = LayerMask.GetMask ( sightLayers );
 		currWaypointIndex = ClosestWaypoint ();
 		deathParticleEffect = transform.FindChild ("EnemyPlaceholder").GetComponent<ParticleSystem>();
+
 		weapon = transform.FindChild("Sword").GetComponent<Sword>();
         
         abilities = new List<AbstractSkill>();
@@ -94,6 +96,10 @@ public class Enemy : Character
 
 		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
+            foreach (AbstractSkill ability in abilities)
+            {
+                ability.Use();
+            }
 			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
 
@@ -140,9 +146,6 @@ public class Enemy : Character
 		if (distanceToPlayer > DISTANCE_TO_ATTACK) {
 			state = EnemyState.CHASING;
 		}
-		else if (player.state == PlayerState.STEALTH) {
-			state = EnemyState.PATROL;
-		}
 		else if (attackTimer == 0) {
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
             
@@ -182,7 +185,7 @@ public class Enemy : Character
         this.transform.right = to - (Vector2)this.transform.position;
     }
 
-	public virtual void OnPlayerSighted ()
+	public void OnPlayerSighted ()
 	{
 		this.state = EnemyState.CHASING;
 	}

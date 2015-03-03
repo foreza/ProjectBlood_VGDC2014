@@ -62,10 +62,8 @@ public class Player : Character
     public void takeHit(float dmg)
     {
         this.health = this.health - dmg;
-        
-        this.audio.clip = this.dmgClip;
-        if (dmg > 0)
-		    this.audio.Play();
+		this.audio.clip = this.dmgClip;
+		this.audio.Play();
         if (this.health < 0)
         {
             this.health = 0;
@@ -108,25 +106,20 @@ public class Player : Character
         this.energyRegen = true;
         this.sprite.sprite = normalSprite;
         this.state = PlayerState.NORMAL;
-        audio.clip = null;
         this.audio.Play();
     }
 
     public void Demacia()
     {
-        if (this.energy > spinDegenRate)
-        {
-            StartCoroutine("DemaciaRoutine");
-            this.sprite.sprite = normalSprite;
-            this.state = PlayerState.NORMAL;
-            audio.clip = null;
-            this.audio.Play();
-        }
+        StartCoroutine("DemaciaRoutine");
+        this.sprite.sprite = normalSprite;
+        this.state = PlayerState.NORMAL;
+        this.audio.Play();
     }
 
     IEnumerator DemaciaRoutine()
     {
-        while (Input.GetButton("Demacia") && this.energy > spinDegenRate)
+        while (Input.GetButton("Demacia"))
         {
             this.weapon.Unsheathe(true);
             this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
@@ -184,7 +177,6 @@ public class Player : Character
                 this.energyRegen = true;
                 this.sprite.sprite = normalSprite;
                 this.state = PlayerState.NORMAL;
-                audio.clip = this.stealthClip;
                 this.audio.Play();
             }
             yield return null;

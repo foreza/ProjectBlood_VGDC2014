@@ -17,12 +17,9 @@ public class AStarMoveTest : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if ( path != null )
-		{
-			if ( this.transform.position != path.First.Value )
-				Vector3.MoveTowards ( this.transform.position, path.First.Value, 5f * Time.deltaTime );
-			else if ( path.Count > 0 )
-				path.RemoveFirst ();
-		}
+		if ( this.transform.position != path.First.Value )
+			Vector3.MoveTowards ( this.transform.position, path.First.Value, 5f * Time.deltaTime );
+		else if ( path.Count > 0 )
+			path.RemoveFirst ();
 	}
 }

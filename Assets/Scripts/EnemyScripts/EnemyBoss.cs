@@ -22,31 +22,17 @@ public class EnemyBoss : Enemy
     // PRIVATE VARIABLES
 
     private float[] triggerLevels = new float[]{150, 300, 450};
-    private float timer = 0;
-    public float waitDuration = 5;
-    public AudioClip waitingClip;
-    public AudioClip immuneClip;
+
     void Start()
     {
         sprite = transform.FindChild("EnemyPlaceholder").GetComponent<SpriteRenderer>();
         minimapSprite = transform.FindChild("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
-        LoSCollider = transform.FindChild("LineOfSight");
         player = GameObject.Find("Player").GetComponent<Player>();
         playerTrail = player.GetComponent<PlayerTrail>();
         string[] trackLayers = { "LightWalls", "Tracks" };
         trackMask = LayerMask.GetMask(trackLayers);
         string[] sightLayers = { "LightWalls", "Mobs" };
         sightMask = LayerMask.GetMask(sightLayers);
-        currWaypointIndex = ClosestWaypoint();
-        deathParticleEffect = transform.FindChild("EnemyPlaceholder").GetComponent<ParticleSystem>();
-        weapon = transform.FindChild("Sword").GetComponent<Sword>();
-
-        abilities = new List<AbstractSkill>();
-        AbstractSkill probAbility = transform.GetComponent<RandomTeleport>();
-        if (probAbility != null)
-        {
-            abilities.Add(probAbility);
-        }
     }
 
     void FixedUpdate()
@@ -67,35 +53,9 @@ public class EnemyBoss : Enemy
             {
                 BossSpecial();
             }
-            else if (bossstate == EnemyBossState.WAITING)
-            {
-                Waiting();
-            }
-            else if (bossstate == EnemyBossState.CHARGING)
-            {
-                Charge();
-            }
         }
     }
-    void Charge()
-    {
-        WalkTowards(player.transform.position);
-        timer += Time.deltaTime;
-        if (timer > waitDuration)
-        {
-            timer = 0;
-            bossstate = EnemyBossState.BLINDED;
-        }
-    }
-    void Waiting()
-    {
-        timer += Time.deltaTime;
-        if (timer > waitDuration)
-        {
-            timer = 0;
-            bossstate = EnemyBossState.CHARGING;
-        }
-    }
+
     public void BossSpecial()
     {
         Vector2 teleportDirection = new Vector2(9001, 0);
@@ -105,12 +65,6 @@ public class EnemyBoss : Enemy
         }
         this.transform.Translate(teleportDirection.x, teleportDirection.y, 0, Space.World);
         bossstate = EnemyBossState.WAITING;
-        timer = 0;
-        this.sprite.color = new Color(1f, 1f, 1f, 0f);
-        this.minimapSprite.color = new Color(1f, 1f, 1f, 0f);
-        this.audio.clip = this.waitingClip;
-        this.audio.Play();
-        this.GetComponent<CircleCollider2D>().enabled = false;
     }
 
     // WalkTowards: Tells enemy to move to a specified location.
@@ -127,10 +81,9 @@ public class EnemyBoss : Enemy
         this.transform.right = to - (Vector2)this.transform.position;
     }
 
-    public override void OnPlayerSighted()
+    new public void OnPlayerSighted()
     {
-        if(bossstate != EnemyBossState.WAITING)
-            this.GetComponent<CircleCollider2D>().enabled = true;
+
     }
 
     private int ClosestWaypoint()
@@ -150,32 +103,19 @@ public class EnemyBoss : Enemy
 
     override public void GetHit(float damage)
     {
-        if (bossstate != EnemyBossState.CHARGING)
+        health = health - damage;
+        if (health <= 0)
         {
-            health = health - damage;
-            if (health <= 0)
-            {
-                Die();
-            }
-            for (int i = 0; i < triggerLevels.Length; i++)
-            {
-                if (triggerLevels[i] > health)
-                {
-                    triggerLevels[i] = -1;
-                    bossstate = EnemyBossState.BOSSSPECIAL;
-                }
-            }
-            if (bossstate == EnemyBossState.PATROL || bossstate == EnemyBossState.BLINDED)
-            {
-                this.sprite.color = new Color(1f, 1f, 1f, 1f);
-                this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-                bossstate = EnemyBossState.CHASING;
-            }
+            Die();
         }
-        else
+        for(int i=0; i < triggerLevels.Length; i++)
         {
-            this.audio.clip = this.immuneClip;
-            this.audio.Play();
+            if (triggerLevels[i] > health)
+            {
+                triggerLevels[i] = -1;
+                bossstate = EnemyBossState.BOSSSPECIAL;
+                Debug.Log("Bosstime!");
+            }
         }
     }
 
@@ -193,16 +133,5 @@ public class EnemyBoss : Enemy
             this.transform.Translate(lostVelocity * Time.deltaTime, Space.World);
         }
     }
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.transform.tag == "Player")
-        {
-            other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
-            this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-            bossstate = EnemyBossState.CHASING;
-        }
-    }
-
 }
 

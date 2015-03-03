@@ -107,7 +107,6 @@ public class Sword : Weapon
         else if ((swordWielder.tag == "Enemy" || swordWielder.tag == "EnemyBoss") && other.gameObject.tag == "Player")
         {
             other.gameObject.GetComponent<Player>().takeHit(damage); // We should take damage from the enemy.
-
         }
 
     }
