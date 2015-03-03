@@ -9,14 +9,28 @@ public class UIMaster : MonoBehaviour {
 	GameObject theobj;
 	public List<Objective> descriptions;
 	public ScrollableList scrolist;
+	public GameObject nextLevel;
+	public bool alreadyInstantiated;
+	public GameObject nextLevelButton;
 
 	void Start(){
+		nextLevelButton = GameObject.Find ("NextLevelButton");
+		nextLevelButton.SetActive (false);
+		alreadyInstantiated = false;
 		descriptions = new List<Objective>();
-		Enemy anenemy = GameObject.Find ("/Boss").GetComponent<Enemy> (); //find whatever enemy is first in the scene
-		UnityEngine.Debug.Log (anenemy);
-		descriptions.Add ( new Objective ("Kill Him", "He Needs To Die", "kill",anenemy, new Vector3(0,0,0)));
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		//Enemy anenemy = GameObject.Find ("/Boss").GetComponent<Enemy> (); //find whatever enemy is first in the scene
+		//UnityEngine.Debug.Log (anenemy);
+		foreach (GameObject enemy in enemies) {
+						descriptions.Add (new Objective ("Kill Him", "He Needs To Die", "kill", enemy.GetComponent<Enemy>(), new Vector3 (0, 0, 0)));
+				}
 		scrolist = this.GetComponent<ScrollableList> ();
 	}
+
+	public void loadLevel2(){
+		//Instantiate button
+		Application.LoadLevel ("Organized_Build_Level2");
+		}
 
 	void Update(){
 				System.Diagnostics.Debug.Assert (descriptions != null);
@@ -28,7 +42,13 @@ public class UIMaster : MonoBehaviour {
 						//UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
 				}
 	
-		
+		if (/*GameObject.Find ("/Boss").GetComponent<Enemy> ().state == EnemyState.DEAD && */alreadyInstantiated == false) {
+			//buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
+			nextLevelButton.SetActive(true);
+			alreadyInstantiated = true;
+			UnityEngine.Debug.Log ("penis");
+		}
+
 		if (Input.GetKeyDown ("tab")) {
 			scrolist.doTheGUI ();
 		}
@@ -36,7 +56,9 @@ public class UIMaster : MonoBehaviour {
 		if (Input.GetKeyUp ("tab")) {
 			children = new ArrayList ();
 			foreach (Transform child in transform)
-					children.Add (child.gameObject);
+				if(!child.name.Contains("Slider"))
+					if(!child.name.Contains ("Level"))
+						children.Add (child.gameObject);
 			foreach (GameObject child in children) {
 					Destroy (child);
 			}
