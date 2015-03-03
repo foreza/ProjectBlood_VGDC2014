@@ -5,12 +5,12 @@ public class DoorScript : MonoBehaviour {
 
 	public bool open = false; // Is the door open?
 
-	Vector3 openPosition; // The position of the door when it's open
-	Vector3 closedPosition; // The position of the door when it's closed
+	public Vector3 openPosition; // The position of the door when it's open
+	public Vector3 closedPosition; // The position of the door when it's closed
 
-	float totalMoveDistance; // The distance between the open position and closed position
+	public float totalMoveDistance; // The distance between the open position and closed position
 
-	bool doorIsTriggered; // Is the door currently moving?
+	public bool doorIsTriggered; // Is the door currently moving?
 
 	float startTime; // The time at which the door started moving
 
@@ -20,10 +20,16 @@ public class DoorScript : MonoBehaviour {
         totalMoveDistance = transform.lossyScale.x * GetComponent<BoxCollider2D>().size.x;
 		if (open) {
 			openPosition = transform.position;
-			closedPosition = openPosition + new Vector3(totalMoveDistance, 0, 0);
+			if (transform.rotation.z != 0)
+				closedPosition = openPosition + new Vector3(0, totalMoveDistance, 0);
+			else
+				closedPosition = openPosition + new Vector3(totalMoveDistance, 0, 0);
 		} else {
 			closedPosition = transform.position;
-			openPosition = closedPosition - new Vector3(totalMoveDistance, 0, 0);
+			if (transform.rotation.z != 0)
+				openPosition = closedPosition + new Vector3(0, totalMoveDistance, 0);
+			else
+				openPosition = closedPosition + new Vector3(totalMoveDistance, 0, 0);
 		}
 	}
 	
