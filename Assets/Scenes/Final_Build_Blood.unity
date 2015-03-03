@@ -1238,7 +1238,7 @@ Transform:
   - {fileID: 1248271218}
   - {fileID: 615670605}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!114 &86848333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1952,7 +1952,7 @@ Transform:
   - {fileID: 942363155}
   - {fileID: 735423191}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
 --- !u!50 &290869894
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -2002,7 +2002,7 @@ MonoBehaviour:
   - {fileID: 282126157}
   state: 0
   distanceToPlayer: 0
-  DISTANCE_TO_ATTACK: 70
+  DISTANCE_TO_ATTACK: 50
 --- !u!82 &290869897
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3587,7 +3587,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400032, guid: e3aa70fd4af14aa43b69a9a21872eefc, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 19901020, guid: e3aa70fd4af14aa43b69a9a21872eefc, type: 2}
       propertyPath: m_Materials.Array.data[0]
@@ -4154,7 +4154,7 @@ Transform:
   - {fileID: 1433330561}
   - {fileID: 134235829}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!114 &1066446468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4287,7 +4287,7 @@ Transform:
   - {fileID: 2105051461}
   - {fileID: 1432469510}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!58 &1095577484
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7436,7 +7436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 459970, guid: 6ef0db3a194e6a8468a8ccce81338801, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11459972, guid: 6ef0db3a194e6a8468a8ccce81338801, type: 2}
       propertyPath: patrolPath.Array.data[0]
@@ -7896,7 +7896,7 @@ Transform:
   - {fileID: 636672940}
   - {fileID: 1804460762}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
 --- !u!1 &1684802036
 GameObject:
   m_ObjectHideFlags: 0
