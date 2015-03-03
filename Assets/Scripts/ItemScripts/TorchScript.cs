@@ -39,6 +39,11 @@ public class TorchScript : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
+                EnemyBoss otherScript = other.gameObject.GetComponent<EnemyBoss>();
+                if (otherScript != null)
+                {
+                    otherScript.reveal();
+                }
                 //other.gameObject.GetComponent<Enemy>().BoostSight();
             }
         }

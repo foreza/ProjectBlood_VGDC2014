@@ -77,6 +77,15 @@ public class EnemyBoss : Enemy
             }
         }
     }
+
+    public void reveal()
+    {
+        timer = 0;
+        bossstate = EnemyBossState.CHASING;
+        this.sprite.color = new Color(1f, 1f, 1f, 1f);
+        this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
+    }
+
     void Charge()
     {
         WalkTowards(player.transform.position);
@@ -85,6 +94,8 @@ public class EnemyBoss : Enemy
         {
             timer = 0;
             bossstate = EnemyBossState.BLINDED;
+            this.sprite.color = new Color(1f, 1f, 1f, 1f);
+            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
         }
     }
     void Waiting()
