@@ -26,14 +26,14 @@ public class Enemy : Character
 	public float distanceToPlayer;
 	
 	// PRIVATE VARIABLES
-	private Player player;
-	private PlayerTrail playerTrail;
+	protected Player player;
+    protected PlayerTrail playerTrail;
 	private EnemyVisionState vision = EnemyVisionState.NORMAL;
-	private SpriteRenderer sprite;
-	private SpriteRenderer minimapSprite;
+    protected SpriteRenderer sprite;
+    protected SpriteRenderer minimapSprite;
 	private Transform LoSCollider;
-	private LayerMask trackMask;
-	private LayerMask sightMask;
+	protected LayerMask trackMask;
+	protected LayerMask sightMask;
 	private int currWaypointIndex;
 	private ParticleSystem deathParticleEffect;
 	private static float ATTACK_COOLDOWN = 1.0f;
@@ -87,7 +87,7 @@ public class Enemy : Character
 	}
 
 	// FollowPlayer: tries to find the player and move towards him. Otherwise, move towards the latest crumb.
-	private void FollowPlayer ()
+	public void FollowPlayer ()
 	{
 		// ray direction is towards the player
 		Vector2 rayDir = player.transform.position - this.transform.position;
@@ -141,7 +141,7 @@ public class Enemy : Character
 	}
 
 	// AttackPlayer: attack player if within attack radius
-	private void AttackPlayer ()
+    public void AttackPlayer()
 	{
 		if (distanceToPlayer > DISTANCE_TO_ATTACK) {
 			state = EnemyState.CHASING;
@@ -162,7 +162,7 @@ public class Enemy : Character
 	}
 
 	// Patrol: if state is patrolling, do patrol
-	private void Patrol ()
+    public void Patrol()
 	{
 		Vector2 to = patrolPath [ currWaypointIndex ].transform.position;		// get current waypoint's position.
 		if ( ( Vector2 ) this.transform.position != to )						// if not at the waypoint, move towards it ~~ !
@@ -205,7 +205,7 @@ public class Enemy : Character
 		return nearest;
 	}
 
-    public void GetHit(float damage)
+    virtual public void GetHit(float damage)
     {
         health = health - damage;
         if (health <= 0)
@@ -223,27 +223,6 @@ public class Enemy : Character
         this.LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
         state = EnemyState.DEAD;
 	}
-
-    public void BoostSight()
-    {
-        if (vision == EnemyVisionState.NORMAL)
-        {
-            vision = EnemyVisionState.BOOSTED;
-//            Debug.Log("BOOST!");
-            LoSCollider.localScale = new Vector3(LoSCollider.localScale.x * 2, LoSCollider.localScale.y, LoSCollider.localScale.z);
-        }
-    }
-
-    public void NormalSight()
-    {
-        if (vision == EnemyVisionState.BOOSTED)
-        {
-            vision = EnemyVisionState.NORMAL;
-            Debug.Log("BOOST!");
-            LoSCollider.localScale = new Vector3(LoSCollider.localScale.x / 2, LoSCollider.localScale.y, LoSCollider.localScale.z);
-        }
-    }
-    
 	void OnCollisionStay2D(Collision2D coll)
 	{
 		if(coll.transform.tag == "Wall")

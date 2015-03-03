@@ -11,7 +11,8 @@ public class LineOfSight : MonoBehaviour
 	{
 
 		parentEnemy = this.transform.parent.gameObject.GetComponent<Enemy>();
-		
+		if(parentEnemy == null)
+            parentEnemy = this.transform.parent.gameObject.GetComponent<EnemyBoss>();
 		string[] layers = {"LightWalls", "Mobs"};
 		sightMask = LayerMask.GetMask(layers);
 	}

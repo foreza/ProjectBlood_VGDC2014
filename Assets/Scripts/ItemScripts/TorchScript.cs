@@ -39,7 +39,7 @@ public class TorchScript : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<Enemy>().BoostSight();
+                //other.gameObject.GetComponent<Enemy>().BoostSight();
             }
         }
 
@@ -47,7 +47,7 @@ public class TorchScript : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<Enemy>().NormalSight();
+                //other.gameObject.GetComponent<Enemy>().NormalSight();
             }
         }
 
