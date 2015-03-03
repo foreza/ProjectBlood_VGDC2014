@@ -12,9 +12,12 @@ public class UIMaster : MonoBehaviour {
 
 	void Start(){
 		descriptions = new List<Objective>();
-		Enemy anenemy = GameObject.Find ("/Enemy").GetComponent<Enemy> (); //find whatever enemy is first in the scene
-		UnityEngine.Debug.Log (anenemy);
-		descriptions.Add ( new Objective ("Kill Him", "He Needs To Die", "kill",anenemy, new Vector3(0,0,0)));
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+		//Enemy anenemy = GameObject.Find ("/Enemy").GetComponent<Enemy> (); //find whatever enemy is first in the scene
+		//UnityEngine.Debug.Log (anenemy);
+		foreach (GameObject enemy in enemies) {
+						descriptions.Add (new Objective ("Kill Him", "He Needs To Die", "kill", enemy.GetComponent<Enemy> (), new Vector3 (0, 0, 0)));
+				}
 		scrolist = this.GetComponent<ScrollableList> ();
 	}
 
@@ -35,8 +38,11 @@ public class UIMaster : MonoBehaviour {
 				
 		if (Input.GetKeyUp ("tab")) {
 			children = new ArrayList ();
-			foreach (Transform child in transform)
-					children.Add (child.gameObject);
+			foreach (Transform child in transform){
+					if(!child.gameObject.name.Contains("Slider")){
+						children.Add (child.gameObject);
+					}
+				}
 			foreach (GameObject child in children) {
 					Destroy (child);
 			}
