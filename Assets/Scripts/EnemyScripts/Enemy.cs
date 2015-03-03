@@ -140,6 +140,9 @@ public class Enemy : Character
 		if (distanceToPlayer > DISTANCE_TO_ATTACK) {
 			state = EnemyState.CHASING;
 		}
+		else if (player.state == PlayerState.STEALTH) {
+			state = EnemyState.PATROL;
+		}
 		else if (attackTimer == 0) {
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
             
