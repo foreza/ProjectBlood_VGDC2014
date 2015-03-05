@@ -37,7 +37,7 @@ public class Enemy : Character
     protected ParticleSystem deathParticleEffect;
     protected static float ATTACK_COOLDOWN = 1.0f;
     protected float attackTimer = 0.0f;
-	protected float ATTACK_DAMAGE = 50.0f;
+	protected float ATTACK_DAMAGE = 25.0f;
 	public float DISTANCE_TO_ATTACK = 50.0f;
     protected List<AbstractSkill> abilities;
     protected Weapon weapon;

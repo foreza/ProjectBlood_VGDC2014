@@ -36,12 +36,7 @@ public class UIMaster : MonoBehaviour {
 				System.Diagnostics.Debug.Assert (descriptions != null);
 				
 	
-		if (GameObject.Find ("/Boss").GetComponent<Enemy> ().state == EnemyState.DEAD && alreadyInstantiated == false) {
-			//buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
-			nextLevelButton.SetActive(true);
-			alreadyInstantiated = true;
-			UnityEngine.Debug.Log ("penis");
-		}
+		
 
 		if (Input.GetKeyDown ("tab")) {
 			scrolist.doTheGUI ();
@@ -65,6 +60,14 @@ public class UIMaster : MonoBehaviour {
                 break;
             }
             //UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
+        }
+
+        if (GameObject.Find("/Boss").GetComponent<Enemy>().state == EnemyState.DEAD && alreadyInstantiated == false)
+        {
+            //buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
+            nextLevelButton.SetActive(true);
+            alreadyInstantiated = true;
+            UnityEngine.Debug.Log("penis");
         }
 	}
 	
