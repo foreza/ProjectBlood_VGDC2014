@@ -70,7 +70,7 @@ public class Enemy : Character
 	void FixedUpdate ()
 	{
 		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
-		rigidbody2D.velocity = Vector2.zero;
+		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		if ( state != EnemyState.DEAD )
 		{
 			if ( state == EnemyState.PATROL )
@@ -216,7 +216,7 @@ public class Enemy : Character
         deathParticleEffect.Play(); // Temporarily removed since it was throwing errors. TODO : FIX THIS D:
 		this.sprite.enabled = false;
 		this.minimapSprite.enabled = false;
-		this.collider2D.enabled = false;
+		this.GetComponent<Collider2D>().enabled = false;
         this.LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
         state = EnemyState.DEAD;
 	}

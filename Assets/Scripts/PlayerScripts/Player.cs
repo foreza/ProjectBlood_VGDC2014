@@ -62,8 +62,8 @@ public class Player : Character
     public void takeHit(float dmg)
     {
         this.health = this.health - dmg;
-		this.audio.clip = this.dmgClip;
-		this.audio.Play();
+		this.GetComponent<AudioSource>().clip = this.dmgClip;
+		this.GetComponent<AudioSource>().Play();
         if (this.health < 0)
         {
             this.health = 0;
@@ -92,8 +92,8 @@ public class Player : Character
     {
         if (trailParticles.enableEmission == true && enabled == true) //edge trigger for first activation
         {
-            audio.clip = this.stealthClip;
-            this.audio.Play();
+            GetComponent<AudioSource>().clip = this.stealthClip;
+            this.GetComponent<AudioSource>().Play();
             blinkParticles.Play();
         }
         trailParticles.enableEmission = !enabled;
@@ -106,7 +106,7 @@ public class Player : Character
         this.energyRegen = true;
         this.sprite.sprite = normalSprite;
         this.state = PlayerState.NORMAL;
-        this.audio.Play();
+        this.GetComponent<AudioSource>().Play();
     }
 
     public void Demacia()
@@ -114,7 +114,7 @@ public class Player : Character
         StartCoroutine("DemaciaRoutine");
         this.sprite.sprite = normalSprite;
         this.state = PlayerState.NORMAL;
-        this.audio.Play();
+        this.GetComponent<AudioSource>().Play();
     }
 
     IEnumerator DemaciaRoutine()
@@ -143,7 +143,7 @@ public class Player : Character
 			this.energyRegen = true;
             this.sprite.sprite = normalSprite;
             this.state = PlayerState.NORMAL;
-            this.gameObject.audio.Play();
+            this.gameObject.GetComponent<AudioSource>().Play();
         }
     }
 
@@ -152,7 +152,7 @@ public class Player : Character
 		this.energyRegen = true; // not sure if this will cause anything;
 		this.sprite.sprite = normalSprite;
 		this.state = PlayerState.NORMAL;
-		this.gameObject.audio.Play();
+		this.gameObject.GetComponent<AudioSource>().Play();
 	}
 	
 
@@ -163,8 +163,8 @@ public class Player : Character
         //		float stealthTime = player.meldTime;
         sprite.sprite = stealthedSprite;
         energyRegen = false;
-        audio.clip = this.stealthClip;
-        this.audio.Play();
+        GetComponent<AudioSource>().clip = this.stealthClip;
+        this.GetComponent<AudioSource>().Play();
 		
         //		float currentTime = 0.0f;
 		
@@ -177,7 +177,7 @@ public class Player : Character
                 this.energyRegen = true;
                 this.sprite.sprite = normalSprite;
                 this.state = PlayerState.NORMAL;
-                this.audio.Play();
+                this.GetComponent<AudioSource>().Play();
             }
             yield return null;
         }

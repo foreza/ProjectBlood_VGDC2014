@@ -118,7 +118,7 @@ public class ShadowRayCaster2D : MonoBehaviour
 
         foreach (CircleCollider2D circleCollider in circleColliders)
         {
-            points.Add(circleCollider.center);
+            points.Add(circleCollider.offset);
         }
 
 

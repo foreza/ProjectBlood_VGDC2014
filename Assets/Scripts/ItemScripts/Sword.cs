@@ -36,9 +36,9 @@ public class Sword : Weapon
 
     public void Swing()
     {
-        if (this.renderer.enabled == false) 					// if the weapon is not yet out.
+        if (this.GetComponent<Renderer>().enabled == false) 					// if the weapon is not yet out.
         {
-            this.audio.Play();									// Play the sound
+            this.GetComponent<AudioSource>().Play();									// Play the sound
             originalPosition = this.transform.localPosition;	// Transform/move the sword
             originalRotation = this.transform.localRotation;	// Rotate it
             StartCoroutine("SwingMotion");						// Call the co-routine "SwingMotion"
@@ -48,16 +48,16 @@ public class Sword : Weapon
 
     public override void Unsheathe(bool swordOut)
     {
-        this.renderer.enabled = swordOut;
-        this.collider2D.enabled = swordOut;
+        this.GetComponent<Renderer>().enabled = swordOut;
+        this.GetComponent<Collider2D>().enabled = swordOut;
     }
 
     IEnumerator SwingMotion()
     {
         state = SwordState.SWINGING;
 
-        this.renderer.enabled = true;							// Set the weapon to be visible.
-        this.collider2D.enabled = true;							// Set collider to true to allow us to damage things.
+        this.GetComponent<Renderer>().enabled = true;							// Set the weapon to be visible.
+        this.GetComponent<Collider2D>().enabled = true;							// Set collider to true to allow us to damage things.
 
         float currentTime = 0.0f;
  
@@ -67,8 +67,8 @@ public class Sword : Weapon
            
             if (currentTime >= this.swingTime)
             {
-                this.renderer.enabled = false;
-                this.collider2D.enabled = false;
+                this.GetComponent<Renderer>().enabled = false;
+                this.GetComponent<Collider2D>().enabled = false;
                 state = SwordState.STANDBY;
                 //Get the sword back to its original position and rotation once the sword swing is done
                 this.transform.localPosition = originalPosition;

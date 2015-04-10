@@ -52,7 +52,7 @@ public class EnemyBoss : Enemy
     void FixedUpdate()
     {
         distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        rigidbody2D.velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         if (bossstate != EnemyBossState.DEAD)
         {
             if (bossstate == EnemyBossState.PATROL)
@@ -119,8 +119,8 @@ public class EnemyBoss : Enemy
         timer = 0;
         this.sprite.color = new Color(1f, 1f, 1f, 0f);
         this.minimapSprite.color = new Color(1f, 1f, 1f, 0f);
-        this.audio.clip = this.waitingClip;
-        this.audio.Play();
+        this.GetComponent<AudioSource>().clip = this.waitingClip;
+        this.GetComponent<AudioSource>().Play();
         this.GetComponent<CircleCollider2D>().enabled = false;
     }
 
@@ -185,8 +185,8 @@ public class EnemyBoss : Enemy
         }
         else
         {
-            this.audio.clip = this.immuneClip;
-            this.audio.Play();
+            this.GetComponent<AudioSource>().clip = this.immuneClip;
+            this.GetComponent<AudioSource>().Play();
         }
     }
 

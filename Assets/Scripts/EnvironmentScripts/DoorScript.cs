@@ -44,7 +44,7 @@ public class DoorScript : MonoBehaviour {
 		open = !open;
 		doorIsTriggered = true;
 		startTime = Time.time;
-		this.audio.Play ();
+		this.GetComponent<AudioSource>().Play ();
 	}
 
 	void MoveDoor() {

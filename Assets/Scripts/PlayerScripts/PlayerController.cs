@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 		//CharacterController controller = GetComponent<CharacterController> ();
 		//controller.Move(velocity);
 		//this.gameObject.transform.Translate(velocity,Space.World);
-		this.rigidbody2D.MovePosition((Vector2)this.transform.position + velocity);
+		this.GetComponent<Rigidbody2D>().MovePosition((Vector2)this.transform.position + velocity);
 	}
 
 	void Aim()

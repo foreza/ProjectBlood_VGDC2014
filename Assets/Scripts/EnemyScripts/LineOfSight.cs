@@ -33,7 +33,7 @@ public class LineOfSight : MonoBehaviour
 				//Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
 				if(player.state != PlayerState.STEALTH)
 				{
-					this.audio.Play();
+					this.GetComponent<AudioSource>().Play();
 					parentEnemy.OnPlayerSighted();
 					
 					Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
