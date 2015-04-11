@@ -161,11 +161,9 @@ public class Enemy : Character
 	// Patrol: if state is patrolling, do patrol
     public void Patrol()
 	{
-		Vector2 to = patrolPath [ currWaypointIndex ].transform.position;		// get current waypoint's position.
-		if ( ( Vector2 ) this.transform.position != to )						// if not at the waypoint, move towards it ~~ !
-			WalkTowards ( to );
-		else 																	// otherwise, set current waypoint to the next one.
-			currWaypointIndex = ( currWaypointIndex >= patrolPath.Length - 1)? 0 : ++currWaypointIndex;
+		if (patrolPath.Length > 0) {
+			else 																	// otherwise, set current waypoint to the next one.
+		}
 	}
 
 	// WalkTowards: Tells enemy to move to a specified location.
