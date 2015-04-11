@@ -183,18 +183,6 @@ public class Player : Character
         }
     }
 
-
-
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        if (coll.gameObject.tag == "Enemy")
-        {
-            //takeHit(50);
-          
-            Debug.Log("Health: " + this.health);
-        }
-    }
-
     IEnumerator LoadStartScreen()
     { // not working as intended oh well.
 	

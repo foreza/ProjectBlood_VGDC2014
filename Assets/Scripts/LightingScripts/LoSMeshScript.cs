@@ -20,7 +20,6 @@ public class LoSMeshScript : MonoBehaviour
 	void Start () 
 	{
 		mask = LayerMask.GetMask (layers);
-		Debug.Log (mask.value);
 		vertices2d = new Vector2[RaysToShoot];
 		mesh= lightmeshholder.GetComponent<MeshFilter>().mesh;
 		visibleMobs = new List<Transform> ();

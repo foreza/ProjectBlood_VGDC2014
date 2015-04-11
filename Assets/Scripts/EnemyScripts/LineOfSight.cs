@@ -35,8 +35,6 @@ public class LineOfSight : MonoBehaviour
 				{
 					this.GetComponent<AudioSource>().Play();
 					parentEnemy.OnPlayerSighted();
-					
-					Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
 				}
 
 		}
