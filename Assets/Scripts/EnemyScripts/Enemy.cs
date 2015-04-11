@@ -41,6 +41,8 @@ public class Enemy : Character
 	public float DISTANCE_TO_ATTACK = 50.0f;
     protected List<AbstractSkill> abilities;
     protected Weapon weapon;
+	protected EnemyState startState;
+	protected Vector3 startRotation;
 
 	// INITIALIZE
 	void Start () 
@@ -64,6 +66,9 @@ public class Enemy : Character
         {
             abilities.Add(probAbility);
         }
+
+		startState = state;
+		startRotation = transform.eulerAngles;
 	}
 
 	// FIXED UPDATE
@@ -162,7 +167,21 @@ public class Enemy : Character
     public void Patrol()
 	{
 		if (patrolPath.Length > 0) {
+			Vector2 target = patrolPath[currWaypointIndex].transform.position;		// get current waypoint's position.
+			if ( (Vector2)this.transform.position != target )						// if not at the waypoint, move towards it ~~ !
+				WalkTowards ( target );
 			else 																	// otherwise, set current waypoint to the next one.
+			{
+				if (patrolPath.Length == 1)
+				{
+					transform.eulerAngles = startRotation;
+					state = EnemyState.STATIONARY;
+				}
+				else
+				{
+					currWaypointIndex = (currWaypointIndex + 1) % patrolPath.Length;
+				}
+			}
 		}
 	}
 
