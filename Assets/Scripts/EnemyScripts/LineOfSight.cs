@@ -17,8 +17,11 @@ public class LineOfSight : MonoBehaviour
 		sightMask = LayerMask.GetMask(layers);
 	}
 
+	// If player WALKS into sight.
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		// print ("Enter collider: " + other.name);
+
 		if ( other.gameObject.tag == "Player")
 		{
 			Player player = other.transform.GetComponent <Player> ();
@@ -30,14 +33,38 @@ public class LineOfSight : MonoBehaviour
 			//if(hit && hit.transform == player.transform)
 			//if
 
-				//Debug.Log ("I SEE YOU. YOU SEE ME. WE'RE A HAPPY VAMPIRIC FAMILY");
+				 Debug.Log ("Player has entered collidor. I SEE YOU. YOU SEE ME.");
 				if(player.state != PlayerState.STEALTH)
 				{
 					this.GetComponent<AudioSource>().Play();
 					parentEnemy.OnPlayerSighted();
 				}
+			else{
+				print ("-shrug-");
+			}
 
 		}
 	}
+	// If player leaves sight/stealths.
+
+	// If the player appears out of stealth in front of the enemy.
+
+	void OnTriggerStay2D(Collider2D other)
+	{
+
+		Player player = other.transform.GetComponent <Player> ();
+		if ( other.gameObject.tag == "Player" && player.state == PlayerState.NORMAL)
+		{
+
+			Debug.Log ("You surprised me!~");
+			//this.GetComponent<AudioSource>().Play();
+			parentEnemy.OnPlayerSighted();
+		
+			
+		}
+	
+
+	}
+
 
 }

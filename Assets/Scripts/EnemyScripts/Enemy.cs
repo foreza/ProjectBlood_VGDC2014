@@ -202,6 +202,8 @@ public class Enemy : Character
 	public virtual void OnPlayerSighted ()
 	{
 		this.state = EnemyState.CHASING;
+		this.gameObject.GetComponentInChildren<AudioSource>().Play ();
+		print ("I SEE YOU [Enemy.cs]");
 	}
        
 	private int ClosestWaypoint()
