@@ -88,7 +88,7 @@ public class Sword : Weapon
         {
             if (other.gameObject.tag == "Enemy") 
             {
-                if(other.gameObject.GetComponent<Enemy>().state == EnemyState.PATROL)
+				if(other.gameObject.GetComponent<Enemy>().state == EnemyState.PATROL || other.gameObject.GetComponent<Enemy>().state == EnemyState.STATIONARY)
                 {
                     other.gameObject.GetComponent<Enemy>().GetHit(critMultiplier*damage);
                     Debug.Log("crit!");
