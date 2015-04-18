@@ -58,7 +58,7 @@ public class LineOfSight : MonoBehaviour
 
 			Debug.Log ("You surprised me!~");
 			//this.GetComponent<AudioSource>().Play();
-			parentEnemy.OnPlayerSighted();
+			//parentEnemy.OnPlayerSighted();
 		
 			
 		}

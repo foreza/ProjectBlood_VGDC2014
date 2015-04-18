@@ -74,6 +74,17 @@ public class Enemy : Character
 	// FIXED UPDATE
 	void FixedUpdate ()
 	{
+		// TODO: Optimize this, this is so, so costly.
+		if (player.state == PlayerState.NORMAL) {
+			LoSCollider.gameObject.SetActive(true);
+			//print ("I am look at you.");
+				}
+		if (player.state == PlayerState.STEALTH) {
+			LoSCollider.gameObject.SetActive(false);
+			//print ("I am not look at you.");
+		}
+
+		
 		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
 		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		if ( state != EnemyState.DEAD )
@@ -96,6 +107,12 @@ public class Enemy : Character
 		Vector2 rayDir = player.transform.position - this.transform.position;
 		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
 //		Debug.Log (hit.collider.gameObject.tag);
+
+		// In the case that the player stealths.
+		if (player.state == PlayerState.STEALTH) {
+			LoSCollider.gameObject.SetActive(false);
+
+				}
 
 		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
@@ -147,6 +164,7 @@ public class Enemy : Character
 		}
 		else if (player.state == PlayerState.STEALTH) {
 			state = EnemyState.PATROL;
+
 		}
 		else if (attackTimer == 0) {
 			// player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
@@ -202,7 +220,7 @@ public class Enemy : Character
 	public virtual void OnPlayerSighted ()
 	{
 		this.state = EnemyState.CHASING;
-		this.gameObject.GetComponentInChildren<AudioSource>().Play ();
+		this.LoSCollider.GetComponent<AudioSource>().Play ();
 		print ("I SEE YOU [Enemy.cs]");
 	}
        
