@@ -3,11 +3,21 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class GameManagerScript : MonoBehaviour {
-	
+    const string MusicLevel = "MusicLevel";
+    const string SoundLevel = "SoundLevel";	
 	public Text timerText;
 	public float timer = 0.0f;
+    private AudioSource music;
 	// Use this for initialization
 	void Start () {
+        music = GetComponent<AudioSource>();
+        music.ignoreListenerVolume = true;
+        if (PlayerPrefs.HasKey(SoundLevel)) // set volumes from stored values
+            AudioListener.volume = PlayerPrefs.GetInt(SoundLevel) / 100.0f;
+        if (PlayerPrefs.HasKey(MusicLevel)) // set volumes from stored values
+            music.volume = PlayerPrefs.GetInt(MusicLevel) / 100.0f;
+
+        
 		//...wait really there's no Text initialization
 	}
 
