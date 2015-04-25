@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Tags : MonoBehaviour {
-
+    public const string LOSCollider = "LOSCollider";
 	// Use this for initialization
 	void Start () {
 	
@@ -17,4 +17,6 @@ public class Tags : MonoBehaviour {
 public class Options : MonoBehaviour
 {
     public const string MusicLevel = "MusicLevel";
+    public const string SoundLevel = "SoundLevel";
+    
 }

@@ -74,6 +74,7 @@ public class Enemy : Character
 	// FIXED UPDATE
 	void FixedUpdate ()
 	{
+        /*
 		// TODO: Optimize this, this is so, so costly.
 		if (player.state == PlayerState.NORMAL) {
 			LoSCollider.gameObject.SetActive(true);
@@ -83,7 +84,7 @@ public class Enemy : Character
 			LoSCollider.gameObject.SetActive(false);
 			//print ("I am not look at you.");
 		}
-
+        */
 		
 		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
 		GetComponent<Rigidbody2D>().velocity = Vector2.zero;

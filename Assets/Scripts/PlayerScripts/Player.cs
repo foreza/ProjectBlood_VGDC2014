@@ -27,13 +27,15 @@ public class Player : Character
 	public float blinkDegenCost = 10.0f;
     private ParticleSystem trailParticles;
     private ParticleSystem blinkParticles;
+    private GameObject[] enemyDetectionColliders;
     void Start()
     {
         sprite = transform.FindChild("PlayerPlaceholder").GetComponent<SpriteRenderer>();
         trailParticles = transform.FindChild("PlayerPlaceholder").GetComponent<ParticleSystem>();
         blinkParticles = transform.FindChild("BlinkParticleEffect").GetComponent<ParticleSystem>();
         weapon = this.transform.FindChild("Sword").GetComponent<Sword>();
-        state = PlayerState.NORMAL;
+        enemyDetectionColliders = GameObject.FindGameObjectsWithTag(Tags.LOSCollider);
+        setState(PlayerState.NORMAL);
 		health = healthMax;
     }
 	
@@ -49,6 +51,29 @@ public class Player : Character
             if (energy <= energyMax)
                 energy += (energyRegenRate * Time.deltaTime * 10);
         }
+    }
+
+    void setState(PlayerState newstate)
+    {
+        if(state == newstate)
+        {
+            return;
+        }
+        if(newstate == PlayerState.STEALTH)
+        {
+            foreach(GameObject LoSCollider in enemyDetectionColliders)
+            {
+                LoSCollider.gameObject.SetActive(false);
+            }
+        }
+        else if(newstate == PlayerState.NORMAL)
+        {
+            foreach(GameObject LoSCollider in enemyDetectionColliders)
+            {
+                LoSCollider.gameObject.SetActive(true);
+            }
+        }
+        state = newstate;
     }
 
     void killPlayer()
@@ -105,7 +130,7 @@ public class Player : Character
         weapon.Attack();
         this.energyRegen = true;
         this.sprite.sprite = normalSprite;
-        this.state = PlayerState.NORMAL;
+        setState(PlayerState.NORMAL);
         this.GetComponent<AudioSource>().Play();
     }
 
@@ -113,7 +138,7 @@ public class Player : Character
     {
         StartCoroutine("DemaciaRoutine");
         this.sprite.sprite = normalSprite;
-        this.state = PlayerState.NORMAL;
+        setState(PlayerState.NORMAL);
         this.GetComponent<AudioSource>().Play();
     }
 
@@ -142,7 +167,7 @@ public class Player : Character
             //make a function for this later
 			this.energyRegen = true;
             this.sprite.sprite = normalSprite;
-            this.state = PlayerState.NORMAL;
+            setState(PlayerState.NORMAL);
             this.gameObject.GetComponent<AudioSource>().Play();
         }
     }
@@ -151,15 +176,15 @@ public class Player : Character
 	{
 		this.energyRegen = true; // not sure if this will cause anything;
 		this.sprite.sprite = normalSprite;
-		this.state = PlayerState.NORMAL;
+        setState(PlayerState.NORMAL);
 		this.gameObject.GetComponent<AudioSource>().Play();
 	}
 	
 
     IEnumerator StealthRoutine()
     {
-		
-        state = PlayerState.STEALTH;
+
+        setState(PlayerState.STEALTH);
         //		float stealthTime = player.meldTime;
         sprite.sprite = stealthedSprite;
         energyRegen = false;
@@ -176,7 +201,7 @@ public class Player : Character
                 this.energy = 0;
                 this.energyRegen = true;
                 this.sprite.sprite = normalSprite;
-                this.state = PlayerState.NORMAL;
+                setState(PlayerState.NORMAL);
                 this.GetComponent<AudioSource>().Play();
             }
             yield return null;
