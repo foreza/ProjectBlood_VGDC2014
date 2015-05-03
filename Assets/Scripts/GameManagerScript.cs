@@ -21,9 +21,6 @@ public class GameManagerScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
-			Application.Quit();
-		}
 
 		// Below is old code for the timer system. May use later.
 //		//It's meant to tick up, not act as a time limit. And the timer should

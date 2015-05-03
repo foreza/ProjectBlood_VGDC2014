@@ -18,41 +18,42 @@ public class PlayerController : MonoBehaviour {
 	//Use this instead of update for inputs. This function will be called in the InputManager's Update function.
 	public void UpdateController()
 	{
-		if (Input.GetButtonDown("Stealth")){
-			player.Stealth();
-		}
+		if (Time.timeScale > 0) {
+			if (Input.GetButtonDown("Stealth")){
+				player.Stealth();
+			}
 
-		 if (Input.GetButton ("Blink")) // Will work on this feature more - consider it a fun thing for now.
-		{
-			player.Blink();
-			player.unStealth();
-		}
-         if (Input.GetButtonUp("Blink"))
-         {
-             player.BlinkParticleEffects(false);
-         }
-		 if(Input.GetButtonDown("Weapon"))// attack!
-		{
-			player.Attack();
-			player.unStealth();
-		}
+			 if (Input.GetButton ("Blink")) // Will work on this feature more - consider it a fun thing for now.
+			{
+				player.Blink();
+				player.unStealth();
+			}
+	         if (Input.GetButtonUp("Blink"))
+	         {
+	             player.BlinkParticleEffects(false);
+	         }
+			 if(Input.GetButtonDown("Weapon"))// attack!
+			{
+				player.Attack();
+				player.unStealth();
+			}
 
-		else if(Input.GetButton ("Demacia"))
-		{
-			player.Demacia();
-			player.unStealth();
+			else if(Input.GetButton ("Demacia"))
+			{
+				player.Demacia();
+				player.unStealth();
+			}
+
+			if(canMove)
+			{
+				int x = (int)Input.GetAxisRaw("Horizontal");
+				int y = (int)Input.GetAxisRaw("Vertical");
+				
+				Move(x, y);
+			}
+
+			Aim ();
 		}
-
-		if(canMove)
-		{
-			int x = (int)Input.GetAxisRaw("Horizontal");
-			int y = (int)Input.GetAxisRaw("Vertical");
-			
-			Move(x, y);
-		}
-
-		Aim ();
-
 	}
 
 	void Move(int x, int y)
