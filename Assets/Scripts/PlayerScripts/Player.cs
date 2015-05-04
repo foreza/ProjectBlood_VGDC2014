@@ -150,6 +150,13 @@ public class Player : Character
             this.gameObject.transform.Rotate(Vector3.forward, 30.0f, Space.Self);
 			this.energy -= spinDegenRate * Time.deltaTime;
 			energyRegen = false;
+			if (this.energy <= 0)
+			{
+				this.energy = 0;
+				this.energyRegen = true;
+				setState(PlayerState.NORMAL);
+				break;
+			}
             yield return null;
         }
 			
