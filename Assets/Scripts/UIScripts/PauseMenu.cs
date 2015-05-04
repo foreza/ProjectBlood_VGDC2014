@@ -30,13 +30,14 @@ public class PauseMenu : MonoBehaviour {
 		pauseMenu.SetActive(true);
 	}
 
+	public void InstructionsMenu() {
+		pauseMenu.SetActive(false);
+		instructionsMenu.SetActive(true);
+	}
+
 	public void OptionsMenu() {
 		pauseMenu.SetActive(false);
 		optionsMenu.SetActive(true);
-	}
-	
-	public void InstructionsMenu() {
-		
 	}
 
 	public void ResumeGame() {
@@ -46,7 +47,7 @@ public class PauseMenu : MonoBehaviour {
 
 	public void BackToPause() {
 		pauseMenu.SetActive(true);
-		//instructionsMenu.SetActive(false);
+		instructionsMenu.SetActive(false);
 		optionsMenu.SetActive(false);
 	}
 }
