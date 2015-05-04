@@ -9,7 +9,15 @@ public class PauseMenu : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (!pauseMenu.activeSelf) {
-				PauseGame();
+				//if (instructionsMenu.activeSelf) {
+				//	BackToPause();
+				//}
+				if (optionsMenu.activeSelf) {
+					BackToPause();
+				}
+				else {
+					PauseGame();
+				}
 			}
 			else {
 				ResumeGame();
@@ -23,7 +31,8 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void OptionsMenu() {
-		
+		pauseMenu.SetActive(false);
+		optionsMenu.SetActive(true);
 	}
 	
 	public void InstructionsMenu() {
@@ -33,5 +42,11 @@ public class PauseMenu : MonoBehaviour {
 	public void ResumeGame() {
 		Time.timeScale = 1;
 		pauseMenu.SetActive(false);
+	}
+
+	public void BackToPause() {
+		pauseMenu.SetActive(true);
+		//instructionsMenu.SetActive(false);
+		optionsMenu.SetActive(false);
 	}
 }

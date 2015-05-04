@@ -7,6 +7,7 @@ public class ChangeScene : MonoBehaviour {
 	public void LoadScene (string sceneName = "") {
         if (sceneName == "")
             sceneName = mainSceneName;
+		Time.timeScale = 1;
 		Application.LoadLevel (sceneName);
 	}
 
