@@ -1,30 +1,26 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum EnemyBossState
+public enum LeshyState
 {
     PATROL,
     ATTACK,
     DEAD,
-    CHASING,
-    BLINDED,
     BOSSSPECIAL,
-    WAITING,
-    CHARGING,
+    CHASING,
 }
-public class EnemyBoss : Enemy
+public class Leshy : Enemy
 {
     // PUBLIC VARIABLES
-    public EnemyBossState bossstate = EnemyBossState.PATROL;
+    public LeshyState bossstate = LeshyState.PATROL;
 
     // PRIVATE VARIABLES
 
-    private float[] triggerLevels = new float[]{150, 300, 450};
-    private float timer = 0;
-    public float waitDuration = 5;
+    private float[] triggerLevels = new float[] { 150, 300, 450 };
     public AudioClip waitingClip;
     public AudioClip immuneClip;
+    public GameObject treeHeadPrefab;
     void Start()
     {
         sprite = transform.FindChild("EnemyPlaceholder").GetComponent<SpriteRenderer>();
@@ -52,72 +48,28 @@ public class EnemyBoss : Enemy
     {
         distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        if (bossstate != EnemyBossState.DEAD)
+        if (bossstate != LeshyState.DEAD)
         {
-            if (bossstate == EnemyBossState.PATROL)
+            if (bossstate == LeshyState.PATROL)
                 Patrol();
-            else if (bossstate == EnemyBossState.CHASING)
+            else if (bossstate == LeshyState.CHASING)
                 FollowPlayer();
-            else if (bossstate == EnemyBossState.ATTACK)
+            else if (bossstate == LeshyState.ATTACK)
             {
                 AttackPlayer();
             }
-            else if (bossstate == EnemyBossState.BOSSSPECIAL)
+            else if (bossstate == LeshyState.BOSSSPECIAL)
             {
                 BossSpecial();
             }
-            else if (bossstate == EnemyBossState.WAITING)
-            {
-                Waiting();
-            }
-            else if (bossstate == EnemyBossState.CHARGING)
-            {
-                Charge();
-            }
-        }
-    }
-
-    public void reveal()
-    {
-        timer = 0;
-        bossstate = EnemyBossState.CHASING;
-        this.sprite.color = new Color(1f, 1f, 1f, 1f);
-        this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-    }
-
-    void Charge()
-    {
-        WalkTowards(player.transform.position);
-        timer += Time.deltaTime;
-        if (timer > waitDuration)
-        {
-            timer = 0;
-            bossstate = EnemyBossState.BLINDED;
-            this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-        }
-    }
-    void Waiting()
-    {
-        timer += Time.deltaTime;
-        if (timer > waitDuration)
-        {
-            timer = 0;
-            bossstate = EnemyBossState.CHARGING;
         }
     }
     public void BossSpecial()
     {
-        Vector2 teleportDirection = new Vector2(9001, 0);
-        while (Physics2D.Raycast(this.transform.position, teleportDirection, teleportDirection.magnitude, sightMask).collider != null)
-        {
-            teleportDirection = Random.insideUnitCircle * 500;
-        }
-        this.transform.Translate(teleportDirection.x, teleportDirection.y, 0, Space.World);
-        bossstate = EnemyBossState.WAITING;
-        timer = 0;
-        this.sprite.color = new Color(1f, 1f, 1f, 0f);
-        this.minimapSprite.color = new Color(1f, 1f, 1f, 0f);
+        print("BOSS");
+        GameObject tree = Instantiate(treeHeadPrefab) as GameObject;
+        
+        bossstate = LeshyState.CHASING;
         this.GetComponent<AudioSource>().clip = this.waitingClip;
         this.GetComponent<AudioSource>().Play();
         this.GetComponent<CircleCollider2D>().enabled = false;
@@ -139,7 +91,6 @@ public class EnemyBoss : Enemy
 
     public override void OnPlayerSighted()
     {
-        if(bossstate != EnemyBossState.WAITING)
             this.GetComponent<CircleCollider2D>().enabled = true;
     }
 
@@ -160,33 +111,25 @@ public class EnemyBoss : Enemy
 
     override public void GetHit(float damage)
     {
-        if (bossstate != EnemyBossState.CHARGING)
+        health = health - damage;
+        if (health <= 0)
         {
-            health = health - damage;
-            if (health <= 0)
+            Die();
+        }
+        for (int i = 0; i < triggerLevels.Length; i++)
+        {
+            if (triggerLevels[i] > health)
             {
-                Die();
+                triggerLevels[i] = -1;
+                bossstate = LeshyState.BOSSSPECIAL;
             }
-            for (int i = 0; i < triggerLevels.Length; i++)
-            {
-                if (triggerLevels[i] > health)
-                {
-                    triggerLevels[i] = -1;
-                    bossstate = EnemyBossState.BOSSSPECIAL;
-                }
-            }
-            if (bossstate == EnemyBossState.PATROL || bossstate == EnemyBossState.BLINDED)
+        }
+            if (bossstate == LeshyState.PATROL)
             {
                 this.sprite.color = new Color(1f, 1f, 1f, 1f);
                 this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-                bossstate = EnemyBossState.CHASING;
+                bossstate = LeshyState.CHASING;
             }
-        }
-        else
-        {
-            this.GetComponent<AudioSource>().clip = this.immuneClip;
-            this.GetComponent<AudioSource>().Play();
-        }
     }
 
     void OnCollisionStay2D(Collision2D coll)
@@ -210,7 +153,7 @@ public class EnemyBoss : Enemy
             other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
             this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
-            bossstate = EnemyBossState.CHASING;
+            bossstate = LeshyState.CHASING;
         }
     }
 

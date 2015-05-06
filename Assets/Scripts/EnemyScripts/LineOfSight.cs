@@ -56,7 +56,7 @@ public class LineOfSight : MonoBehaviour
 		if ( other.gameObject.tag == "Player" && player.state == PlayerState.NORMAL)
 		{
 
-			Debug.Log ("You surprised me!~");
+			//Debug.Log ("You surprised me!~");
 			//this.GetComponent<AudioSource>().Play();
 			//parentEnemy.OnPlayerSighted();
 		

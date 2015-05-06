@@ -150,7 +150,7 @@ public class Enemy : Character
 				WalkTowards ( crumbToFollow );
 			else
 			{
-				Debug.Log("Player Lost");
+				//Debug.Log("Player Lost");
 				state = EnemyState.PATROL;
 				currWaypointIndex = ClosestWaypoint ();
 			}
