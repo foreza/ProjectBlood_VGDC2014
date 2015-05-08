@@ -3,15 +3,9 @@ using System.Collections;
 
 public class Tags : MonoBehaviour {
     public const string LOSCollider = "LOSCollider";
+    public const string vine = "vine";
 	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }
 
 public class Options : MonoBehaviour

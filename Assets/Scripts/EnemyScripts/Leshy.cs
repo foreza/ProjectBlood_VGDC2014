@@ -92,6 +92,11 @@ public class Leshy : Enemy
     public override void OnPlayerSighted()
     {
             this.GetComponent<CircleCollider2D>().enabled = true;
+        //summon vines
+            foreach (GameObject vine in GameObject.FindGameObjectsWithTag(Tags.vine))
+            {
+                vine.GetComponent<TreeHoming>().Summon();
+            }
     }
 
     private int ClosestWaypoint()
