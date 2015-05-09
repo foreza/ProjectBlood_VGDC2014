@@ -24,7 +24,6 @@ public class Leshy : Enemy
     void Start()
     {
         sprite = transform.FindChild("EnemyPlaceholder").GetComponent<SpriteRenderer>();
-        minimapSprite = transform.FindChild("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
         LoSCollider = transform.FindChild("LineOfSight");
         player = GameObject.Find("Player").GetComponent<Player>();
         playerTrail = player.GetComponent<PlayerTrail>();
@@ -132,7 +131,6 @@ public class Leshy : Enemy
             if (bossstate == LeshyState.PATROL)
             {
                 this.sprite.color = new Color(1f, 1f, 1f, 1f);
-                this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
                 bossstate = LeshyState.CHASING;
             }
     }
@@ -157,7 +155,6 @@ public class Leshy : Enemy
         {
             other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
             bossstate = LeshyState.CHASING;
         }
     }

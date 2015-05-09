@@ -28,7 +28,6 @@ public class EnemyBoss : Enemy
     void Start()
     {
         sprite = transform.FindChild("EnemyPlaceholder").GetComponent<SpriteRenderer>();
-        minimapSprite = transform.FindChild("Minimap EnemyPlaceholder").GetComponent<SpriteRenderer>();
         LoSCollider = transform.FindChild("LineOfSight");
         player = GameObject.Find("Player").GetComponent<Player>();
         playerTrail = player.GetComponent<PlayerTrail>();
@@ -50,7 +49,7 @@ public class EnemyBoss : Enemy
 
     void FixedUpdate()
     {
-        distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        //distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         if (bossstate != EnemyBossState.DEAD)
         {
@@ -82,7 +81,6 @@ public class EnemyBoss : Enemy
         timer = 0;
         bossstate = EnemyBossState.CHASING;
         this.sprite.color = new Color(1f, 1f, 1f, 1f);
-        this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
     }
 
     void Charge()
@@ -94,7 +92,6 @@ public class EnemyBoss : Enemy
             timer = 0;
             bossstate = EnemyBossState.BLINDED;
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
         }
     }
     void Waiting()
@@ -117,7 +114,6 @@ public class EnemyBoss : Enemy
         bossstate = EnemyBossState.WAITING;
         timer = 0;
         this.sprite.color = new Color(1f, 1f, 1f, 0f);
-        this.minimapSprite.color = new Color(1f, 1f, 1f, 0f);
         this.GetComponent<AudioSource>().clip = this.waitingClip;
         this.GetComponent<AudioSource>().Play();
         this.GetComponent<CircleCollider2D>().enabled = false;
@@ -178,7 +174,6 @@ public class EnemyBoss : Enemy
             if (bossstate == EnemyBossState.PATROL || bossstate == EnemyBossState.BLINDED)
             {
                 this.sprite.color = new Color(1f, 1f, 1f, 1f);
-                this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
                 bossstate = EnemyBossState.CHASING;
             }
         }
@@ -209,7 +204,6 @@ public class EnemyBoss : Enemy
         {
             other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.minimapSprite.color = new Color(1f, 1f, 1f, 1f);
             bossstate = EnemyBossState.CHASING;
         }
     }

@@ -48,7 +48,7 @@ public class LoSMeshScript : MonoBehaviour
 				vertices[i] = new Vector3(tmp.x,tmp.y,0);
 
 				//code for LoS showing enemies
-				if (hit.collider.tag == "Enemy")
+				if (hit.collider.tag == "Enemy" || hit.collider.tag == "Boss")
 				{
 					if(!visibleMobs.Contains (hit.transform))//&& visibleMobs.Contains(hit.transform.parent.gameObject)) 
 					{

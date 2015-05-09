@@ -86,7 +86,7 @@ public class Sword : Weapon
 
         if (swordWielder.tag == "Player") 
         {
-            if (other.gameObject.tag == "Enemy") 
+            if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss")
             {
 				if(other.gameObject.GetComponent<Enemy>().state == EnemyState.PATROL || other.gameObject.GetComponent<Enemy>().state == EnemyState.STATIONARY)
                 {
@@ -104,7 +104,7 @@ public class Sword : Weapon
                 Application.LoadLevel(4); // finish.
             }
         } 
-        else if ((swordWielder.tag == "Enemy" || swordWielder.tag == "EnemyBoss") && other.gameObject.tag == "Player")
+        else if ((swordWielder.tag == "Enemy" || swordWielder.tag == "Boss") && other.gameObject.tag == "Player")
         {
             other.gameObject.GetComponent<Player>().takeHit(damage); // We should take damage from the enemy.
         }

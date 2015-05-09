@@ -9,7 +9,6 @@ public class UIMaster : MonoBehaviour {
 	GameObject theobj;
 	public List<Objective> descriptions;
 	public ScrollableList scrolist;
-	public GameObject nextLevel;
 	public bool alreadyInstantiated;
 	public GameObject nextLevelButton;
 
@@ -52,24 +51,23 @@ public class UIMaster : MonoBehaviour {
 					Destroy (child);
 			}
 		}
-        foreach (Objective o in descriptions)
-        {
-            if (o.isObjectiveDone())
-            {
-                descriptions.Remove(o);
-                break;
-            }
-            //UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
-        }
+//        foreach (Objective o in descriptions)
+//        {
+//            if (o.isObjectiveDone())
+//            {
+//                descriptions.Remove(o);
+//                break;
+//            }
+//            //UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
+//        }
 
-		if (GameObject.Find ("/Boss"))
-        if (GameObject.Find("/Boss").GetComponent<Enemy>().state == EnemyState.DEAD && alreadyInstantiated == false)
-        {
-            //buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
-            nextLevelButton.SetActive(true);
-            alreadyInstantiated = true;
-            UnityEngine.Debug.Log("penis");
-        }
+		if (GameObject.FindGameObjectWithTag ("Boss"))
+		    if (GameObject.FindGameObjectWithTag("Boss").GetComponent<Enemy>().state == EnemyState.DEAD && alreadyInstantiated == false)
+		    {
+		        //buttonTransform.anchoredPosition.x = 3; buttonTransform.anchoredPosition.y = -28;
+		        nextLevelButton.SetActive(true);
+		        alreadyInstantiated = true;
+		    }
 	}
 	
 }

@@ -37,7 +37,7 @@ public class TorchScript : MonoBehaviour
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss")
             {
                 EnemyBoss otherScript = other.gameObject.GetComponent<EnemyBoss>();
                 if (otherScript != null)
@@ -50,7 +50,7 @@ public class TorchScript : MonoBehaviour
 
         void OnTriggerExit2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss")
             {
                 //other.gameObject.GetComponent<Enemy>().NormalSight();
             }

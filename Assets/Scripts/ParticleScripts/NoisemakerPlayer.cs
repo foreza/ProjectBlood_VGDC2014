@@ -21,12 +21,12 @@ public class NoisemakerPlayer : MonoBehaviour {
 		RaycastHit2D[] hits  = Physics2D.CircleCastAll(transform.position, radius, new Vector2(0,0), 0, LayerMask.GetMask(soundLayers));
 		foreach (RaycastHit2D hit in hits)
 		{
-			if (hit.collider.tag == "Enemy") {
-				Debug.Log ("Did you hear that?", hit.collider);
+			if (hit.collider.tag == "Enemy" || hit.collider.tag == "Boss") {
+				//Debug.Log ("Did you hear that?", hit.collider);
 				if(hasLoS (transform, hit.transform, (int)radius, LayerMask.GetMask(lightLayers)))
 				{
                     hit.transform.GetComponent<Enemy>().OnPlayerSighted();
-                    Debug.Log("Did you see that?", hit.collider);
+                    //Debug.Log("Did you see that?", hit.collider);
 				}
 			}
 		}

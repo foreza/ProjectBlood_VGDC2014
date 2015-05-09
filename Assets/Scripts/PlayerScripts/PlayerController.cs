@@ -11,11 +11,9 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
 	{
 		player = GameObject.Find ("Player").GetComponent<Player>();
-
-
 	}
 
-	//Use this instead of update for inputs. This function will be called in the InputManager's Update function.
+	//Use this instead of update for inputs. This function will be called in the InputHandler's Update function.
 	public void UpdateController()
 	{
 		if (Time.timeScale > 0) {

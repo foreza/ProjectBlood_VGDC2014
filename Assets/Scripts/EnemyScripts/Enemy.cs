@@ -29,7 +29,6 @@ public class Enemy : Character
 	protected Player player;
     protected PlayerTrail playerTrail;
     protected SpriteRenderer sprite;
-    protected SpriteRenderer minimapSprite;
     protected Transform LoSCollider;
 	protected LayerMask trackMask;
 	protected LayerMask sightMask;
@@ -48,7 +47,6 @@ public class Enemy : Character
 	void Start () 
 	{
 		sprite = transform.FindChild ( "EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
-		minimapSprite = transform.FindChild ( "Minimap EnemyPlaceholder" ).GetComponent <SpriteRenderer> ();
 		LoSCollider = transform.FindChild ( "LineOfSight" );
 		player = GameObject.Find ( "Player" ).GetComponent <Player> ();
 		playerTrail = player.GetComponent <PlayerTrail> ();
@@ -85,7 +83,7 @@ public class Enemy : Character
 			//print ("I am not look at you.");
 		}
         */
-		
+
 		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
 		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		if ( state != EnemyState.DEAD )
@@ -187,8 +185,10 @@ public class Enemy : Character
 	{
 		if (patrolPath.Length > 0) {
 			Vector2 target = patrolPath[currWaypointIndex].transform.position;		// get current waypoint's position.
-			if ( (Vector2)this.transform.position != target )						// if not at the waypoint, move towards it ~~ !
+			if ( Vector2.Distance((Vector2)this.transform.position, target) > .05 ) {						// if not at the waypoint, move towards it ~~ !
+				//Debug.Log("Not at target");
 				WalkTowards ( target );
+			}
 			else 																	// otherwise, set current waypoint to the next one.
 			{
 				if (patrolPath.Length == 1)
@@ -220,9 +220,10 @@ public class Enemy : Character
 
 	public virtual void OnPlayerSighted ()
 	{
+		Debug.Log ("Sighted");
 		this.state = EnemyState.CHASING;
 		this.LoSCollider.GetComponent<AudioSource>().Play ();
-		print ("I SEE YOU [Enemy.cs]");
+		//print ("I SEE YOU [Enemy.cs]");
 	}
        
 	private int ClosestWaypoint()
@@ -243,6 +244,7 @@ public class Enemy : Character
     virtual public void GetHit(float damage)
     {
         health = health - damage;
+		state = EnemyState.CHASING;
         if (health <= 0)
         {
             Die();
@@ -253,7 +255,6 @@ public class Enemy : Character
 	{
         deathParticleEffect.Play(); // Temporarily removed since it was throwing errors. TODO : FIX THIS D:
 		this.sprite.enabled = false;
-		this.minimapSprite.enabled = false;
 		this.GetComponent<Collider2D>().enabled = false;
         this.LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
         state = EnemyState.DEAD;

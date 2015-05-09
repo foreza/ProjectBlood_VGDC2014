@@ -33,7 +33,7 @@ public class LineOfSight : MonoBehaviour
 			//if(hit && hit.transform == player.transform)
 			//if
 
-				 Debug.Log ("Player has entered collidor. I SEE YOU. YOU SEE ME.");
+				//Debug.Log ("Player has entered collidor. I SEE YOU. YOU SEE ME.");
 				if(player.state != PlayerState.STEALTH)
 				{
 					this.GetComponent<AudioSource>().Play();
