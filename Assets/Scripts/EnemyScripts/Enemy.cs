@@ -220,7 +220,6 @@ public class Enemy : Character
 
 	public virtual void OnPlayerSighted ()
 	{
-		Debug.Log ("Sighted");
 		this.state = EnemyState.CHASING;
 		this.LoSCollider.GetComponent<AudioSource>().Play ();
 		//print ("I SEE YOU [Enemy.cs]");
