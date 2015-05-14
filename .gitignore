@@ -49,6 +49,7 @@ Temp/
 Obj/
 UnityGenerated/
 Library/
+Assets/Sprites/PSD/*.meta
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
