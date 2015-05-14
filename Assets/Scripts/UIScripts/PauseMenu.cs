@@ -12,7 +12,7 @@ public class PauseMenu : MonoBehaviour {
 				//if (instructionsMenu.activeSelf) {
 				//	BackToPause();
 				//}
-				if (optionsMenu.activeSelf) {
+				if (optionsMenu.activeSelf || instructionsMenu.activeSelf) {
 					BackToPause();
 				}
 				else {
