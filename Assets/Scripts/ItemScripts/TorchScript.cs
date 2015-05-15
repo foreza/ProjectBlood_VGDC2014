@@ -122,23 +122,13 @@ public class TorchScript : MonoBehaviour
                 }
             }
 
-            // triangulate.cs
-            //    var tr : Triangulator = new Triangulator(vertices2d);
-            //    var indices : int[] = tr.Triangulate();
-
             // build mesh
             uvs = new Vector2[vertices2d.Length + 1];
             newvertices = new Vector3[vertices2d.Length + 1];
             for (int n = 0; n < newvertices.Length - 1; n++)
             {
                 newvertices[n] = new Vector3(vertices2d[n].x, vertices2d[n].y, 0);
-
-                // create some uv's for the mesh?
-                // uvs[n] = vertices2d[n];
-
             }
-
-            //print("len"+newvertices.Length+" n:"+n);
 
             triangles = new int[newvertices.Length * 3];
 
@@ -151,7 +141,6 @@ public class TorchScript : MonoBehaviour
                 if (iterator >= newvertices.Length)
                 {
                     triangles[n + 1] = 0;
-                    //print ("hit:"+i);
                 }
                 else
                 {

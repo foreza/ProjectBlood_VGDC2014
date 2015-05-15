@@ -150,7 +150,6 @@ public class EnemyBoss : Enemy
                 nearest = i;
             }
         }
-        //Debug.Log (nearest);
         return nearest;
     }
 

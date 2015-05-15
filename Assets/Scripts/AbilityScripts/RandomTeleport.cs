@@ -34,7 +34,6 @@ public class RandomTeleport : AbstractSkill {
             newTestPosition = (Vector2)(transform.position) + teleportDirection;
         }
         transform.position = newTestPosition;
-        Debug.Log("Teleport!");
         timer += Time.deltaTime;
     }
 }

@@ -151,7 +151,6 @@ public static class AStarPathing
 		{
 			// Add current node to the path
 			result.AddFirst ( curr.position );
-			Vector3 prev = curr.position;
 
 			// Try to get the next node in the path
 			getSuccess = childToParent.TryGetValue ( curr, out curr );

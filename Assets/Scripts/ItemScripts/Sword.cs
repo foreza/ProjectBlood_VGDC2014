@@ -91,7 +91,6 @@ public class Sword : Weapon
 				if(other.gameObject.GetComponent<Enemy>().state == EnemyState.PATROL || other.gameObject.GetComponent<Enemy>().state == EnemyState.STATIONARY)
                 {
                     other.gameObject.GetComponent<Enemy>().GetHit(critMultiplier*damage);
-                    Debug.Log("crit!");
                 }
                 else
                     other.gameObject.GetComponent<Enemy>().GetHit(damage);  // Deal damage to the enemy.

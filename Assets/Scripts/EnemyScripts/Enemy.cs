@@ -72,18 +72,6 @@ public class Enemy : Character
 	// FIXED UPDATE
 	void FixedUpdate ()
 	{
-        /*
-		// TODO: Optimize this, this is so, so costly.
-		if (player.state == PlayerState.NORMAL) {
-			LoSCollider.gameObject.SetActive(true);
-			//print ("I am look at you.");
-				}
-		if (player.state == PlayerState.STEALTH) {
-			LoSCollider.gameObject.SetActive(false);
-			//print ("I am not look at you.");
-		}
-        */
-
 		distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
 		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		if ( state != EnemyState.DEAD )
@@ -105,9 +93,8 @@ public class Enemy : Character
 		// ray direction is towards the player
 		Vector2 rayDir = player.transform.position - this.transform.position;
 		RaycastHit2D hit = Physics2D.Raycast ( this.transform.position, rayDir, 1000, sightMask );
-//		Debug.Log (hit.collider.gameObject.tag);
 
-		// In the case that the player stealths.
+        // In the case that the player stealths.
 		if (player.state == PlayerState.STEALTH) {
 			LoSCollider.gameObject.SetActive(false);
 
@@ -115,7 +102,6 @@ public class Enemy : Character
 
 		if ( hit && hit.collider.gameObject.tag == "Player" && player.state != PlayerState.STEALTH)		// if the player is sighted, move towards him ...
 		{
-			Debug.DrawLine ( this.transform.position, hit.point );
 			WalkTowards ( player.transform.position );
 
 			if (distanceToPlayer <= DISTANCE_TO_ATTACK) {
@@ -139,7 +125,6 @@ public class Enemy : Character
 				if ( crumbToFollow == Vector2.zero && hit && hit.transform.gameObject.tag == "Trail" )
 				{
 					crumbToFollow = hit.point;
-					Debug.DrawLine ( this.transform.position, hit.point );
 				}
 			}
 
@@ -148,7 +133,6 @@ public class Enemy : Character
 				WalkTowards ( crumbToFollow );
 			else
 			{
-				//Debug.Log("Player Lost");
 				state = EnemyState.PATROL;
 				currWaypointIndex = ClosestWaypoint ();
 			}
@@ -186,7 +170,6 @@ public class Enemy : Character
 		if (patrolPath.Length > 0) {
 			Vector2 target = patrolPath[currWaypointIndex].transform.position;		// get current waypoint's position.
 			if ( Vector2.Distance((Vector2)this.transform.position, target) > .05 ) {						// if not at the waypoint, move towards it ~~ !
-				//Debug.Log("Not at target");
 				WalkTowards ( target );
 			}
 			else 																	// otherwise, set current waypoint to the next one.
@@ -222,7 +205,6 @@ public class Enemy : Character
 	{
 		this.state = EnemyState.CHASING;
 		this.LoSCollider.GetComponent<AudioSource>().Play ();
-		//print ("I SEE YOU [Enemy.cs]");
 	}
        
 	private int ClosestWaypoint()
@@ -236,7 +218,6 @@ public class Enemy : Character
 				nearest = i;
 			}
 		}
-		//Debug.Log (nearest);
 		return nearest;
 	}
 

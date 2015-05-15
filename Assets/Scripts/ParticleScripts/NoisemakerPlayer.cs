@@ -22,11 +22,9 @@ public class NoisemakerPlayer : MonoBehaviour {
 		foreach (RaycastHit2D hit in hits)
 		{
 			if (hit.collider.tag == "Enemy" || hit.collider.tag == "Boss") {
-				//Debug.Log ("Did you hear that?", hit.collider);
 				if(hasLoS (transform, hit.transform, (int)radius, LayerMask.GetMask(lightLayers)))
 				{
                     hit.transform.GetComponent<Enemy>().OnPlayerSighted();
-                    //Debug.Log("Did you see that?", hit.collider);
 				}
 			}
 		}

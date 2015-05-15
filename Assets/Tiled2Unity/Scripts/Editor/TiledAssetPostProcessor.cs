@@ -5,6 +5,7 @@ using System.Xml.Linq;
 
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Tiled2Unity
 {
@@ -120,7 +121,8 @@ namespace Tiled2Unity
 
                 // Also, no shadows
                 mr.receiveShadows = false;
-                mr.castShadows = false;
+                //mr.castShadows = false;
+                mr.shadowCastingMode = ShadowCastingMode.Off;
             }
         }
 

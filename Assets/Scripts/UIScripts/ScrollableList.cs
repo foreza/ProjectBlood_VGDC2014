@@ -30,7 +30,6 @@ public class ScrollableList : MonoBehaviour
         containerRectTransform.offsetMax = new Vector2(containerRectTransform.offsetMax.x, scrollHeight / 2);
 
         int j = 0;
-		Debug.Log ("objectives has length "+descs.Count);
         for (int i = 0; i < itemCount; i++)
         {
             //this is used instead of a double for loop because itemCount may not fit perfectly into the rows/columns

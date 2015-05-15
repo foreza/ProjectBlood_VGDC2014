@@ -64,10 +64,7 @@ public class Leshy : Enemy
         }
     }
     public void BossSpecial()
-    {
-        print("BOSS");
-        GameObject tree = Instantiate(treeHeadPrefab) as GameObject;
-        
+    {        
         bossstate = LeshyState.CHASING;
         this.GetComponent<AudioSource>().clip = this.waitingClip;
         this.GetComponent<AudioSource>().Play();
@@ -109,7 +106,6 @@ public class Leshy : Enemy
                 nearest = i;
             }
         }
-        //Debug.Log (nearest);
         return nearest;
     }
 

@@ -18,8 +18,6 @@ public class UIMaster : MonoBehaviour {
 		alreadyInstantiated = false;
 		descriptions = new List<Objective>();
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
-		//Enemy anenemy = GameObject.Find ("/Boss").GetComponent<Enemy> (); //find whatever enemy is first in the scene
-		//UnityEngine.Debug.Log (anenemy);
 		foreach (GameObject enemy in enemies) {
 						descriptions.Add (new Objective ("Kill Him", "He Needs To Die", "kill", enemy.GetComponent<Enemy>(), new Vector3 (0, 0, 0)));
 				}
@@ -32,11 +30,6 @@ public class UIMaster : MonoBehaviour {
 		}
 
 	void Update(){
-				System.Diagnostics.Debug.Assert (descriptions != null);
-				
-	
-		
-
 		if (Input.GetKeyDown ("tab")) {
 			scrolist.doTheGUI ();
 		}
@@ -51,15 +44,6 @@ public class UIMaster : MonoBehaviour {
 					Destroy (child);
 			}
 		}
-//        foreach (Objective o in descriptions)
-//        {
-//            if (o.isObjectiveDone())
-//            {
-//                descriptions.Remove(o);
-//                break;
-//            }
-//            //UnityEngine.Debug.Log ("Enemy is "+ o.evil.distanceToPlayer);
-//        }
 
 		if (GameObject.FindGameObjectWithTag ("Boss"))
 		    if (GameObject.FindGameObjectWithTag("Boss").GetComponent<Enemy>().state == EnemyState.DEAD && alreadyInstantiated == false)
