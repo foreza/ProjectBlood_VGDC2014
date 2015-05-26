@@ -7,7 +7,6 @@ public class ShadowRayCaster2D : MonoBehaviour
     public GameObject lightmeshholder;
 
     public float distance = 1000;
-    public bool debugLines = true;
 
     List<PolygonCollider2D> polygonColliders = new List<PolygonCollider2D>();
     List<CircleCollider2D> circleColliders = new List<CircleCollider2D>();
@@ -16,14 +15,9 @@ public class ShadowRayCaster2D : MonoBehaviour
     private Vector3[] vertexList;
     private int[] triangles;
 
-    private LayerMask mask; 
-    private string[] layers = {"Enemy","LightWalls"};
-
     // Use this for initialization
     void Start()
     {
-        mask = LayerMask.GetMask(layers);
-
         //fill the collider lists with the appropriate colliders
         polygonColliders = new List<PolygonCollider2D>(FindObjectsOfType<PolygonCollider2D>());
         circleColliders = new List<CircleCollider2D>(FindObjectsOfType<CircleCollider2D>());
@@ -40,7 +34,6 @@ public class ShadowRayCaster2D : MonoBehaviour
             {
                 foreach (Vector2 point in polyCollider.GetPath(i))
                 {
-                    //points.Add(point);
                     if (Vector2.Distance(transform.position, point) < distance)
                     {
                         points.Add(point);
@@ -48,18 +41,6 @@ public class ShadowRayCaster2D : MonoBehaviour
                 }
             }
         }
-
-
-//        foreach (BoxCollider2D boxCollider in boxColliders)
-//        {
-//            Vector2 size = boxCollider.size;
-//            Vector2 center = boxCollider.center;
-//
-//            points.Add(new Vector2(center.x + (size.x / 2), center.y + (size.y / 2)));
-//            points.Add(new Vector2(center.x - (size.x / 2), center.y + (size.y / 2)));
-//            points.Add(new Vector2(center.x + (size.x / 2), center.y - (size.y / 2)));
-//            points.Add(new Vector2(center.x - (size.x / 2), center.y - (size.y / 2)));
-//        }
 
         foreach (CircleCollider2D circleCollider in circleColliders)
         {

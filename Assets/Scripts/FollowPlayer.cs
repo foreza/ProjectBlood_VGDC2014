@@ -10,6 +10,7 @@ public class FollowPlayer : MonoBehaviour {
 	}
 
 	void LateUpdate () {
-		transform.position = player.transform.position;
+        Vector3 currentPos = player.transform.position;
+        this.transform.position = new Vector3(currentPos.x, currentPos.y, this.transform.position.z);
 	}
 }
