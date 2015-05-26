@@ -3,14 +3,17 @@ using System.Collections;
 
 public class FollowPlayer : MonoBehaviour {
 
-	GameObject player;
+	private GameObject player;
 
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
 	void LateUpdate () {
-        Vector3 currentPos = player.transform.position;
-        this.transform.position = new Vector3(currentPos.x, currentPos.y, this.transform.position.z);
+        Vector3 playerPosition = player.transform.position;
+
+        // Only update x and y positions
+        transform.position = new Vector3(playerPosition.x, playerPosition.y, transform.position.z);
 	}
+
 }

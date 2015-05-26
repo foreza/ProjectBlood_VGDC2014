@@ -5,36 +5,37 @@ public class DoorScript : MonoBehaviour {
 
 	public bool open = false; // Is the door open?
 
-	public Vector3 openPosition; // The position of the door when it's open
-	public Vector3 closedPosition; // The position of the door when it's closed
+	private Vector3 openPosition; // The position of the door when it's open
+	private Vector3 closedPosition; // The position of the door when it's closed
 
-	public float totalMoveDistance; // The distance between the open position and closed position
+	private float totalMoveDistance; // The distance between the open position and closed position
 
-	public bool doorIsTriggered; // Is the door currently moving?
+	private bool doorIsTriggered; // Is the door currently moving?
 
-	float startTime; // The time at which the door started moving
+	private float startTime; // The time at which the door started moving
 
-	// Use this for initialization
 	void Start () {
-
         totalMoveDistance = transform.lossyScale.x * GetComponent<BoxCollider2D>().size.x;
-		if (open) {
-			openPosition = transform.position;
-			if (transform.rotation.z != 0)
-				closedPosition = openPosition + new Vector3(0, totalMoveDistance, 0);
-			else
-				closedPosition = openPosition + new Vector3(totalMoveDistance, 0, 0);
+        if (open) {
+            openPosition = transform.position;
+            if (transform.rotation.z != 0) {
+                closedPosition = openPosition + new Vector3(0, totalMoveDistance, 0);
+            }
+            else {
+                closedPosition = openPosition + new Vector3(totalMoveDistance, 0, 0);
+            }
 		} else {
 			closedPosition = transform.position;
-			if (transform.rotation.z != 0)
+			if (transform.rotation.z != 0) {
 				openPosition = closedPosition + new Vector3(0, totalMoveDistance, 0);
-			else
+            }
+            else {
 				openPosition = closedPosition + new Vector3(totalMoveDistance, 0, 0);
+            }
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (doorIsTriggered) {
 			MoveDoor ();
 		}
@@ -44,7 +45,7 @@ public class DoorScript : MonoBehaviour {
 		open = !open;
 		doorIsTriggered = true;
 		startTime = Time.time;
-		this.GetComponent<AudioSource>().Play ();
+		GetComponent<AudioSource>().Play ();
 	}
 
 	void MoveDoor() {

@@ -134,7 +134,7 @@ public class Player : Character
         this.GetComponent<AudioSource>().Play();
     }
 
-    public void Demacia()
+    public void SpinAttack()
     {
         StartCoroutine("DemaciaRoutine");
         this.sprite.sprite = normalSprite;

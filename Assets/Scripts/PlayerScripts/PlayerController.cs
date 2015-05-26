@@ -7,77 +7,67 @@ public class PlayerController : MonoBehaviour {
 	public bool canMove = true;
 	public bool canAim = true;
 
-	// Use this for initialization
 	void Start ()
 	{
-		player = GameObject.Find ("Player").GetComponent<Player>();
+		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 	}
 
 	//Use this instead of update for inputs. This function will be called in the InputHandler's Update function.
 	public void UpdateController()
 	{
 		if (Time.timeScale > 0) {
-			if (Input.GetButtonDown("Stealth")){
+			if (Input.GetButtonDown("Stealth")) {
 				player.Stealth();
 			}
 
-			 if (Input.GetButton ("Blink")) // Will work on this feature more - consider it a fun thing for now.
-			{
+			if (Input.GetButton ("Blink")) {
 				player.Blink();
 				player.unStealth();
 			}
-	         if (Input.GetButtonUp("Blink"))
-	         {
-	             player.BlinkParticleEffects(false);
-	         }
-			 if(Input.GetButtonDown("Weapon"))// attack!
-			{
-				player.Attack();
+
+            if (Input.GetButtonUp("Blink")) {
+                player.BlinkParticleEffects(false);
+            }
+
+            if(Input.GetButtonDown("Weapon")) {
+                player.Attack();
+                player.unStealth();
+            }
+			else if(Input.GetButton ("Demacia")) {
+				player.SpinAttack();
 				player.unStealth();
 			}
 
-			else if(Input.GetButton ("Demacia"))
-			{
-				player.Demacia();
-				player.unStealth();
-			}
-
-			if(canMove)
-			{
+			if(canMove) {
 				int x = (int)Input.GetAxisRaw("Horizontal");
 				int y = (int)Input.GetAxisRaw("Vertical");
 				
 				Move(x, y);
 			}
 
-			Aim ();
+			Aim();
 		}
 	}
 
-	void Move(int x, int y)
-	{
+	void Move(int x, int y) {
 		float displace = player.speed * Time.deltaTime;
 		float xComp = x * displace;
 		float yComp = y * displace;
 
-		if(x != 0 && y != 0)
-		{
+        // If we are moving diagonally, slow movement along both axes
+		if(x != 0 && y != 0) {
 			xComp = xComp * Mathf.Sqrt(2)/2;
 			yComp = yComp * Mathf.Sqrt(2)/2;
-
 		}
 
 		Vector2 velocity = new Vector2(xComp,yComp);
-		//CharacterController controller = GetComponent<CharacterController> ();
-		//controller.Move(velocity);
-		//this.gameObject.transform.Translate(velocity,Space.World);
-		this.GetComponent<Rigidbody2D>().MovePosition((Vector2)this.transform.position + velocity);
+		GetComponent<Rigidbody2D>().MovePosition((Vector2)transform.position + velocity);
 	}
 
-	void Aim()
-	{
+	void Aim() {
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		Vector3 lookPos = new Vector3 (mousePos.x-this.transform.position.x, mousePos.y-this.transform.position.y, 0);
-		this.transform.up = lookPos;
+		Vector3 lookPos = new Vector3 (mousePos.x-transform.position.x, mousePos.y-transform.position.y, 0);
+		transform.up = lookPos;
 	}
+
 }
