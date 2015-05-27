@@ -38,13 +38,6 @@ public class EnemyBoss : Enemy
         currWaypointIndex = ClosestWaypoint();
         deathParticleEffect = transform.FindChild("EnemyPlaceholder").GetComponent<ParticleSystem>();
         weapon = transform.FindChild("Sword").GetComponent<Sword>();
-
-        abilities = new List<AbstractSkill>();
-        AbstractSkill probAbility = transform.GetComponent<RandomTeleport>();
-        if (probAbility != null)
-        {
-            abilities.Add(probAbility);
-        }
     }
 
     void FixedUpdate()
