@@ -74,6 +74,7 @@ public class EnemyBoss : Enemy
         timer = 0;
         bossstate = EnemyBossState.CHASING;
         this.sprite.color = new Color(1f, 1f, 1f, 1f);
+        this.sprite.enabled = true;
     }
 
     void Charge()
@@ -85,6 +86,8 @@ public class EnemyBoss : Enemy
             timer = 0;
             bossstate = EnemyBossState.BLINDED;
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
+            this.sprite.enabled = true;
+            this.GetComponent<CircleCollider2D>().enabled = true;
         }
     }
     void Waiting()
@@ -94,6 +97,7 @@ public class EnemyBoss : Enemy
         {
             timer = 0;
             bossstate = EnemyBossState.CHARGING;
+            this.GetComponent<CircleCollider2D>().enabled = true;
         }
     }
     public void BossSpecial()
@@ -166,6 +170,9 @@ public class EnemyBoss : Enemy
             if (bossstate == EnemyBossState.PATROL || bossstate == EnemyBossState.BLINDED)
             {
                 this.sprite.color = new Color(1f, 1f, 1f, 1f);
+                this.sprite.enabled = true;
+                this.GetComponent<CircleCollider2D>().enabled = true;
+                
                 bossstate = EnemyBossState.CHASING;
             }
         }
@@ -197,6 +204,8 @@ public class EnemyBoss : Enemy
             other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
             this.sprite.color = new Color(1f, 1f, 1f, 1f);
             bossstate = EnemyBossState.CHASING;
+            this.sprite.enabled = true;
+            this.GetComponent<CircleCollider2D>().enabled = true;
         }
     }
 
