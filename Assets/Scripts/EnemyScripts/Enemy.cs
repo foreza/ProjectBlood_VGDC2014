@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public enum EnemyState
 {
@@ -70,16 +68,18 @@ public class Enemy : Character
         {
             LoSCollider.gameObject.SetActive(true);
         }
-        if (state != EnemyState.DEAD)
+
+        switch(state)
         {
-            if (state == EnemyState.PATROL)
+            case EnemyState.PATROL:
                 Patrol();
-            else if (state == EnemyState.CHASING)
+                break;
+            case EnemyState.CHASING:
                 FollowPlayer();
-            else if (state == EnemyState.ATTACK)
-            {
+                break;
+            case EnemyState.ATTACK:
                 AttackPlayer();
-            }
+                break;
         }
     }
 
@@ -87,8 +87,8 @@ public class Enemy : Character
     public void FollowPlayer()
     {
         // ray direction is towards the player
-        Vector2 rayDir = player.transform.position - this.transform.position;
-        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, sightMask);
+        Vector2 rayDir = player.transform.position - transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, 1000, sightMask);
 
         // In the case that the player stealths.
         if (player.state == PlayerState.STEALTH)
@@ -115,8 +115,8 @@ public class Enemy : Character
             foreach (TrailCrumb crumb in playerTrail.GetCrumbTrail())
             {
                 // cast the ray towards the crumb
-                rayDir = crumb.transform.position - this.transform.position;
-                hit = Physics2D.Raycast(this.transform.position, rayDir, 1000, trackMask);
+                rayDir = crumb.transform.position - transform.position;
+                hit = Physics2D.Raycast(transform.position, rayDir, 1000, trackMask);
 
                 // if it hits the crumb, move towards crumb
                 if (crumbToFollow == Vector2.zero && hit && hit.transform.gameObject.tag == "Trail")
@@ -146,16 +146,11 @@ public class Enemy : Character
         else if (player.state == PlayerState.STEALTH)
         {
             state = EnemyState.PATROL;
-
         }
         else if (attackTimer == 0)
         {
-            // player.GetComponent<Character>().health -= ATTACK_DAMAGE; // deals damage to player
-
             weapon.Attack();
             attackTimer += Time.deltaTime;
-            //LookTowards(player.transform.position); //face the player
-
         }
         else if (attackTimer > 0)
         {
@@ -173,7 +168,7 @@ public class Enemy : Character
         if (patrolPath.Length > 0)
         {
             Vector2 target = patrolPath[currWaypointIndex].transform.position;		// get current waypoint's position.
-            if (Vector2.Distance((Vector2)this.transform.position, target) > .05)
+            if (Vector2.Distance(transform.position, target) > .05)
             {						// if not at the waypoint, move towards it ~~ !
                 WalkTowards(target);
             }
@@ -193,32 +188,32 @@ public class Enemy : Character
     }
 
     // WalkTowards: Tells enemy to move to a specified location.
-    // TODO need to make this smarter using pathfinding or something D:
+    // TODO need to make this smarter using pathfinding or something
     private void WalkTowards(Vector2 to)
     {
-        Vector2 direction = to - (Vector2)this.transform.position;
-        this.transform.Translate(Vector3.ClampMagnitude(direction, speed * Time.deltaTime), Space.World);
-        this.transform.right = to - (Vector2)this.transform.position;
+        Vector2 direction = to - (Vector2)transform.position;
+        transform.Translate(Vector3.ClampMagnitude(direction, speed * Time.deltaTime), Space.World);
+        transform.right = to - (Vector2)transform.position;
     }
 
     private void LookTowards(Vector2 to)
     {
-        this.transform.right = to - (Vector2)this.transform.position;
+        transform.right = to - (Vector2)transform.position;
     }
 
     public virtual void OnPlayerSighted()
     {
-        this.state = EnemyState.CHASING;
-        this.LoSCollider.GetComponent<AudioSource>().Play();
+        state = EnemyState.CHASING;
+        LoSCollider.GetComponent<AudioSource>().Play();
     }
 
     private int ClosestWaypoint()
     {
         int nearest = 0;
-        for (int i = 0; i < this.patrolPath.Length; i++)
+        for (int i = 0; i < patrolPath.Length; i++)
         {
-            float distance = (this.transform.position - this.patrolPath[i].transform.position).magnitude;
-            if (distance < (this.transform.position - this.patrolPath[nearest].transform.position).magnitude)
+            float distance = (transform.position - patrolPath[i].transform.position).magnitude;
+            if (distance < (transform.position - patrolPath[nearest].transform.position).magnitude)
             {
                 nearest = i;
             }
@@ -239,9 +234,9 @@ public class Enemy : Character
     public void Die()
     {
         deathParticleEffect.Play(); // Temporarily removed since it was throwing errors. TODO : FIX THIS D:
-        this.sprite.enabled = false;
-        this.GetComponent<Collider2D>().enabled = false;
-        this.LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
+        sprite.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        LoSCollider.GetComponent<PolygonCollider2D>().enabled = false;
         state = EnemyState.DEAD;
     }
     void OnCollisionStay2D(Collision2D coll)
@@ -250,12 +245,12 @@ public class Enemy : Character
         {
             Vector2 wallNormal = coll.contacts[0].normal;
             Vector2 wallParallel = new Vector2(wallNormal.y, -wallNormal.x);
-            Vector2 aimDirection = this.transform.right * speed;
+            Vector2 aimDirection = transform.right * speed;
             Vector2 currentVelocity = Vector3.Project(aimDirection, wallParallel);
 
             float lostSpeed = speed - currentVelocity.magnitude;
             Vector2 lostVelocity = Vector3.Normalize(currentVelocity) * lostSpeed;
-            this.transform.Translate(lostVelocity * Time.deltaTime, Space.World);
+            transform.Translate(lostVelocity * Time.deltaTime, Space.World);
         }
     }
 }

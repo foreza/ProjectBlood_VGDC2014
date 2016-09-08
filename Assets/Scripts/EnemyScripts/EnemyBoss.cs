@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public enum EnemyBossState
 {
@@ -20,7 +18,7 @@ public class EnemyBoss : Enemy
 
     // PRIVATE VARIABLES
 
-    private float[] triggerLevels = new float[]{150, 300, 450};
+    private float[] triggerLevels = new float[] { 150, 300, 450 };
     private float timer = 0;
     public float waitDuration = 5;
     public AudioClip waitingClip;
@@ -42,30 +40,28 @@ public class EnemyBoss : Enemy
 
     void FixedUpdate()
     {
-        //distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        if (bossstate != EnemyBossState.DEAD)
+
+        switch (bossstate)
         {
-            if (bossstate == EnemyBossState.PATROL)
+            case EnemyBossState.PATROL:
                 Patrol();
-            else if (bossstate == EnemyBossState.CHASING)
+                break;
+            case EnemyBossState.CHASING:
                 FollowPlayer();
-            else if (bossstate == EnemyBossState.ATTACK)
-            {
+                break;
+            case EnemyBossState.ATTACK:
                 AttackPlayer();
-            }
-            else if (bossstate == EnemyBossState.BOSSSPECIAL)
-            {
+                break;
+            case EnemyBossState.BOSSSPECIAL:
                 BossSpecial();
-            }
-            else if (bossstate == EnemyBossState.WAITING)
-            {
+                break;
+            case EnemyBossState.WAITING:
                 Waiting();
-            }
-            else if (bossstate == EnemyBossState.CHARGING)
-            {
+                break;
+            case EnemyBossState.CHARGING:
                 Charge();
-            }
+                break;
         }
     }
 
@@ -73,8 +69,8 @@ public class EnemyBoss : Enemy
     {
         timer = 0;
         bossstate = EnemyBossState.CHASING;
-        this.sprite.color = new Color(1f, 1f, 1f, 1f);
-        this.sprite.enabled = true;
+        sprite.color = new Color(1f, 1f, 1f, 1f);
+        sprite.enabled = true;
     }
 
     void Charge()
@@ -85,9 +81,9 @@ public class EnemyBoss : Enemy
         {
             timer = 0;
             bossstate = EnemyBossState.BLINDED;
-            this.sprite.color = new Color(1f, 1f, 1f, 1f);
-            this.sprite.enabled = true;
-            this.GetComponent<CircleCollider2D>().enabled = true;
+            sprite.color = new Color(1f, 1f, 1f, 1f);
+            sprite.enabled = true;
+            GetComponent<CircleCollider2D>().enabled = true;
         }
     }
     void Waiting()
@@ -97,52 +93,52 @@ public class EnemyBoss : Enemy
         {
             timer = 0;
             bossstate = EnemyBossState.CHARGING;
-            this.GetComponent<CircleCollider2D>().enabled = true;
+            GetComponent<CircleCollider2D>().enabled = true;
         }
     }
     public void BossSpecial()
     {
         Vector2 teleportDirection = new Vector2(9001, 0);
-        while (Physics2D.Raycast(this.transform.position, teleportDirection, teleportDirection.magnitude, sightMask).collider != null)
+        while (Physics2D.Raycast(transform.position, teleportDirection, teleportDirection.magnitude, sightMask).collider != null)
         {
             teleportDirection = Random.insideUnitCircle * 500;
         }
-        this.transform.Translate(teleportDirection.x, teleportDirection.y, 0, Space.World);
+        transform.Translate(teleportDirection.x, teleportDirection.y, 0, Space.World);
         bossstate = EnemyBossState.WAITING;
         timer = 0;
-        this.sprite.color = new Color(1f, 1f, 1f, 0f);
-        this.GetComponent<AudioSource>().clip = this.waitingClip;
-        this.GetComponent<AudioSource>().Play();
-        this.GetComponent<CircleCollider2D>().enabled = false;
+        sprite.color = new Color(1f, 1f, 1f, 0f);
+        GetComponent<AudioSource>().clip = waitingClip;
+        GetComponent<AudioSource>().Play();
+        GetComponent<CircleCollider2D>().enabled = false;
     }
 
     // WalkTowards: Tells enemy to move to a specified location.
     // TODO need to make this smarter using pathfinding or something D:
     private void WalkTowards(Vector2 to)
     {
-        Vector2 direction = to - (Vector2)this.transform.position;
-        this.transform.Translate(Vector3.ClampMagnitude(direction, speed * Time.deltaTime), Space.World);
-        this.transform.right = to - (Vector2)this.transform.position;
+        Vector2 direction = to - (Vector2)transform.position;
+        transform.Translate(Vector3.ClampMagnitude(direction, speed * Time.deltaTime), Space.World);
+        transform.right = to - (Vector2)transform.position;
     }
 
     private void LookTowards(Vector2 to)
     {
-        this.transform.right = to - (Vector2)this.transform.position;
+        transform.right = to - (Vector2)transform.position;
     }
 
     public override void OnPlayerSighted()
     {
-        if(bossstate != EnemyBossState.WAITING)
-            this.GetComponent<CircleCollider2D>().enabled = true;
+        if (bossstate != EnemyBossState.WAITING)
+            GetComponent<CircleCollider2D>().enabled = true;
     }
 
     private int ClosestWaypoint()
     {
         int nearest = 0;
-        for (int i = 0; i < this.patrolPath.Length; i++)
+        for (int i = 0; i < patrolPath.Length; i++)
         {
-            float distance = (this.transform.position - this.patrolPath[i].transform.position).magnitude;
-            if (distance < (this.transform.position - this.patrolPath[nearest].transform.position).magnitude)
+            float distance = (transform.position - patrolPath[i].transform.position).magnitude;
+            if (distance < (transform.position - patrolPath[nearest].transform.position).magnitude)
             {
                 nearest = i;
             }
@@ -169,17 +165,17 @@ public class EnemyBoss : Enemy
             }
             if (bossstate == EnemyBossState.PATROL || bossstate == EnemyBossState.BLINDED)
             {
-                this.sprite.color = new Color(1f, 1f, 1f, 1f);
-                this.sprite.enabled = true;
-                this.GetComponent<CircleCollider2D>().enabled = true;
-                
+                sprite.color = new Color(1f, 1f, 1f, 1f);
+                sprite.enabled = true;
+                GetComponent<CircleCollider2D>().enabled = true;
+
                 bossstate = EnemyBossState.CHASING;
             }
         }
         else
         {
-            this.GetComponent<AudioSource>().clip = this.immuneClip;
-            this.GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().clip = immuneClip;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -189,12 +185,12 @@ public class EnemyBoss : Enemy
         {
             Vector2 wallNormal = coll.contacts[0].normal;
             Vector2 wallParallel = new Vector2(wallNormal.y, -wallNormal.x);
-            Vector2 aimDirection = this.transform.right * speed;
+            Vector2 aimDirection = transform.right * speed;
             Vector2 currentVelocity = Vector3.Project(aimDirection, wallParallel);
 
             float lostSpeed = speed - currentVelocity.magnitude;
             Vector2 lostVelocity = Vector3.Normalize(currentVelocity) * lostSpeed;
-            this.transform.Translate(lostVelocity * Time.deltaTime, Space.World);
+            transform.Translate(lostVelocity * Time.deltaTime, Space.World);
         }
     }
     void OnCollisionEnter2D(Collision2D other)
@@ -202,10 +198,10 @@ public class EnemyBoss : Enemy
         if (other.transform.tag == "Player")
         {
             other.gameObject.GetComponent<Player>().takeHit(ATTACK_DAMAGE);
-            this.sprite.color = new Color(1f, 1f, 1f, 1f);
+            sprite.color = new Color(1f, 1f, 1f, 1f);
             bossstate = EnemyBossState.CHASING;
-            this.sprite.enabled = true;
-            this.GetComponent<CircleCollider2D>().enabled = true;
+            sprite.enabled = true;
+            GetComponent<CircleCollider2D>().enabled = true;
         }
     }
 
